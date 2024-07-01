@@ -7,6 +7,7 @@ import BBCodeTextPlugin from "phaser3-rex-plugins/plugins/bbcodetext-plugin";
 import InputTextPlugin from "phaser3-rex-plugins/plugins/inputtext-plugin.js";
 import TransitionImagePackPlugin from "phaser3-rex-plugins/templates/transitionimagepack/transitionimagepack-plugin.js";
 import { LoadingScene } from "./loading-scene";
+import { renderDebugForm } from "./debugging/debuggingForm";
 
 
 // Catch global errors and display them in an alert so users can report the issue.
@@ -156,6 +157,7 @@ let game;
 const startGame = () => {
   game = new Phaser.Game(config);
   game.sound.pauseOnBlur = false;
+  renderDebugForm();
 };
 
 fetch("/manifest.json")
