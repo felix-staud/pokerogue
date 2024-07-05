@@ -67,6 +67,7 @@ import { Species } from "#enums/species";
 import { UiTheme } from "#enums/ui-theme";
 import { TimedEventManager } from "#app/timed-event-manager.js";
 import i18next from "i18next";
+import { audioManager } from "./audio-manager";
 
 export const bypassLogin = import.meta.env.VITE_BYPASS_LOGIN === "1";
 
@@ -105,9 +106,9 @@ export default class BattleScene extends SceneBase {
 
   public sessionPlayTime: integer = null;
   public lastSavePlayTime: integer = null;
-  public masterVolume: number = 0.5;
-  public bgmVolume: number = 1;
-  public seVolume: number = 1;
+  // public masterVolume: number = 0.5;
+  // public bgmVolume: number = 1;
+  // public seVolume: number = 1;
   public gameSpeed: integer = 1;
   public damageNumbersMode: integer = 0;
   public reroll: boolean = false;
@@ -1626,7 +1627,7 @@ export default class BattleScene extends SceneBase {
     if (this.bgm && bgmName === this.bgm.key) {
       if (!this.bgm.isPlaying) {
         this.bgm.play({
-          volume: this.masterVolume * this.bgmVolume
+          volume: audioManager.masterVolume * audioManager.bgmVolume
         });
       }
       return;
@@ -1645,7 +1646,7 @@ export default class BattleScene extends SceneBase {
       this.ui.bgmBar.setBgmToBgmBar(bgmName);
       if (bgmName === null && this.bgm && !this.bgm.pendingRemove) {
         this.bgm.play({
-          volume: this.masterVolume * this.bgmVolume
+          volume: audioManager.masterVolume * audioManager.bgmVolume
         });
         return;
       }
@@ -1654,7 +1655,7 @@ export default class BattleScene extends SceneBase {
       }
       this.bgm = this.sound.add(bgmName, { loop: true });
       this.bgm.play({
-        volume: this.masterVolume * this.bgmVolume
+        volume: audioManager.masterVolume * audioManager.bgmVolume
       });
       if (loopPoint) {
         this.bgm.on("looped", () => this.bgm.play({ seek: loopPoint }));
@@ -1698,7 +1699,7 @@ export default class BattleScene extends SceneBase {
   updateSoundVolume(): void {
     if (this.sound) {
       for (const sound of this.sound.getAllPlaying()) {
-        (sound as AnySound).setVolume(this.masterVolume * (this.bgmCache.has(sound.key) ? this.bgmVolume : this.seVolume));
+        (sound as AnySound).setVolume(audioManager.masterVolume * (this.bgmCache.has(sound.key) ? audioManager.bgmVolume : audioManager.seVolume));
       }
     }
   }
@@ -1719,12 +1720,12 @@ export default class BattleScene extends SceneBase {
   playSound(sound: string | AnySound, config?: object): AnySound {
     if (config) {
       if (config.hasOwnProperty("volume")) {
-        config["volume"] *= this.masterVolume * this.seVolume;
+        config["volume"] *= audioManager.masterVolume * audioManager.seVolume;
       } else {
-        config["volume"] = this.masterVolume * this.seVolume;
+        config["volume"] = audioManager.masterVolume * audioManager.seVolume;
       }
     } else {
-      config = { volume: this.masterVolume * this.seVolume };
+      config = { volume: audioManager.masterVolume * audioManager.seVolume };
     }
     // PRSFX sounds are mixed too loud
     if ((typeof sound === "string" ? sound : sound.key).startsWith("PRSFX- ")) {
