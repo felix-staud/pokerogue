@@ -45,7 +45,7 @@ export class BattlerTag {
     this.tagType = tagType;
     this.lapseTypes = Array.isArray(lapseType) ? lapseType : [ lapseType ];
     this.turnCount = turnCount;
-    this.sourceMove = sourceMove!; // TODO: is this bang correct?
+    this.sourceMove = sourceMove ?? Moves.NONE;
     this.sourceId = sourceId;
   }
 
@@ -438,7 +438,7 @@ export class InfatuatedTag extends BattlerTag {
     pokemon.scene.queueMessage(
       i18next.t("battlerTags:infatuatedOnAdd", {
         pokemonNameWithAffix: getPokemonNameWithAffix(pokemon),
-        sourcePokemonName: getPokemonNameWithAffix(pokemon.scene.getPokemonById(this.sourceId!) ?? undefined) // TODO: is that bang correct?
+        sourcePokemonName: getPokemonNameWithAffix(this.sourceId ? pokemon.scene.getPokemonById(this.sourceId) ?? undefined : undefined),
       })
     );
   }
@@ -456,7 +456,7 @@ export class InfatuatedTag extends BattlerTag {
       pokemon.scene.queueMessage(
         i18next.t("battlerTags:infatuatedLapse", {
           pokemonNameWithAffix: getPokemonNameWithAffix(pokemon),
-          sourcePokemonName: getPokemonNameWithAffix(pokemon.scene.getPokemonById(this.sourceId!) ?? undefined) // TODO: is that bang correct?
+          sourcePokemonName: getPokemonNameWithAffix(this.sourceId ? pokemon.scene.getPokemonById(this.sourceId!) ?? undefined : undefined),
         })
       );
       pokemon.scene.unshiftPhase(new CommonAnimPhase(pokemon.scene, pokemon.getBattlerIndex(), undefined, CommonAnim.ATTRACT));
