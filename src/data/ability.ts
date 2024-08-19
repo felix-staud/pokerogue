@@ -2264,7 +2264,7 @@ export class PostSummonTransformAbAttr extends PostSummonAbAttr {
     pokemon.summonData.fusionGender = target.getFusionGender();
     pokemon.summonData.stats = [ pokemon.stats[Stat.HP] ].concat(target.stats.slice(1));
     pokemon.summonData.battleStats = target.summonData.battleStats.slice(0);
-    pokemon.summonData.moveset = target.getMoveset().map(m => new PokemonMove(m!.moveId, m!.ppUsed, m!.ppUp)); // TODO: are those bangs correct?
+    pokemon.summonData.moveset = target.getMoveset().map(m => m ? new PokemonMove(m.moveId, m.ppUsed, m.ppUp) : null);
     pokemon.summonData.types = target.getTypes();
 
     pokemon.scene.playSound("PRSFX- Transform");
@@ -2809,7 +2809,7 @@ function getAnticipationCondition(): AbAttrCondition {
     for (const opponent of pokemon.getOpponents()) {
       for (const move of opponent.moveset) {
         // move is super effective
-        if (move!.getMove() instanceof AttackMove && pokemon.getAttackTypeEffectiveness(move!.getMove().type, opponent, true) >= 2) { // TODO: is this bang correct?
+        if (move?.getMove() instanceof AttackMove && pokemon.getAttackTypeEffectiveness(move.getMove().type, opponent, true) >= 2) {
           return true;
         }
         // move is a OHKO
@@ -2873,13 +2873,16 @@ export class ForewarnAbAttr extends PostSummonAbAttr {
           movePower = 120;
         } else if (move?.getMove().power === -1) {
           movePower = 80;
+        } else if (move) {
+          movePower = move.getMove().power;
         } else {
-          movePower = move!.getMove().power; // TODO: is this bang correct?
+          console.warn("move is not undefined/null! Setting movePower to 0.");
+          movePower = 0;
         }
 
-        if (movePower > maxPowerSeen) {
+        if (move && movePower > maxPowerSeen) {
           maxPowerSeen = movePower;
-          maxMove = move!.getName(); // TODO: is this bang correct?
+          maxMove = move.getName();
         }
       }
     }
@@ -3596,8 +3599,8 @@ export class PostBattleLootAbAttr extends PostBattleAbAttr {
     const postBattleLoot = pokemon.scene.currentBattle.postBattleLoot;
     if (postBattleLoot.length) {
       const randItem = Utils.randSeedItem(postBattleLoot);
-      //@ts-ignore - TODO see below
-      if (pokemon.scene.tryTransferHeldItemModifier(randItem, pokemon, true, 1, true)) { // TODO: fix. This is a promise!?
+      //@ts-ignore - TODO: fix. This is a promise!?
+      if (pokemon.scene.tryTransferHeldItemModifier(randItem, pokemon, true, 1, true)) {
         postBattleLoot.splice(postBattleLoot.indexOf(randItem), 1);
         pokemon.scene.queueMessage(i18next.t("abilityTriggers:postBattleLoot", { pokemonNameWithAffix: getPokemonNameWithAffix(pokemon), itemName: randItem.type.name }));
         return true;
@@ -4715,8 +4718,8 @@ export function initAbilities() {
       .attr(IgnoreOpponentStatChangesAbAttr)
       .ignorable(),
     new Ability(Abilities.TINTED_LENS, 4)
-      //@ts-ignore
-      .attr(DamageBoostAbAttr, 2, (user, target, move) => target.getAttackTypeEffectiveness(move.type, user) <= 0.5), // TODO: fix TS issues
+      //@ts-ignore - TODO: fix TS issues
+      .attr(DamageBoostAbAttr, 2, (user, target, move) => target.getAttackTypeEffectiveness(move.type, user) <= 0.5),
     new Ability(Abilities.FILTER, 4)
       .attr(ReceivedMoveDamageMultiplierAbAttr,(target, user, move) => target.getAttackTypeEffectiveness(move.type, user) >= 2, 0.75)
       .ignorable(),
