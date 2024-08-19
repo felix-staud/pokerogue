@@ -387,7 +387,7 @@ export class NoCritTag extends ArenaTag {
    * @param sourceId `integer` the ID of the {@linkcode Pokemon} that created this effect
    * @param side {@linkcode ArenaTagSide} the side to which this effect belongs
    */
-  constructor(turnCount: integer, sourceMove: Moves, sourceId: integer, side: ArenaTagSide) {
+  constructor(turnCount: integer, sourceMove?: Moves, sourceId?: integer, side?: ArenaTagSide) {
     super(ArenaTagType.NO_CRIT, turnCount, sourceMove, sourceId, side);
   }
 
@@ -400,7 +400,7 @@ export class NoCritTag extends ArenaTag {
 
   /** Queues a message upon removing this effect from the field */
   onRemove(arena: Arena): void {
-    const source = arena.scene.getPokemonById(this.sourceId!); // TODO: is this bang correct?
+    const source = this.sourceId ? arena.scene.getPokemonById(this.sourceId) : null;
     arena.scene.queueMessage(i18next.t("arenaTag:noCritOnRemove", {
       pokemonNameWithAffix: getPokemonNameWithAffix(source ?? undefined),
       moveName: this.getMoveName()
@@ -665,19 +665,20 @@ class ToxicSpikesTag extends ArenaTrapTag {
  * and deals damage after the turn count is reached.
  */
 class DelayedAttackTag extends ArenaTag {
-  public targetIndex: BattlerIndex;
+  public targetIndex: BattlerIndex | undefined;
 
-  constructor(tagType: ArenaTagType, sourceMove: Moves | undefined, sourceId: integer, targetIndex: BattlerIndex) {
+  constructor(tagType: ArenaTagType, sourceMove: Moves | undefined, sourceId: integer, targetIndex?: BattlerIndex) {
     super(tagType, 3, sourceMove, sourceId);
 
-    this.targetIndex = targetIndex;
+    this.targetIndex = targetIndex ?? -1;
   }
 
   lapse(arena: Arena): boolean {
     const ret = super.lapse(arena);
 
-    if (!ret) {
-      arena.scene.unshiftPhase(new MoveEffectPhase(arena.scene, this.sourceId!, [ this.targetIndex ], new PokemonMove(this.sourceMove!, 0, 0, true))); // TODO: are those bangs correct?
+    if (!ret && this.sourceId && this.sourceMove) {
+      const targets = this.targetIndex ? [ this.targetIndex ] : [];
+      arena.scene.unshiftPhase(new MoveEffectPhase(arena.scene, this.sourceId, targets, new PokemonMove(this.sourceMove, 0, 0, true)));
     }
 
     return ret;
@@ -863,7 +864,7 @@ class TailwindTag extends ArenaTag {
       arena.scene.queueMessage(i18next.t(`arenaTag:tailwindOnAdd${this.side === ArenaTagSide.PLAYER ? "Player" : this.side === ArenaTagSide.ENEMY ? "Enemy" : ""}`));
     }
 
-    const source = arena.scene.getPokemonById(this.sourceId!); //TODO: this bang is questionable!
+    const source = this.sourceId ? arena.scene.getPokemonById(this.sourceId) : null;
     const party = (source?.isPlayer() ? source.scene.getPlayerField() : source?.scene.getEnemyField()) ?? [];
 
     for (const pokemon of party) {
@@ -918,7 +919,7 @@ export function getArenaTag(tagType: ArenaTagType, turnCount: integer, sourceMov
   case ArenaTagType.CRAFTY_SHIELD:
     return new CraftyShieldTag(sourceId, side);
   case ArenaTagType.NO_CRIT:
-    return new NoCritTag(turnCount, sourceMove!, sourceId, side); // TODO: is this bang correct?
+    return new NoCritTag(turnCount, sourceMove, sourceId, side);
   case ArenaTagType.MUD_SPORT:
     return new MudSportTag(turnCount, sourceId);
   case ArenaTagType.WATER_SPORT:
@@ -929,7 +930,7 @@ export function getArenaTag(tagType: ArenaTagType, turnCount: integer, sourceMov
     return new ToxicSpikesTag(sourceId, side);
   case ArenaTagType.FUTURE_SIGHT:
   case ArenaTagType.DOOM_DESIRE:
-    return new DelayedAttackTag(tagType, sourceMove, sourceId, targetIndex!); // TODO:questionable bang
+    return new DelayedAttackTag(tagType, sourceMove, sourceId, targetIndex);
   case ArenaTagType.WISH:
     return new WishTag(turnCount, sourceId, side);
   case ArenaTagType.STEALTH_ROCK:
