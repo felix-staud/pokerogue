@@ -60,14 +60,14 @@ export class TimedEventManager {
     let multiplier = 1;
     const shinyEvents = timedEvents.filter((te) => te.eventType === EventType.SHINY && this.isActive(te));
     shinyEvents.forEach((se) => {
-      multiplier *= se.shinyMultiplier!; // TODO: is this bang correct?
+      multiplier *= se.shinyMultiplier ?? 1;
     });
 
     return multiplier;
   }
 
-  getEventBannerFilename(): string {
-    return timedEvents.find((te: TimedEvent) => this.isActive(te))?.bannerFilename!; // TODO: is this bang correct?
+  getEventBannerFilename(): string | null {
+    return timedEvents.find((te: TimedEvent) => this.isActive(te))?.bannerFilename ?? null;
   }
 }
 
@@ -80,43 +80,47 @@ export class TimedEventDisplay extends Phaser.GameObjects.Container {
 
   constructor(scene: BattleScene, x: number, y: number, event?: TimedEvent) {
     super(scene, x, y);
-    this.event = event!; // TODO: is this bang correct?
+    this.event = event ?? null;
     this.setVisible(false);
   }
 
   setup() {
     console.log(this.event?.bannerFilename);
-    this.banner = new Phaser.GameObjects.Image(this.scene, 29, 64, this.event!.bannerFilename!); // TODO: are the bangs correct here?
-    this.banner.setName("img-event-banner");
-    this.banner.setOrigin(0.08, -0.35);
-    this.banner.setScale(0.18);
-    // this.bannerShadow = new Phaser.GameObjects.Rectangle(
-    //   this.scene,
-    //   this.banner.x - 2,
-    //   this.banner.y + 2,
-    //   this.banner.width,
-    //   this.banner.height,
-    //   0x484848
-    // );
-    // this.bannerShadow.setName("rect-event-banner-shadow");
-    // this.bannerShadow.setScale(0.07);
-    // this.bannerShadow.setAlpha(0.5);
-    // this.bannerShadow.setOrigin(0,0);
-    this.eventTimerText = addTextObject(
-      this.scene,
-      this.banner.x + 8,
-      this.banner.y + 100,
-      this.timeToGo(this.event!.endDate), // TODO: is the bang correct here?
-      TextStyle.WINDOW
-    );
-    this.eventTimerText.setName("text-event-timer");
-    this.eventTimerText.setScale(0.15);
-    this.eventTimerText.setOrigin(0,0);
+    if (this.event?.bannerFilename) {
+      this.banner = new Phaser.GameObjects.Image(this.scene, 29, 64, this.event?.bannerFilename);
+      this.banner.setName("img-event-banner");
+      this.banner.setOrigin(0.08, -0.35);
+      this.banner.setScale(0.18);
+      // this.bannerShadow = new Phaser.GameObjects.Rectangle(
+      //   this.scene,
+      //   this.banner.x - 2,
+      //   this.banner.y + 2,
+      //   this.banner.width,
+      //   this.banner.height,
+      //   0x484848
+      // );
+      // this.bannerShadow.setName("rect-event-banner-shadow");
+      // this.bannerShadow.setScale(0.07);
+      // this.bannerShadow.setAlpha(0.5);
+      // this.bannerShadow.setOrigin(0,0);
+      this.eventTimerText = addTextObject(
+        this.scene,
+        this.banner.x + 8,
+        this.banner.y + 100,
+        this.timeToGo(this.event?.endDate ?? new Date()),
+        TextStyle.WINDOW
+      );
+      this.eventTimerText.setName("text-event-timer");
+      this.eventTimerText.setScale(0.15);
+      this.eventTimerText.setOrigin(0,0);
 
-    this.add([
-      this.eventTimerText,
-      // this.bannerShadow,
-      this.banner]);
+      this.add([
+        this.eventTimerText,
+        // this.bannerShadow,
+        this.banner]);
+    } else {
+      console.warn("could not find event.banenrFilename!");
+    }
   }
 
   show() {
@@ -157,6 +161,10 @@ export class TimedEventDisplay extends Phaser.GameObjects.Container {
   }
 
   updateCountdown() {
-    this.eventTimerText.setText(this.timeToGo(this.event!.endDate)); // TODO: is the bang correct here?
+    if (this.event?.endDate) {
+      this.eventTimerText.setText(this.timeToGo(this.event?.endDate));
+    } else {
+      console.warn("Could not update countdown! No event.endDate found.");
+    }
   }
 }
