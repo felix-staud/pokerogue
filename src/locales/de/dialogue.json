@@ -1,0 +1,1537 @@
+{
+  "youngster": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "lass": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "breeder": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "breeder_female": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "fisherman": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "fisherman_female": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "swimmer": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "backpacker": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "ace_trainer": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "parasol_lady": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "twins": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "cyclist": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "black_belt": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "battle_girl": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "hiker": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "ranger": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "scientist": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "school_kid": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "artist": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "guitarist": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "worker": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "worker_female": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "worker_double": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "hex_maniac": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "psychic": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "officer": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "beauty": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "baker": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "biker": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "firebreather": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "sailor": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "archer": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "ariana": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "proton": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "petrel": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "tabitha": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "courtney": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "shelly": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "matt": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "mars": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "jupiter": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "saturn": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "zinzolin": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "rood": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "xerosic": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "bryony": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "rocket_grunt": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "magma_grunt": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "aqua_grunt": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "galactic_grunt": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "plasma_grunt": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "flare_grunt": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "rocket_boss_giovanni_1": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "rocket_boss_giovanni_2": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "magma_boss_maxie_1": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "magma_boss_maxie_2": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "aqua_boss_archie_1": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "aqua_boss_archie_2": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "galactic_boss_cyrus_1": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "galactic_boss_cyrus_2": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "plasma_boss_ghetsis_1": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "plasma_boss_ghetsis_2": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "flare_boss_lysandre_1": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "flare_boss_lysandre_2": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "brock": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "misty": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "lt_surge": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "erika": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "janine": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "sabrina": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "blaine": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "giovanni": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "roxanne": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "brawly": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "wattson": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "flannery": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "norman": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "winona": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "tate": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "liza": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "juan": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "crasher_wake": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "falkner": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "nessa": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "melony": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "marlon": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "shauntal": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "marshal": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "cheren": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "chili": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "cilan": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "roark": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "morty": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "crispin": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "amarys": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "lacey": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "drayton": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "ramos": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "viola": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "candice": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "gardenia": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "aaron": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "cress": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "allister": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "clay": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "kofu": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "tulip": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "sidney": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "phoebe": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "glacia": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "drake": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "wallace": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "lorelei": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "will": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "malva": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "hala": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "molayne": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "rika": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "bruno": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "bugsy": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "koga": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "bertha": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "lenora": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "siebold": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "roxie": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "olivia": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "poppy": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "agatha": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "flint": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "grimsley": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "caitlin": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "diantha": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "wikstrom": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "acerola": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "larry_elite": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "lance": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "karen": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "milo": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "lucian": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "drasna": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "kahili": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "hassel": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "blue": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "piers": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "red": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "jasmine": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "lance_champion": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "steven": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "cynthia": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "iris": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "hau": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "geeta": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "nemona": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "leon": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "whitney": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "chuck": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "katy": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "pryce": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "clair": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "maylene": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "fantina": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "byron": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "olympia": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "volkner": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "burgh": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "elesa": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "skyla": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "brycen": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "drayden": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "grant": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "korrina": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "clemont": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "valerie": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "wulfric": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "kabu": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "bea": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "opal": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "bede": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "gordie": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "marnie": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "raihan": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "brassius": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "iono": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "larry": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "ryme": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "grusha": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "marnie_elite": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "nessa_elite": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "bea_elite": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "allister_elite": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "raihan_elite": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "alder": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "kieran": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "rival": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "rival_female": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "rival_2": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "rival_2_female": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "rival_3": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "rival_3_female": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "rival_4": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "rival_4_female": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "rival_5": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "rival_5_female": {
+    "encounter": {
+    },
+    "victory": {
+    },
+    "defeat": {
+    }
+  },
+  "rival_6": {
+    "encounter": {
+    },
+    "victory": {
+    }
+  },
+  "rival_6_female": {
+    "encounter": {
+    },
+    "victory": {
+      "1": "@c{smile_ehalf}I… I think I fulfilled my purpose…\n$@c{smile_eclosed}Promise me… After you heal the world… Please… come home safe.\n$@c{smile_ehalf}…VIELEN DANK"
+    }
+  }
+}
