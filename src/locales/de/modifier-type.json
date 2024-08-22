@@ -420,7 +420,7 @@
     "x_accuracy": "X-Treffer",
     "dire_hit": "X-Volltreffer"
   },
-  "TempBattleStatBoosterStatName": {
+  "TempBattleStatBoosterStatname": {
     "ATK": "Angriff",
     "DEF": "Verteidigung",
     "SPATK": "Sp. Ang",
