@@ -92,14 +92,7 @@
   "buttonSlowDown": "Ralentir",
   "alt": " (Alt)",
   "mute": "Muet",
-  "controller": "Controller",
-  "gamepadSupport": "Gamepad Support",
   "showBgmBar": "Titre de la musique",
   "moveTouchControls": "Déplacer les contrôles tactiles",
-  "shopOverlayOpacity": "Opacité boutique",
-  "shopCursorTarget": "Choix après relance",
-  "items": "Obj. gratuits",
-  "reroll": "Relance",
-  "shop": "Boutique",
-  "checkTeam": "Équipe"
+  "shopOverlayOpacity": "Opacité boutique"
 }
