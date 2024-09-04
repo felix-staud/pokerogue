@@ -10,7 +10,6 @@ import { allMoves, ForceSwitchOutAttr } from "../data/move";
 import { getGenderColor, getGenderSymbol } from "../data/gender";
 import { StatusEffect } from "../data/status-effect";
 import PokemonIconAnimHandler, { PokemonIconAnimMode } from "./pokemon-icon-anim-handler";
-import { pokemonEvolutions } from "../data/pokemon-evolutions";
 import { addWindow } from "./ui-theme";
 import { SpeciesFormChangeItemTrigger, FormChangeItem } from "../data/pokemon-forms";
 import { getVariantTint } from "#app/data/variant";
@@ -24,6 +23,7 @@ import { Species } from "#enums/species";
 import { getPokemonNameWithAffix } from "#app/messages.js";
 import { CommandPhase } from "#app/phases/command-phase.js";
 import { SelectModifierPhase } from "#app/phases/select-modifier-phase.js";
+import { OptionSelectItem } from "./abstact-option-select-ui-handler";
 
 const defaultMessage = i18next.t("partyUiHandler:choosePokemon");
 
@@ -459,10 +459,7 @@ export default class PartyUiHandler extends MessageUiHandler {
           ui.setModeWithoutClear(Mode.SUMMARY, pokemon).then(() =>  this.clearOptions());
           return true;
         } else if (option === PartyOption.UNPAUSE_EVOLUTION) {
-          this.clearOptions();
-          ui.playSelect();
-          pokemon.pauseEvolutions = false;
-          this.showText(i18next.t("partyUiHandler:unpausedEvolutions", { pokemonName: getPokemonNameWithAffix(pokemon) }), undefined, () => this.showText("", 0), null, true);
+          this.handleUnpauseEvolutions(pokemon);
         } else if (option === PartyOption.UNSPLICE) {
           this.clearOptions();
           ui.playSelect();
@@ -877,7 +874,7 @@ export default class PartyUiHandler extends MessageUiHandler {
       this.options.push(PartyOption.SUMMARY);
       this.options.push(PartyOption.RENAME);
 
-      if (pokemon.pauseEvolutions && pokemonEvolutions.hasOwnProperty(pokemon.species.speciesId)) {
+      if (pokemon.hasPausedEvolutions()) {
         this.options.push(PartyOption.UNPAUSE_EVOLUTION);
       }
 
@@ -1139,6 +1136,97 @@ export default class PartyUiHandler extends MessageUiHandler {
   clearPartySlots() {
     this.partySlots.splice(0, this.partySlots.length);
     this.partySlotsContainer.removeAll(true);
+  }
+
+  /**
+   * Handler for unpausing evolutions
+   * @param pokemon the Pokemon whose evolutions are to be unpaused
+   */
+  private handleUnpauseEvolutions(pokemon: PlayerPokemon) {
+    const ui = this.getUi();
+
+    this.clearOptions();
+    ui.playSelect();
+    if (pokemon.isFusion()) {
+      this.handleFusionUnpauseEvolutions(pokemon);
+    } else {
+      this.handleSimpleUnpauseEvolutions(pokemon);
+    }
+  }
+
+  /**
+   * Handles unpausing evolutions for non-fused Pokemon
+   * @param pokemon the unfused Pokemon whose evolutions are to be unpaused
+   */
+  private handleSimpleUnpauseEvolutions(pokemon: PlayerPokemon) {
+    pokemon.pauseEvolutions = false;
+    this.showText(
+      i18next.t("partyUiHandler:unpausedEvolutions", { pokemonName: getPokemonNameWithAffix(pokemon) }),
+      null,
+      () => this.showText("", 0),
+      null,
+      true
+    );
+  }
+
+  /**
+   * Handles unpausing evolutions for fused Pokemon
+   * @param pokemon the fused Pokemon whose evolutions are to be unpaused
+   */
+  private handleFusionUnpauseEvolutions(pokemon: PlayerPokemon) {
+    if (!pokemon.isFusion()) {
+      throw new Error("The handleUnpauseFusionEvolutions function should only be called for fusion Pokemon!.");
+    }
+
+    const ui = this.getUi();
+    const unpauseFusionEvolutionsText = i18next.t("partyUiHandler:unpauseFusionEvolutions", {
+      fusionName: pokemon.fusionSpecies.name,
+      pokemonName: pokemon.name,
+    });
+    const options: OptionSelectItem[] = [];
+    const done = (pokemonName: string) => {
+      const unpausedEvolutionsText = i18next.t("partyUiHandler:unpausedEvolutions", { pokemonName });
+      this.showText(
+        unpausedEvolutionsText,
+        null,
+        () => ui.setMode(Mode.PARTY),
+        0,
+      );
+      return true;
+    };
+
+    if (pokemon.pauseEvolutions) {
+      options.push({
+        label: pokemon.species.getName(),
+        handler: () => {
+          pokemon.pauseEvolutions = false;
+          return done(pokemon.species.getName());
+        },
+      });
+    }
+
+    if (pokemon.fusionPauseEvolutions) {
+      options.push({
+        label: pokemon.fusionSpecies.getName(),
+        handler: () => {
+          pokemon.fusionPauseEvolutions = false;
+          return done(pokemon.fusionSpecies.getName());
+        },
+      });
+    }
+
+    options.push({
+      label: i18next.t("partyUiHandler:cancel"),
+      handler: () => {
+        ui.setMode(Mode.PARTY);
+        return false;
+      },
+    });
+
+    this.showText(
+      unpauseFusionEvolutionsText,
+      null,
+      () => ui.setModeWithoutClear(Mode.OPTION_SELECT, { options, delay: 100 }));
   }
 }
 

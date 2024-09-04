@@ -104,6 +104,7 @@ export default abstract class Pokemon extends Phaser.GameObjects.Container {
   public fusionVariant: Variant;
   public fusionGender: Gender;
   public fusionLuck: integer;
+  public fusionPauseEvolutions: boolean;
 
   private summonDataPrimer: PokemonSummonData | null;
 
@@ -195,6 +196,7 @@ export default abstract class Pokemon extends Phaser.GameObjects.Container {
       this.fusionVariant = dataSource.fusionVariant || 0;
       this.fusionGender = dataSource.fusionGender;
       this.fusionLuck = dataSource.fusionLuck;
+      this.fusionPauseEvolutions = dataSource.fusionPauseEvolutions ?? false;
       this.usedTMs = dataSource.usedTMs ?? [];
     } else {
       this.id = Utils.randSeedInt(4294967296);
@@ -971,7 +973,7 @@ export default abstract class Pokemon extends Phaser.GameObjects.Container {
     return this.luck + (this.isFusion() ? this.fusionLuck : 0);
   }
 
-  isFusion(): boolean {
+  isFusion(): this is this & { fusionSpecies: PokemonSpecies }  {
     return !!this.fusionSpecies;
   }
 
@@ -3475,6 +3477,16 @@ export default abstract class Pokemon extends Phaser.GameObjects.Container {
     const rootForm = getPokemonSpecies(this.species.getRootSpeciesId());
     return rootForm.getAbility(abilityIndex) === rootForm.getAbility(currentAbilityIndex);
   }
+
+  /**
+   * Checks if a Pokemon has paused evolutions.
+   * If it's a fusion the fused Pokemon is checked as well.
+   * @returns true if the Pokemon has paused evolutions (checks fusion too!)
+   */
+  hasPausedEvolutions(): boolean {
+    return (this.pauseEvolutions && pokemonEvolutions.hasOwnProperty(this.species.speciesId))
+      || (this.isFusion() && this.fusionPauseEvolutions && pokemonEvolutions.hasOwnProperty(this.fusionSpecies.speciesId));
+  }
 }
 
 export default interface Pokemon {
@@ -3843,6 +3855,7 @@ export class PlayerPokemon extends Pokemon {
       this.fusionVariant = pokemon.variant;
       this.fusionGender = pokemon.gender;
       this.fusionLuck = pokemon.luck;
+      this.fusionPauseEvolutions = pokemon.pauseEvolutions;
 
       this.scene.validateAchv(achvs.SPLICE);
       this.scene.gameData.gameStats.pokemonFused++;

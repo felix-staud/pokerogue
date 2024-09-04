@@ -23,6 +23,7 @@
   "tooManyItems": "{{pokemonName}} has too many\nof this item!",
   "anyEffect": "It won't have any effect.",
   "unpausedEvolutions": "Evolutions have been unpaused for {{pokemonName}}.",
+  "unpauseFusionEvolutions": "Which Pokemon do you want\nto unpause evolutions for?",
   "unspliceConfirmation": "Do you really want to unsplice {{fusionName}}\nfrom {{pokemonName}}? {{fusionName}} will be lost.",
   "wasReverted": "{{fusionName}} was reverted to {{pokemonName}}.",
   "releaseConfirmation": "Do you really want to release {{pokemonName}}?",
