@@ -11,6 +11,7 @@ on:
     branches:
       - main  # Trigger on pull request events targeting the main branch
       - beta # Trigger on pull request events targeting the beta branch
+      - refactor/paralle-test-runs # TODO: delete
   merge_group:
     types: [checks_requested]
 
