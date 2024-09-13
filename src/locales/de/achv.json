@@ -13,7 +13,8 @@
     "name_female": "Besserverdienerin"
   },
   "100K_MONEY": {
-    "name": "Reich"
+    "name": "Reich",
+    "name_female": "Reich"
   },
   "1M_MONEY": {
     "name": "Millionär",
