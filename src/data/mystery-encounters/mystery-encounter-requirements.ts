@@ -37,31 +37,58 @@ export abstract class EncounterSceneRequirement implements EncounterRequirement 
   abstract getDialogueToken(scene: BattleScene, pokemon?: PlayerPokemon): [string, string];
 }
 
+/**
+ * Combination of multiple {@linkcode EncounterSceneRequirement | EncounterSceneRequirements} (OR/AND possible. See {@linkcode isAnd})
+ */
 export class CombinationSceneRequirement extends EncounterSceneRequirement {
-  orRequirements: EncounterSceneRequirement[];
+  /** If `true`, all requirements must be met (AND). If `false`, any requirement must be met (OR) */
+  private isAnd: boolean;
+  requirements: EncounterSceneRequirement[];
 
-  constructor(... orRequirements: EncounterSceneRequirement[]) {
+  public static Some(...requirements: EncounterSceneRequirement[]): CombinationSceneRequirement {
+    return new CombinationSceneRequirement(false, ...requirements);
+  }
+
+  public static Every(...requirements: EncounterSceneRequirement[]): CombinationSceneRequirement {
+    return new CombinationSceneRequirement(true, ...requirements);
+  }
+
+  private constructor(isAnd: boolean, ...requirements: EncounterSceneRequirement[]) {
     super();
-    this.orRequirements = orRequirements;
+    this.isAnd = isAnd;
+    this.requirements = requirements;
   }
 
+  /**
+   * Checks if all/any requirements are met (depends on {@linkcode isAnd})
+   * @param scene The {@linkcode BattleScene} to check against
+   * @returns true if all/any requirements are met (depends on {@linkcode isAnd})
+   */
   override meetsRequirement(scene: BattleScene): boolean {
-    for (const req of this.orRequirements) {
-      if (req.meetsRequirement(scene)) {
-        return true;
-      }
-    }
-    return false;
+    return this.isAnd
+      ? this.requirements.every(req => req.meetsRequirement(scene))
+      : this.requirements.some(req => req.meetsRequirement(scene));
   }
 
+  /**
+   * Retrieves a dialogue token key/value pair for the given {@linkcode EncounterSceneRequirement | requirements}.
+   * @param scene The {@linkcode BattleScene} to check against
+   * @param pokemon The {@linkcode PlayerPokemon} to check against
+   * @returns A dialogue token key/value pair
+   * @throws An {@linkcode Error} if {@linkcode isAnd} is `true` (not supported)
+   */
   override getDialogueToken(scene: BattleScene, pokemon?: PlayerPokemon): [string, string] {
-    for (const req of this.orRequirements) {
-      if (req.meetsRequirement(scene)) {
-        return req.getDialogueToken(scene, pokemon);
+    if (this.isAnd) {
+      throw new Error("Not implemented (Sorry)");
+    } else {
+      for (const req of this.requirements) {
+        if (req.meetsRequirement(scene)) {
+          return req.getDialogueToken(scene, pokemon);
+        }
       }
-    }
 
-    return this.orRequirements[0].getDialogueToken(scene, pokemon);
+      return this.requirements[0].getDialogueToken(scene, pokemon);
+    }
   }
 }
 
