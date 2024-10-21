@@ -98,11 +98,11 @@ export class CombinationPokemonRequirement extends EncounterPokemonRequirement {
   private isAnd: boolean;
   private requirements: EncounterPokemonRequirement[];
 
-  public static Some(...requirements: EncounterPokemonRequirement[]): EncounterPokemonRequirement {
+  public static Some(...requirements: EncounterPokemonRequirement[]): CombinationPokemonRequirement {
     return new CombinationPokemonRequirement(false, ...requirements);
   }
 
-  public static Every(...requirements: EncounterPokemonRequirement[]): EncounterPokemonRequirement {
+  public static Every(...requirements: EncounterPokemonRequirement[]): CombinationPokemonRequirement {
     return new CombinationPokemonRequirement(true, ...requirements);
   }
 
