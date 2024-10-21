@@ -98,20 +98,20 @@ export class CombinationPokemonRequirement extends EncounterPokemonRequirement {
   private isAnd: boolean;
   private requirements: EncounterPokemonRequirement[];
 
-  public static Some(...orRequirements: EncounterPokemonRequirement[]): EncounterPokemonRequirement {
-    return new CombinationPokemonRequirement(false, ...orRequirements);
+  public static Some(...requirements: EncounterPokemonRequirement[]): EncounterPokemonRequirement {
+    return new CombinationPokemonRequirement(false, ...requirements);
   }
 
-  public static Every(...orRequirements: EncounterPokemonRequirement[]): EncounterPokemonRequirement {
-    return new CombinationPokemonRequirement(true, ...orRequirements);
+  public static Every(...requirements: EncounterPokemonRequirement[]): EncounterPokemonRequirement {
+    return new CombinationPokemonRequirement(true, ...requirements);
   }
 
-  private constructor(isAnd: boolean, ...orRequirements: EncounterPokemonRequirement[]) {
+  private constructor(isAnd: boolean, ...requirements: EncounterPokemonRequirement[]) {
     super();
     this.isAnd = isAnd;
     this.invertQuery = false;
     this.minNumberOfPokemon = 1;
-    this.requirements = orRequirements;
+    this.requirements = requirements;
   }
 
   /**
