@@ -328,17 +328,27 @@ export function localPing() {
   }
 }
 
+const fetchController = new AbortController();
+
 export function apiFetch(path: string, authed: boolean = false): Promise<Response> {
   return (isLocal && isLocalServerConnected) || !isLocal ? new Promise((resolve, reject) => {
-    const request = {};
+    const request: RequestInit = {
+      signal: fetchController.signal,
+    };
     if (authed) {
       const sId = getCookie(sessionIdKey);
       if (sId) {
         request["headers"] = { "Authorization": sId };
       }
     }
+    const fetchTimeout = setTimeout(() => {
+      fetchController.abort();
+    }, 5000);
     fetch(`${apiUrl}/${path}`, request)
-      .then(response => resolve(response))
+      .then(response => {
+        clearTimeout(fetchTimeout);
+        return resolve(response);
+      })
       .catch(err => reject(err));
   }) : new Promise(() => {});
 }
@@ -355,8 +365,14 @@ export function apiPost(path: string, data?: any, contentType: string = "applica
         headers["Authorization"] = sId;
       }
     }
-    fetch(`${apiUrl}/${path}`, { method: "POST", headers: headers, body: data })
-      .then(response => resolve(response))
+    const fetchTimeout = setTimeout(() => {
+      fetchController.abort();
+    }, 5000);
+    fetch(`${apiUrl}/${path}`, { method: "POST", headers: headers, body: data, signal: fetchController.signal })
+      .then(response => {
+        clearTimeout(fetchTimeout);
+        return resolve(response);
+      })
       .catch(err => reject(err));
   }) : new Promise(() => {});
 }

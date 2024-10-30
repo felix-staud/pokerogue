@@ -151,7 +151,7 @@ interface VoucherUnlocks {
 }
 
 export interface VoucherCounts {
-    [type: string]: integer;
+  [type: string]: integer;
 }
 
 export interface DexData {
@@ -201,7 +201,7 @@ export interface RunEntry {
   isFavorite: boolean;
 }
 
-export type StarterMoveset = [ Moves ] | [ Moves, Moves ] | [ Moves, Moves, Moves ] | [ Moves, Moves, Moves, Moves ];
+export type StarterMoveset = [Moves] | [Moves, Moves] | [Moves, Moves, Moves] | [Moves, Moves, Moves, Moves];
 
 export interface StarterFormMoveData {
   [key: integer]: StarterMoveset
@@ -228,8 +228,8 @@ export interface StarterPreferences {
 
 // the latest data saved/loaded for the Starter Preferences. Required to reduce read/writes. Initialize as "{}", since this is the default value and no data needs to be stored if present.
 // if they ever add private static variables, move this into StarterPrefs
-const StarterPrefers_DEFAULT : string = "{}";
-let StarterPrefers_private_latest : string = StarterPrefers_DEFAULT;
+const StarterPrefers_DEFAULT: string = "{}";
+let StarterPrefers_private_latest: string = StarterPrefers_DEFAULT;
 
 // This is its own class as StarterPreferences...
 // - don't need to be loaded on startup
@@ -246,7 +246,7 @@ export class StarterPrefs {
 
   // called on starter selection clear, always
   static save(prefs: StarterPreferences): void {
-    const pStr : string = JSON.stringify(prefs);
+    const pStr: string = JSON.stringify(prefs);
     if (pStr !== StarterPrefers_private_latest) {
       // something changed, store the update
       localStorage.setItem(`starterPrefs_${loggedInUser?.username}`, pStr);
@@ -322,6 +322,18 @@ export class GameData {
   public eggs: Egg[];
   public eggPity: integer[];
   public unlockPity: integer[];
+
+  /** Acticated if the servers cannot be reached.  */
+  private _offlineMode: boolean = false;
+
+  public get offlineMode(): boolean {
+    return this._offlineMode;
+  }
+
+  public set offlineMode(value: boolean) {
+    this._offlineMode = value;
+    this.scene.ui.savingIcon.failed = value;
+  }
 
   constructor(scene: BattleScene) {
     this.scene = scene;
@@ -400,15 +412,17 @@ export class GameData {
         Utils.apiPost(`savedata/system/update?clientSessionId=${clientSessionId}`, systemData, undefined, true)
           .then(response => response.text())
           .then(error => {
-            this.scene.ui.savingIcon.hide();
             if (error) {
-              if (error.startsWith("session out of date")) {
+              if (error.startsWith("session out of date") && !this.offlineMode) {
                 this.scene.clearPhaseQueue();
                 this.scene.unshiftPhase(new ReloadSessionPhase(this.scene));
               }
               console.error(error);
+              this.scene.ui.savingIcon.hide();
               return resolve(false);
             }
+            this.scene.ui.savingIcon.hide();
+            this.offlineMode = false;
             resolve(true);
           });
       } else {
@@ -440,11 +454,19 @@ export class GameData {
                 return resolve(false);
               }
               console.error(response);
+              alert("Cannot currently load data. We will try again later. Continue playing in offline mode.");
+              this.offlineMode = true;
+              const cachedSystemData = localStorage.getItem(`data_${loggedInUser?.username}`);
+              console.log("Cached System:", cachedSystemData);
+              this.initSystem(cachedSystemData ? AES.decrypt(cachedSystemData, saveKey).toString(enc.Utf8) : undefined).then(resolve);
               return resolve(false);
             }
 
             const cachedSystem = localStorage.getItem(`data_${loggedInUser?.username}`);
             this.initSystem(response, cachedSystem ? AES.decrypt(cachedSystem, saveKey).toString(enc.Utf8) : undefined).then(resolve);
+          }).catch((err) => {
+            alert("Cannot currently load data. We will try again later. Continue playing in offline mode.");
+            this.offlineMode = true;
           });
       } else {
         this.initSystem(decrypt(localStorage.getItem(`data_${loggedInUser?.username}`)!, bypassLogin)).then(resolve); // TODO: is this bang correct?
@@ -453,6 +475,7 @@ export class GameData {
   }
 
   public initSystem(systemDataStr: string, cachedSystemDataStr?: string): Promise<boolean> {
+    console.log("initSystem", systemDataStr);
     return new Promise<boolean>(resolve => {
       try {
         let systemData = this.parseSystemData(systemDataStr);
@@ -587,7 +610,7 @@ export class GameData {
       const lsItemKey = `runHistoryData_${loggedInUser?.username}`;
       const lsItem = localStorage.getItem(lsItemKey);
       if (lsItem) {
-        const cachedResponse  = lsItem;
+        const cachedResponse = lsItem;
         if (cachedResponse) {
           const runHistory = JSON.parse(decrypt(cachedResponse, bypassLogin));
           return runHistory;
@@ -611,7 +634,7 @@ export class GameData {
       if (lsItem) {
         const cachedResponse = lsItem;
         if (cachedResponse) {
-          const runHistory : RunHistoryData = JSON.parse(decrypt(cachedResponse, bypassLogin));
+          const runHistory: RunHistoryData = JSON.parse(decrypt(cachedResponse, bypassLogin));
           return runHistory;
         }
         return {};
@@ -629,13 +652,13 @@ export class GameData {
    * @param isVictory: result of the run
    * Arbitrary limit of 25 runs per player - Will delete runs, starting with the oldest one, if needed
    */
-  async saveRunHistory(scene: BattleScene, runEntry : SessionSaveData, isVictory: boolean): Promise<boolean> {
+  async saveRunHistory(scene: BattleScene, runEntry: SessionSaveData, isVictory: boolean): Promise<boolean> {
     const runHistoryData = await this.getRunHistoryData(scene);
     // runHistoryData should always return run history or {} empty object
     let timestamps = Object.keys(runHistoryData).map(Number);
 
     // Arbitrary limit of 25 entries per user --> Can increase or decrease
-    while (timestamps.length >= RUN_HISTORY_LIMIT ) {
+    while (timestamps.length >= RUN_HISTORY_LIMIT) {
       const oldestTimestamp = (Math.min.apply(Math, timestamps)).toString();
       delete runHistoryData[oldestTimestamp];
       timestamps = Object.keys(runHistoryData).map(Number);
@@ -707,7 +730,7 @@ export class GameData {
     const response = await Utils.apiFetch(`savedata/system/verify?clientSessionId=${clientSessionId}`, true)
       .then(response => response.json());
 
-    if (!response.valid) {
+    if (!response.valid && !this.offlineMode) {
       this.scene.clearPhaseQueue();
       this.scene.unshiftPhase(new ReloadSessionPhase(this.scene, JSON.stringify(response.systemData)));
       this.clearLocalData();
@@ -816,7 +839,7 @@ export class GameData {
    * to update the specified setting with the new value. Finally, it saves the updated settings back
    * to localStorage and returns `true` to indicate success.
    */
-  public saveControlSetting(device: Device, localStoragePropertyName: string, setting: SettingGamepad|SettingKeyboard, settingDefaults, valueIndex: integer): boolean {
+  public saveControlSetting(device: Device, localStoragePropertyName: string, setting: SettingGamepad | SettingKeyboard, settingDefaults, valueIndex: integer): boolean {
     let settingsControls: object = {};  // Initialize an empty object to hold the gamepad settings
 
     if (localStorage.hasOwnProperty(localStoragePropertyName)) {  // Check if 'settingsControls' exists in localStorage
@@ -1158,7 +1181,7 @@ export class GameData {
           return response.text();
         }).then(error => {
           if (error) {
-            if (error.startsWith("session out of date")) {
+            if (error.startsWith("session out of date") && !this.offlineMode) {
               this.scene.clearPhaseQueue();
               this.scene.unshiftPhase(new ReloadSessionPhase(this.scene));
             }
@@ -1218,8 +1241,8 @@ export class GameData {
       const response = await Utils.apiPost(`savedata/session/clear?slot=${slotId}&trainerId=${this.trainerId}&secretId=${this.secretId}&clientSessionId=${clientSessionId}`, JSON.stringify(sessionData), undefined, true);
 
       if (response.ok) {
-          loggedInUser!.lastSessionSlot = -1; // TODO: is the bang correct?
-          localStorage.removeItem(`sessionData${slotId ? slotId : ""}_${loggedInUser?.username}`);
+        loggedInUser!.lastSessionSlot = -1; // TODO: is the bang correct?
+        localStorage.removeItem(`sessionData${slotId ? slotId : ""}_${loggedInUser?.username}`);
       }
 
       const jsonResponse: PokerogueApiClearSessionData = await response.json();
@@ -1227,7 +1250,7 @@ export class GameData {
       if (!jsonResponse.error) {
         result = [ true, jsonResponse.success ?? false ];
       } else {
-        if (jsonResponse && jsonResponse.error?.startsWith("session out of date")) {
+        if (jsonResponse && jsonResponse.error?.startsWith("session out of date") && !this.offlineMode) {
           this.scene.clearPhaseQueue();
           this.scene.unshiftPhase(new ReloadSessionPhase(this.scene));
         }
@@ -1347,17 +1370,21 @@ export class GameData {
             .then(error => {
               if (sync) {
                 this.scene.lastSavePlayTime = 0;
-                this.scene.ui.savingIcon.hide();
               }
               if (error) {
-                if (error.startsWith("session out of date")) {
+                if (error.startsWith("session out of date") && !this.offlineMode) {
                   this.scene.clearPhaseQueue();
                   this.scene.unshiftPhase(new ReloadSessionPhase(this.scene));
                 }
+                alert("Cannot currently save data. We will try again later. Continue playing in offline mode.");
+                this.offlineMode = true;
                 console.error(error);
                 return resolve(false);
               }
+              this.scene.ui.savingIcon.hide();
               resolve(true);
+            }).catch(error => {
+              console.warn("Update all error", error);
             });
         } else {
           this.verify().then(success => {

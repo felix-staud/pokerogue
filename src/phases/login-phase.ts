@@ -95,6 +95,8 @@ export class LoginPhase extends Phase {
         this.scene.gameData.loadSystem().then(success => {
           if (success || bypassLogin) {
             this.end();
+          } else if (this.scene.gameData.offlineMode)  {
+            this.end();
           } else {
             this.scene.ui.setMode(Mode.MESSAGE);
             this.scene.ui.showText(t("menu:failedToLoadSaveData"));

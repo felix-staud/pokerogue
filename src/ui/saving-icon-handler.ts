@@ -3,9 +3,11 @@ import * as Utils from "../utils";
 
 export default class SavingIconHandler extends Phaser.GameObjects.Container {
   private icon: Phaser.GameObjects.Sprite;
+  private failedIcon: Phaser.GameObjects.Sprite;
 
   private animActive: boolean;
   private shown: boolean;
+  private _failed: boolean;
 
   constructor(scene: BattleScene) {
     super(scene, scene.game.canvas.width / 6 - 4, scene.game.canvas.height / 6 - 4);
@@ -14,8 +16,12 @@ export default class SavingIconHandler extends Phaser.GameObjects.Container {
   setup(): void {
     this.icon = this.scene.add.sprite(0, 0, "saving_icon");
     this.icon.setOrigin(1, 1);
+    this.failedIcon = this.scene.add.sprite(0, 0, "save_failed_icon");
+    this.failedIcon.setOrigin(1, 1);
+    this.failedIcon.setVisible(false);
 
     this.add(this.icon);
+    this.add(this.failedIcon);
 
     this.animActive = false;
     this.shown = false;
@@ -76,5 +82,15 @@ export default class SavingIconHandler extends Phaser.GameObjects.Container {
     });
 
     this.shown = false;
+  }
+
+  get failed(): boolean {
+    return this._failed;
+  }
+
+  set failed(failed: boolean) {
+    this._failed = failed;
+    this.failedIcon.setVisible(failed);
+    this.icon.setVisible(!failed);
   }
 }

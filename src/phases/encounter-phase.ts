@@ -225,9 +225,9 @@ export class EncounterPhase extends BattlePhase {
       this.scene.ui.setMode(Mode.MESSAGE).then(() => {
         if (!this.loaded) {
           this.trySetWeatherIfNewBiome(); // Set weather before session gets saved
-          this.scene.gameData.saveAll(this.scene, true, battle.waveIndex % 10 === 1 || (this.scene.lastSavePlayTime ?? 0) >= 300).then(success => {
+          this.scene.gameData.saveAll(this.scene, true, true).then(success => {
             this.scene.disableMenu = false;
-            if (!success) {
+            if (!success && !this.scene.gameData.offlineMode) {
               return this.scene.reset(true);
             }
             this.doEncounter();
@@ -253,7 +253,7 @@ export class EncounterPhase extends BattlePhase {
       }*/
 
     const { battleType, waveIndex } = this.scene.currentBattle;
-    if (this.scene.isMysteryEncounterValidForWave(battleType,  waveIndex) && !this.scene.currentBattle.isBattleMysteryEncounter()) {
+    if (this.scene.isMysteryEncounterValidForWave(battleType, waveIndex) && !this.scene.currentBattle.isBattleMysteryEncounter()) {
       // Increment ME spawn chance if an ME could have spawned but did not
       // Only do this AFTER session has been saved to avoid duplicating increments
       this.scene.mysteryEncounterSaveData.encounterSpawnChance += WEIGHT_INCREMENT_ON_SPAWN_MISS;
@@ -507,7 +507,7 @@ export class EncounterPhase extends BattlePhase {
         this.scene.ui.showText(this.getEncounterMessage(), null, () => {
           const localizationKey = "battleSpecDialogue:encounter";
           if (this.scene.ui.shouldSkipDialogue(localizationKey)) {
-          // Logging mirrors logging found in dialogue-ui-handler
+            // Logging mirrors logging found in dialogue-ui-handler
             console.log(`Dialogue ${localizationKey} skipped`);
             this.doEncounterCommon(false);
           } else {
