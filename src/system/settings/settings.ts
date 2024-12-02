@@ -10,6 +10,8 @@ import { MoneyFormat } from "#enums/money-format";
 import { PlayerGender } from "#enums/player-gender";
 import { getIsInitialized, initI18n } from "#app/plugins/i18n";
 import { ShopCursorTarget } from "#app/enums/shop-cursor-target";
+import { settingsManager } from "#app/managers/SettingsManager";
+import { MusicPreference } from "#app/enums/music-preference";
 
 function getTranslation(key: string): string {
   if (!getIsInitialized()) {
@@ -178,11 +180,6 @@ export const SettingKeys = {
   Move_Touch_Controls: "MOVE_TOUCH_CONTROLS",
   Shop_Overlay_Opacity: "SHOP_OVERLAY_OPACITY"
 };
-
-export enum MusicPreference {
-  CONSISTENT,
-  MIXED
-}
 
 /**
  * All Settings not related to controls
@@ -729,11 +726,12 @@ export function setSetting(scene: BattleScene, setting: string, value: integer):
       scene.updateSoundVolume();
       break;
     case SettingKeys.BGM_Volume:
-      scene.bgmVolume = value ? parseInt(Setting[index].options[value].value) * 0.01 : 0;
+      settingsManager.updateSetting("audio", "bgmVolume", value ? parseInt(Setting[index].options[value].value) * 0.01 : 0);
       scene.updateSoundVolume();
       break;
     case SettingKeys.Field_Volume:
-      scene.fieldVolume = value ? parseInt(Setting[index].options[value].value) * 0.01 : 0;
+      settingsManager.updateSetting("audio", "fieldVolume", value ? parseInt(Setting[index].options[value].value) * 0.01 : 0);
+      // scene.fieldVolume = value ? parseInt(Setting[index].options[value].value) * 0.01 : 0;
       scene.updateSoundVolume();
       break;
     case SettingKeys.SE_Volume:

@@ -13,7 +13,6 @@ import { Arena, ArenaBase } from "#app/field/arena";
 import { GameData } from "#app/system/game-data";
 import { addTextObject, getTextColor, TextStyle } from "#app/ui/text";
 import { allMoves } from "#app/data/move";
-import { MusicPreference } from "#app/system/settings/settings";
 import { getDefaultModifierTypeForTier, getEnemyModifierTypesForWave, getLuckString, getLuckTextTint, getModifierPoolForType, getModifierType, getPartyLuckValue, ModifierPoolType, modifierTypes, PokemonHeldItemModifierType } from "#app/modifier/modifier-type";
 import AbilityBar from "#app/ui/ability-bar";
 import { allAbilities, applyAbAttrs, applyPostBattleInitAbAttrs, applyPostItemLostAbAttrs, BlockItemTheftAbAttr, DoubleBattleChanceAbAttr, PostBattleInitAbAttr, PostItemLostAbAttr } from "#app/data/ability";
@@ -100,6 +99,8 @@ import { ExpGainsSpeed } from "#enums/exp-gains-speed";
 import { BattlerTagType } from "#enums/battler-tag-type";
 import { FRIENDSHIP_GAIN_FROM_BATTLE } from "#app/data/balance/starters";
 import { StatusEffect } from "#enums/status-effect";
+import { settingsManager } from "./managers/SettingsManager";
+import { MusicPreference } from "./enums/music-preference";
 
 export const bypassLogin = import.meta.env.VITE_BYPASS_LOGIN === "1";
 
@@ -139,8 +140,8 @@ export default class BattleScene extends SceneBase {
   public sessionPlayTime: integer | null = null;
   public lastSavePlayTime: integer | null = null;
   public masterVolume: number = 0.5;
-  public bgmVolume: number = 1;
-  public fieldVolume: number = 1;
+  // public bgmVolume: number = 1;
+  // public fieldVolume: number = 1;
   public seVolume: number = 1;
   public uiVolume: number = 1;
   public gameSpeed: integer = 1;
@@ -1876,13 +1877,15 @@ export default class BattleScene extends SceneBase {
   }
 
   playBgm(bgmName?: string, fadeOut?: boolean): void {
+    const { bgmVolume } = settingsManager.settings.audio;
+
     if (bgmName === undefined) {
       bgmName = this.currentBattle?.getBgmOverride(this) || this.arena?.bgm;
     }
     if (this.bgm && bgmName === this.bgm.key) {
       if (!this.bgm.isPlaying) {
         this.bgm.play({
-          volume: this.masterVolume * this.bgmVolume
+          volume: this.masterVolume * bgmVolume
         });
       }
       return;
@@ -1901,7 +1904,7 @@ export default class BattleScene extends SceneBase {
       this.ui.bgmBar.setBgmToBgmBar(bgmName);
       if (bgmName === null && this.bgm && !this.bgm.pendingRemove) {
         this.bgm.play({
-          volume: this.masterVolume * this.bgmVolume
+          volume: this.masterVolume * bgmVolume
         });
         return;
       }
@@ -1910,7 +1913,7 @@ export default class BattleScene extends SceneBase {
       }
       this.bgm = this.sound.add(bgmName, { loop: true });
       this.bgm.play({
-        volume: this.masterVolume * this.bgmVolume
+        volume: this.masterVolume * bgmVolume
       });
       if (loopPoint) {
         this.bgm.on("looped", () => this.bgm.play({ seek: loopPoint }));
@@ -1952,10 +1955,12 @@ export default class BattleScene extends SceneBase {
   }
 
   updateSoundVolume(): void {
+    const { bgmVolume, fieldVolume } = settingsManager.settings.audio;
+
     if (this.sound) {
       for (const sound of this.sound.getAllPlaying() as AnySound[]) {
         if (this.bgmCache.has(sound.key)) {
-          sound.setVolume(this.masterVolume * this.bgmVolume);
+          sound.setVolume(this.masterVolume * bgmVolume);
         } else {
           const soundDetails = sound.key.split("/");
           switch (soundDetails[0]) {
@@ -1963,9 +1968,9 @@ export default class BattleScene extends SceneBase {
             case "battle_anims":
             case "cry":
               if (soundDetails[1].startsWith("PRSFX- ")) {
-                sound.setVolume(this.masterVolume * this.fieldVolume * 0.5);
+                sound.setVolume(this.masterVolume * fieldVolume * 0.5);
               } else {
-                sound.setVolume(this.masterVolume * this.fieldVolume);
+                sound.setVolume(this.masterVolume * fieldVolume);
               }
               break;
             case "se":
@@ -2004,6 +2009,8 @@ export default class BattleScene extends SceneBase {
   }
 
   playSound(sound: string | AnySound, config?: object): AnySound {
+    const { bgmVolume, fieldVolume } = settingsManager.settings.audio;
+
     const key = typeof sound === "string" ? sound : sound.key;
     config = config ?? {};
     try {
@@ -2018,11 +2025,11 @@ export default class BattleScene extends SceneBase {
         case "evolution_fanfare":
         // These sounds are loaded in as BGM, but played as sound effects
         // When these sounds are updated in updateVolume(), they are treated as BGM however because they are placed in the BGM Cache through being called by playSoundWithoutBGM()
-          config["volume"] *= (this.masterVolume * this.bgmVolume);
+          config["volume"] *= (this.masterVolume * bgmVolume);
           break;
         case "battle_anims":
         case "cry":
-          config["volume"] *= (this.masterVolume * this.fieldVolume);
+          config["volume"] *= (this.masterVolume * fieldVolume);
           //PRSFX sound files are unusually loud
           if (keyDetails[1].startsWith("PRSFX- ")) {
             config["volume"] *= 0.5;

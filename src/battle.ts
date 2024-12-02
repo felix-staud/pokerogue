@@ -1,26 +1,26 @@
-import BattleScene from "./battle-scene";
-import { Command } from "./ui/command-ui-handler";
-import * as Utils from "./utils";
-import Trainer, { TrainerVariant } from "./field/trainer";
-import { GameMode } from "./game-mode";
-import { MoneyMultiplierModifier, PokemonHeldItemModifier } from "./modifier/modifier";
-import { PokeballType } from "#enums/pokeball";
+import MysteryEncounter from "#app/data/mystery-encounters/mystery-encounter";
 import { trainerConfigs } from "#app/data/trainer-config";
-import { SpeciesFormKey } from "#enums/species-form-key";
 import Pokemon, { EnemyPokemon, PlayerPokemon, QueuedMove } from "#app/field/pokemon";
+import { ModifierTier } from "#app/modifier/modifier-tier";
+import { CustomModifierSettings } from "#app/modifier/modifier-type";
+import i18next from "#app/plugins/i18n";
 import { ArenaTagType } from "#enums/arena-tag-type";
 import { BattleSpec } from "#enums/battle-spec";
 import { Moves } from "#enums/moves";
-import { PlayerGender } from "#enums/player-gender";
-import { MusicPreference } from "#app/system/settings/settings";
-import { Species } from "#enums/species";
-import { TrainerType } from "#enums/trainer-type";
-import i18next from "#app/plugins/i18n";
-import MysteryEncounter from "#app/data/mystery-encounters/mystery-encounter";
 import { MysteryEncounterMode } from "#enums/mystery-encounter-mode";
-import { CustomModifierSettings } from "#app/modifier/modifier-type";
-import { ModifierTier } from "#app/modifier/modifier-tier";
 import { MysteryEncounterType } from "#enums/mystery-encounter-type";
+import { PlayerGender } from "#enums/player-gender";
+import { PokeballType } from "#enums/pokeball";
+import { Species } from "#enums/species";
+import { SpeciesFormKey } from "#enums/species-form-key";
+import { TrainerType } from "#enums/trainer-type";
+import BattleScene from "./battle-scene";
+import { MusicPreference } from "./enums/music-preference";
+import Trainer, { TrainerVariant } from "./field/trainer";
+import { GameMode } from "./game-mode";
+import { MoneyMultiplierModifier, PokemonHeldItemModifier } from "./modifier/modifier";
+import { Command } from "./ui/command-ui-handler";
+import * as Utils from "./utils";
 
 export enum ClassicFixedBossWaves {
   // TODO: other fixed wave battles should be added here
