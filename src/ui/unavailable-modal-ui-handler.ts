@@ -5,6 +5,7 @@ import { Mode } from "./ui";
 import { updateUserInfo } from "#app/account";
 import * as Utils from "#app/utils";
 import i18next from "i18next";
+import { SESSION_ID_COOKIE } from "#app/constants";
 
 export default class UnavailableModalUiHandler extends ModalUiHandler {
   private reconnectTimer: NodeJS.Timeout | null;
@@ -58,7 +59,7 @@ export default class UnavailableModalUiHandler extends ModalUiHandler {
         this.scene.playSound("se/pb_bounce_1");
         this.reconnectCallback();
       } else if (response[1] === 401) {
-        Utils.removeCookie(Utils.sessionIdKey);
+        Utils.removeCookie(SESSION_ID_COOKIE);
         this.scene.reset(true, true);
       } else {
         this.reconnectDuration = Math.min(this.reconnectDuration * 2, this.maxTime); // Set a max delay so it isn't infinite

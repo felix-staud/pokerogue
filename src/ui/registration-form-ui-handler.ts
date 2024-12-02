@@ -3,7 +3,7 @@ import { ModalConfig } from "./modal-ui-handler";
 import { Mode } from "./ui";
 import { TextStyle, addTextObject } from "./text";
 import i18next from "i18next";
-import { pokerogueApi } from "#app/plugins/api/pokerogue-api";
+import { api } from "#app/plugins/api/api";
 
 
 interface LanguageSetting {
@@ -111,10 +111,10 @@ export default class RegistrationFormUiHandler extends FormModalUiHandler {
           return onFail(i18next.t("menu:passwordNotMatchingConfirmPassword"));
         }
         const [ usernameInput, passwordInput ] = this.inputs;
-        pokerogueApi.account.register({ username: usernameInput.text, password: passwordInput.text })
+        api.account.register({ username: usernameInput.text, password: passwordInput.text })
           .then(registerError => {
             if (!registerError) {
-              pokerogueApi.account.login({ username: usernameInput.text, password: passwordInput.text })
+              api.account.login({ username: usernameInput.text, password: passwordInput.text })
                 .then(loginError => {
                   if (!loginError) {
                     originalRegistrationAction && originalRegistrationAction();

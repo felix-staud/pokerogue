@@ -45,7 +45,7 @@ window.URL.createObjectURL = (blob: Blob) => {
 };
 navigator.getGamepads = () => [];
 global.fetch = vi.fn(MockFetch);
-Utils.setCookie(Utils.sessionIdKey, 'fake_token');
+Utils.setCookie(SESSION_ID_COOKIE, 'fake_token');
 
 
 window.matchMedia = () => ({

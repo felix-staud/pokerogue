@@ -7,6 +7,7 @@ import i18next, { t } from "i18next";
 import * as Utils from "#app/utils";
 import { SelectGenderPhase } from "./select-gender-phase";
 import { UnavailablePhase } from "./unavailable-phase";
+import { SESSION_ID_COOKIE } from "#app/constants";
 
 export class LoginPhase extends Phase {
   private showText: boolean;
@@ -20,7 +21,7 @@ export class LoginPhase extends Phase {
   start(): void {
     super.start();
 
-    const hasSession = !!Utils.getCookie(Utils.sessionIdKey);
+    const hasSession = !!Utils.getCookie(SESSION_ID_COOKIE);
 
     this.scene.ui.setMode(Mode.LOADING, { buttonActions: []});
     Utils.executeIf(bypassLogin || hasSession, updateUserInfo).then(response => {
@@ -37,7 +38,7 @@ export class LoginPhase extends Phase {
           const loadData = () => {
             updateUserInfo().then(success => {
               if (!success[0]) {
-                Utils.removeCookie(Utils.sessionIdKey);
+                Utils.removeCookie(SESSION_ID_COOKIE);
                 this.scene.reset(true, true);
                 return;
               }
@@ -58,7 +59,7 @@ export class LoginPhase extends Phase {
                       this.scene.ui.playSelect();
                       updateUserInfo().then(success => {
                         if (!success[0]) {
-                          Utils.removeCookie(Utils.sessionIdKey);
+                          Utils.removeCookie(SESSION_ID_COOKIE);
                           this.scene.reset(true, true);
                           return;
                         }
@@ -84,7 +85,7 @@ export class LoginPhase extends Phase {
             ]
           });
         } else if (statusCode === 401) {
-          Utils.removeCookie(Utils.sessionIdKey);
+          Utils.removeCookie(SESSION_ID_COOKIE);
           this.scene.reset(true, true);
         } else {
           this.scene.unshiftPhase(new UnavailablePhase(this.scene));

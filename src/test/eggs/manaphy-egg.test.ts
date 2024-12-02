@@ -25,7 +25,7 @@ describe("Manaphy Eggs", () => {
   });
 
   beforeEach(async () => {
-    await game.importData("src/test/utils/saves/everything.prsv");
+    await game.importData("src/test/utils/saves/everything.poketernity.sav");
 
     /**
      * In our tests, we will perform an "RNG sweep" by letting rngSweepProgress

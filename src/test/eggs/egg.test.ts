@@ -29,7 +29,7 @@ describe("Egg Generation Tests", () => {
   });
 
   beforeEach(async () => {
-    await game.importData("src/test/utils/saves/everything.prsv");
+    await game.importData("src/test/utils/saves/everything.poketernity.sav");
   });
 
   it("should return Kyogre for the 10th of June", () => {
