@@ -2,7 +2,7 @@ import BattleScene from "#app/battle-scene";
 import { PokeballType } from "#enums/pokeball";
 import { Variant } from "#app/data/variant";
 import { getFrameMs, randGauss } from "#app/utils";
-import { settings } from "#app/managers/settings-manager";
+import { settings } from "#app/data/settings/settings-manager";
 
 export function addPokeballOpenParticles(scene: BattleScene, x: number, y: number, pokeballType: PokeballType): void {
   switch (pokeballType) {

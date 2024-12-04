@@ -4,7 +4,7 @@ import { StarterContainer } from "./starter-container";
 import { addTextObject, getTextColor, TextStyle } from "./text";
 import { UiTheme } from "#enums/ui-theme";
 import { addWindow, WindowVariant } from "./ui-theme";
-import { settings } from "#app/managers/settings-manager";
+import { settings } from "#app/data/settings/settings-manager";
 
 export enum DropDownColumn {
   GEN,

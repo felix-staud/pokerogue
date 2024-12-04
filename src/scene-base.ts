@@ -1,5 +1,5 @@
 import { UiTheme } from "./enums/ui-theme";
-import { settings } from "./managers/settings-manager";
+import { settings } from "#app/data/settings/settings-manager";
 
 export const legacyCompatibleImages: string[] = [];
 

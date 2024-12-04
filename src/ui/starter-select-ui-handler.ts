@@ -51,7 +51,7 @@ import { getPassiveCandyCount, getValueReductionCandyCounts, getSameSpeciesEggCa
 import { BooleanHolder, capitalizeString, fixedInt, getLocalizedSpriteKey, isNullOrUndefined, NumberHolder, padInt, randIntRange, rgbHexToRgba, toReadableString } from "#app/utils";
 import type { Nature } from "#enums/nature";
 import { PLAYER_PARTY_MAX_SIZE } from "#app/constants";
-import { settings } from "#app/managers/settings-manager";
+import { settings } from "#app/data/settings/settings-manager";
 
 export type StarterSelectCallback = (starters: Starter[]) => void;
 

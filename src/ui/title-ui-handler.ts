@@ -8,7 +8,7 @@ import i18next from "i18next";
 import { TimedEventDisplay } from "#app/timed-event-manager";
 import { version } from "../../package.json";
 import { pokerogueApi } from "#app/plugins/api/pokerogue-api";
-import { settings } from "#app/managers/settings-manager";
+import { settings } from "#app/data/settings/settings-manager";
 
 export default class TitleUiHandler extends OptionSelectUiHandler {
   /** If the stats can not be retrieved, use this fallback value */

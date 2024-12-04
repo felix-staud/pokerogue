@@ -10,7 +10,7 @@ import { speciesStarterCosts } from "#app/data/balance/starters";
 import { Button } from "#enums/buttons";
 import i18next from "i18next";
 import { UiTheme } from "#enums/ui-theme";
-import { settings } from "#app/managers/settings-manager";
+import { settings } from "#app/data/settings/settings-manager";
 
 interface DisplayStat {
   label_key?: string;

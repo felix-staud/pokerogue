@@ -2,7 +2,7 @@ import BattleScene from "../battle-scene";
 import { TextStyle, getTextColor } from "./text";
 import { Mode } from "./ui";
 import { Button } from "#enums/buttons";
-import { settings } from "#app/managers/settings-manager";
+import { settings } from "#app/data/settings/settings-manager";
 
 /**
  * A basic abstract class to act as a holder and processor for UI elements.

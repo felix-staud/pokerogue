@@ -21,7 +21,7 @@ import { Biome } from "#enums/biome";
 import { GachaType } from "#enums/gacha-types";
 import i18next from "i18next";
 import { UiTheme } from "./enums/ui-theme";
-import { settings } from "./managers/settings-manager";
+import { settings } from "#app/data/settings/settings-manager";
 
 export class LoadingScene extends SceneBase {
   public static readonly KEY = "loading";

@@ -26,7 +26,7 @@ import { PlayerGender } from "#enums/player-gender";
 import { SettingKeyboard } from "#app/system/settings/settings-keyboard";
 import { getBiomeName } from "#app/data/balance/biomes";
 import { MysteryEncounterType } from "#enums/mystery-encounter-type";
-import { settings } from "#app/managers/settings-manager";
+import { settings } from "#app/data/settings/settings-manager";
 
 /**
  * RunInfoUiMode indicates possible overlays of RunInfoUiHandler.

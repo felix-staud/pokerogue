@@ -1,4 +1,4 @@
-import { settings } from "#app/managers/settings-manager";
+import { settings } from "#app/data/settings/settings-manager";
 import FadeIn from "phaser3-rex-plugins/plugins/audio/fade/FadeIn";
 import FadeOut from "phaser3-rex-plugins/plugins/audio/fade/FadeOut";
 import SoundFade from "phaser3-rex-plugins/plugins/soundfade";

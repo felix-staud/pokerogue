@@ -9,7 +9,7 @@ import { InputsIcons } from "#app/ui/settings/abstract-control-settings-ui-handl
 import NavigationMenu, { NavigationManager } from "#app/ui/settings/navigationMenu";
 import { Setting, SettingKeys, SettingType } from "#app/system/settings/settings";
 import i18next, { t } from "i18next";
-import { settingsManager, type Settings, type SettingsUiItem } from "#app/managers/settings-manager";
+import { settingsManager, type Settings, type SettingsUiItem } from "#app/data/settings/settings-manager";
 
 
 /**

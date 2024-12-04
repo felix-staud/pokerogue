@@ -2,7 +2,7 @@ import BattleScene from "#app/battle-scene";
 import { getTextWithColors, TextStyle } from "#app/ui/text";
 import { isNullOrUndefined } from "#app/utils";
 import i18next from "i18next";
-import { settings } from "#app/managers/settings-manager";
+import { settings } from "#app/data/settings/settings-manager";
 
 /**
  * Will inject all relevant dialogue tokens that exist in the {@linkcode BattleScene.currentBattle.mysteryEncounter.dialogueTokens}, into i18n text.

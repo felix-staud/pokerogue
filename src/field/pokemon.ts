@@ -70,7 +70,7 @@ import { BASE_HIDDEN_ABILITY_CHANCE, BASE_SHINY_CHANCE, SHINY_EPIC_CHANCE, SHINY
 import { Nature } from "#enums/nature";
 import { StatusEffect } from "#enums/status-effect";
 import { doShinySparkleAnim } from "#app/field/anims";
-import { settingsManager } from "#app/managers/settings-manager";
+import { settingsManager } from "#app/data/settings/settings-manager";
 
 export enum LearnMoveSituation {
   MISC,

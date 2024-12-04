@@ -1,4 +1,4 @@
-import { generalSettingsUiItems } from "#app/managers/settings-manager";
+import { generalSettingsUiItems } from "#app/data/settings/settings-ui-items";
 import BattleScene from "../../battle-scene";
 import { SettingType } from "../../system/settings/settings";
 import { Mode } from "../ui";

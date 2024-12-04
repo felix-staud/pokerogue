@@ -2,8 +2,9 @@ import SettingsKeyboardUiHandler from "#app/ui/settings/settings-keyboard-ui-han
 import { Button } from "#enums/buttons";
 import Phaser from "phaser";
 import BattleScene from "./battle-scene";
+import { gameSpeedOptions } from "./data/settings/settings-ui-items";
 import { InputsController } from "./inputs-controller";
-import { gameSpeedOptions, settings, settingsManager } from "./managers/settings-manager";
+import { settings, settingsManager } from "#app/data/settings/settings-manager";
 import MessageUiHandler from "./ui/message-ui-handler";
 import RunInfoUiHandler from "./ui/run-info-ui-handler";
 import SettingsAudioUiHandler from "./ui/settings/settings-audio-ui-handler";

@@ -100,7 +100,7 @@ import SoundFade from "phaser3-rex-plugins/plugins/soundfade";
 import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import { PRSFX_SOUND_ADJUSTMENT_RATIO } from "./constants";
 import { MusicPreference } from "./enums/music-preference";
-import { SettingsManager, settingsManager } from "./managers/settings-manager";
+import { SettingsManager, settingsManager } from "#app/data/settings/settings-manager";
 import { ConsumableModifier, ConsumablePokemonModifier, DoubleBattleChanceBoosterModifier, ExpBalanceModifier, ExpShareModifier, FusePokemonModifier, HealingBoosterModifier, Modifier, ModifierBar, ModifierPredicate, MultipleParticipantExpBonusModifier, PersistentModifier, PokemonExpBoosterModifier, PokemonFormChangeItemModifier, PokemonHeldItemModifier, PokemonHpRestoreModifier, PokemonIncrementingStatModifier, RememberMoveModifier, TerastallizeModifier, TurnHeldItemTransferModifier } from "./modifier/modifier";
 
 export const bypassLogin = import.meta.env.VITE_BYPASS_LOGIN === "1";

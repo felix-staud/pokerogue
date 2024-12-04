@@ -3,7 +3,7 @@ import BattleScene from "../battle-scene";
 import { TextStyle, addBBCodeTextObject, addTextObject, getTextColor } from "./text";
 import { PERMANENT_STATS, getStatKey } from "#app/enums/stat";
 import i18next from "i18next";
-import { settings } from "#app/managers/settings-manager";
+import { settings } from "#app/data/settings/settings-manager";
 
 
 const ivChartSize = 24;

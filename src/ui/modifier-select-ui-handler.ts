@@ -1,6 +1,6 @@
 import { getPokeballAtlasKey } from "#app/data/pokeball";
 import { ShopCursorTarget } from "#app/enums/shop-cursor-target";
-import { settings } from "#app/managers/settings-manager";
+import { settings } from "#app/data/settings/settings-manager";
 import Overrides from "#app/overrides";
 import { Button } from "#enums/buttons";
 import type { PokeballType } from "#enums/pokeball";

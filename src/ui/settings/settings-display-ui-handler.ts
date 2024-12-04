@@ -3,7 +3,7 @@ import { Mode } from "../ui";
 "#app/inputs-controller";
 import AbstractSettingsUiHandler from "./abstract-settings-ui-handler";
 import { SettingKeys, SettingType } from "#app/system/settings/settings";
-import { displaySettingsUiItems } from "#app/managers/settings-manager";
+import { displaySettingsUiItems } from "#app/data/settings/settings-ui-items";
 
 export default class SettingsDisplayUiHandler extends AbstractSettingsUiHandler {
   /**
