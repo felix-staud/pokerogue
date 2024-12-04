@@ -7624,15 +7624,13 @@ export class AbilityCopyAttr extends MoveEffectAttr {
 
     if (this.copyToPartner && user.scene.currentBattle?.double && user.getAlly().hp) {
       user.getAlly().summonData.ability = target.getAbility().id;
-      user
-        .getAlly()
-        .scene.queueMessage(
-          i18next.t("moveTriggers:copiedTargetAbility", {
-            pokemonName: getPokemonNameWithAffix(user.getAlly()),
-            targetName: getPokemonNameWithAffix(target),
-            abilityName: allAbilities[target.getAbility().id].name,
-          }),
-        );
+      user.getAlly().scene.queueMessage(
+        i18next.t("moveTriggers:copiedTargetAbility", {
+          pokemonName: getPokemonNameWithAffix(user.getAlly()),
+          targetName: getPokemonNameWithAffix(target),
+          abilityName: allAbilities[target.getAbility().id].name,
+        }),
+      );
     }
 
     return true;
