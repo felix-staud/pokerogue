@@ -23,10 +23,9 @@ export default class BallUiHandler extends UiHandler {
   }
 
   setup() {
-    const { uiTheme } = settings.display;
     const ui = this.getUi();
 
-    this.scale = getTextStyleOptions(TextStyle.WINDOW, uiTheme).scale;
+    this.scale = getTextStyleOptions(TextStyle.WINDOW, settings.display.uiTheme).scale;
 
     let optionsTextContent = "";
 

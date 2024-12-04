@@ -15,14 +15,12 @@ export function getEncounterText(scene: BattleScene, keyOrString?: string, prima
     return null;
   }
 
-  const { uiTheme } = settings.display;
-
   let textString: string | null = getTextWithDialogueTokens(scene, keyOrString);
 
   // Can only color the text if a Primary Style is defined
   // primaryStyle is applied to all text that does not have its own specified style
   if (primaryStyle && textString) {
-    textString = getTextWithColors(textString, primaryStyle, uiTheme, true);
+    textString = getTextWithColors(textString, primaryStyle, settings.display.uiTheme, true);
   }
 
   return textString;

@@ -24,14 +24,12 @@ export class CheckSwitchPhase extends BattlePhase {
   start() {
     super.start();
 
-    const { battleStyle } = settings.general;
-
     const pokemon = this.scene.getPlayerField()[this.fieldIndex];
 
     // End this phase early...
 
     // ...if the user is playing in Set Mode
-    if (battleStyle === BattleStyle.SET) {
+    if (settings.general.battleStyle === BattleStyle.SET) {
       return super.end();
     }
 

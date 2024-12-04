@@ -1,7 +1,7 @@
 import { UiTheme } from "#enums/ui-theme";
 import { legacyCompatibleImages } from "#app/scene-base";
 import BattleScene from "../battle-scene";
-import { settings, settingsManager } from "#app/data/settings/settings-manager";
+import { settings } from "#app/data/settings/settings-manager";
 
 export enum WindowVariant {
   NORMAL,
@@ -49,20 +49,16 @@ export function addWindow(
   maskOffsetY?: number,
   windowVariant?: WindowVariant,
 ): Phaser.GameObjects.NineSlice {
-  const { windowType } = settings.display;
-
   if (windowVariant === undefined) {
     windowVariant = WindowVariant.NORMAL;
   }
 
-  const { uiTheme } = settings.display;
-
-  const borderSize = uiTheme ? 6 : 8;
+  const borderSize = settings.display.uiTheme ? 6 : 8;
 
   const window = scene.add.nineslice(
     x,
     y,
-    `window_${windowType}${getWindowVariantSuffix(windowVariant)}`,
+    `window_${settings.display.windowType}${getWindowVariantSuffix(windowVariant)}`,
     undefined,
     width,
     height,
@@ -97,8 +93,7 @@ export function addWindow(
   return window;
 }
 
-export function updateWindowType(scene: BattleScene, windowTypeIndex: integer): void {
-  const { uiTheme } = settings.display;
+export function renderWindowType(scene: BattleScene): void {
   const windowObjects: [Phaser.GameObjects.NineSlice, WindowVariant][] = [];
   const themedObjects: (Phaser.GameObjects.Image | Phaser.GameObjects.NineSlice)[] = [];
   const traverse = (object: any) => {
@@ -133,26 +128,26 @@ export function updateWindowType(scene: BattleScene, windowTypeIndex: integer): 
 
   traverse(scene);
 
-  settingsManager.updateSetting("display", "windowType", windowTypeIndex);
-
   const rootStyle = document.documentElement.style;
   ["base", "light", "dark"].map((k, i) =>
-    rootStyle.setProperty(`--color-${k}`, windowTypeControlColors[uiTheme][windowTypeIndex - 1][i]),
+    rootStyle.setProperty(
+      `--color-${k}`,
+      windowTypeControlColors[settings.display.uiTheme][settings.display.windowType - 1][i],
+    ),
   );
 
-  const windowKey = `window_${windowTypeIndex}`;
+  const windowKey = `window_${settings.display.windowType}`;
 
   for (const [window, variant] of windowObjects) {
     window.setTexture(`${windowKey}${getWindowVariantSuffix(variant)}`);
   }
 
   for (const obj of themedObjects) {
-    obj.setFrame(windowTypeIndex);
+    obj.setFrame(settings.display.windowType);
   }
 }
 
 export function addUiThemeOverrides(scene: BattleScene): void {
-  const { uiTheme } = settings.display;
   const originalAddImage = scene.add.image;
   scene.add.image = function (
     x: number,
@@ -161,7 +156,7 @@ export function addUiThemeOverrides(scene: BattleScene): void {
     frame?: string | number,
   ): Phaser.GameObjects.Image {
     let legacy = false;
-    if (typeof texture === "string" && uiTheme && legacyCompatibleImages.includes(texture)) {
+    if (typeof texture === "string" && settings.display.uiTheme && legacyCompatibleImages.includes(texture)) {
       legacy = true;
       texture += "_legacy";
     }
@@ -184,7 +179,7 @@ export function addUiThemeOverrides(scene: BattleScene): void {
     frame?: string | number,
   ): Phaser.GameObjects.Sprite {
     let legacy = false;
-    if (typeof texture === "string" && uiTheme && legacyCompatibleImages.includes(texture)) {
+    if (typeof texture === "string" && settings.display.uiTheme && legacyCompatibleImages.includes(texture)) {
       legacy = true;
       texture += "_legacy";
     }
@@ -213,7 +208,7 @@ export function addUiThemeOverrides(scene: BattleScene): void {
     bottomHeight?: number,
   ): Phaser.GameObjects.NineSlice {
     let legacy = false;
-    if (typeof texture === "string" && uiTheme && legacyCompatibleImages.includes(texture)) {
+    if (typeof texture === "string" && settings.display.uiTheme && legacyCompatibleImages.includes(texture)) {
       legacy = true;
       texture += "_legacy";
     }

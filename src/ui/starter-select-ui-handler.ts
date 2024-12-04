@@ -560,9 +560,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
     // Offset the generation filter dropdown to avoid covering the filtered pokemon
     this.filterBar.offsetHybridFilters();
 
-    const { uiTheme } = settings.display;
-
-    if (!uiTheme) {
+    if (!settings.display.uiTheme) {
       starterContainerWindow.setVisible(false);
     }
 
@@ -1354,11 +1352,9 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
    * @returns true if upgrade notifications are enabled and set to display an 'Icon'
    */
   isUpgradeIconEnabled(): boolean {
-    const { candyUpgradeNotificationMode, candyUpgradeDisplayMode } = settings.display;
-
     return (
-      candyUpgradeNotificationMode !== CandyUpgradeNotificationMode.OFF &&
-      candyUpgradeDisplayMode === CandyUpgradeDisplayMode.ICON
+      settings.display.candyUpgradeNotificationMode !== CandyUpgradeNotificationMode.OFF &&
+      settings.display.candyUpgradeDisplayMode === CandyUpgradeDisplayMode.ICON
     );
   }
   /**
@@ -1366,11 +1362,9 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
    * @returns true if upgrade notifications are enabled and set to display an 'Animation'
    */
   isUpgradeAnimationEnabled(): boolean {
-    const { candyUpgradeNotificationMode, candyUpgradeDisplayMode } = settings.display;
-
     return (
-      candyUpgradeNotificationMode !== CandyUpgradeNotificationMode.OFF &&
-      candyUpgradeDisplayMode === CandyUpgradeDisplayMode.ANIMATION
+      settings.display.candyUpgradeNotificationMode !== CandyUpgradeNotificationMode.OFF &&
+      settings.display.candyUpgradeDisplayMode === CandyUpgradeDisplayMode.ANIMATION
     );
   }
 
@@ -1424,12 +1418,10 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
    * @param startPaused Should this animation be paused after it is added?
    */
   setUpgradeAnimation(icon: Phaser.GameObjects.Sprite, species: PokemonSpecies, startPaused: boolean = false): void {
-    const { candyUpgradeNotificationMode, candyUpgradeDisplayMode } = settings.display;
-
     this.scene.tweens.killTweensOf(icon);
     // Skip animations if they are disabled
     if (
-      candyUpgradeDisplayMode === CandyUpgradeDisplayMode.ICON ||
+      settings.display.candyUpgradeDisplayMode === CandyUpgradeDisplayMode.ICON ||
       species.speciesId !== species.getRootSpeciesId(false)
     ) {
       return;
@@ -1466,12 +1458,12 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
     const isSameSpeciesEggAvailable = this.isSameSpeciesEggAvailable(species.speciesId);
 
     // 'Passives Only' mode
-    if (candyUpgradeNotificationMode === CandyUpgradeNotificationMode.PASSIVES_ONLY) {
+    if (settings.display.candyUpgradeNotificationMode === CandyUpgradeNotificationMode.PASSIVES_ONLY) {
       if (isPassiveAvailable) {
         this.scene.tweens.chain(tweenChain).paused = startPaused;
       }
       // 'On' mode
-    } else if (candyUpgradeNotificationMode === CandyUpgradeNotificationMode.ON) {
+    } else if (settings.display.candyUpgradeNotificationMode === CandyUpgradeNotificationMode.ON) {
       if (isPassiveAvailable || isValueReductionAvailable || isSameSpeciesEggAvailable) {
         this.scene.tweens.chain(tweenChain).paused = startPaused;
       }
@@ -1482,14 +1474,12 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
    * Sets the visibility of a Candy Upgrade Icon
    */
   setUpgradeIcon(starter: StarterContainer): void {
-    const { candyUpgradeNotificationMode } = settings.display;
-
     const species = starter.species;
     const slotVisible = !!species?.speciesId;
 
     if (
       !species ||
-      candyUpgradeNotificationMode === CandyUpgradeNotificationMode.OFF ||
+      settings.display.candyUpgradeNotificationMode === CandyUpgradeNotificationMode.OFF ||
       species.speciesId !== species.getRootSpeciesId(false)
     ) {
       starter.candyUpgradeIcon.setVisible(false);
@@ -1502,12 +1492,12 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
     const isSameSpeciesEggAvailable = this.isSameSpeciesEggAvailable(species.speciesId);
 
     // 'Passive Only' mode
-    if (candyUpgradeNotificationMode === CandyUpgradeNotificationMode.PASSIVES_ONLY) {
+    if (settings.display.candyUpgradeNotificationMode === CandyUpgradeNotificationMode.PASSIVES_ONLY) {
       starter.candyUpgradeIcon.setVisible(slotVisible && isPassiveAvailable);
       starter.candyUpgradeOverlayIcon.setVisible(slotVisible && starter.candyUpgradeIcon.visible);
 
       // 'On' mode
-    } else if (candyUpgradeNotificationMode === CandyUpgradeNotificationMode.ON) {
+    } else if (settings.display.candyUpgradeNotificationMode === CandyUpgradeNotificationMode.ON) {
       starter.candyUpgradeIcon.setVisible(
         slotVisible && (isPassiveAvailable || isValueReductionAvailable || isSameSpeciesEggAvailable),
       );
@@ -1533,15 +1523,13 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
    * @param event {@linkcode Event} sent by the callback
    */
   onCandyUpgradeDisplayChanged(event: Event): void {
-    const { candyUpgradeDisplayMode } = settings.display;
-
     const candyUpgradeDisplayEvent = event as CandyUpgradeNotificationChangedEvent;
     if (!candyUpgradeDisplayEvent) {
       return;
     }
 
     // Loop through all visible candy icons when set to 'Icon' mode
-    if (candyUpgradeDisplayMode === CandyUpgradeDisplayMode.ICON) {
+    if (settings.display.candyUpgradeDisplayMode === CandyUpgradeDisplayMode.ICON) {
       this.filteredStarterContainers.forEach((starter) => {
         this.setUpgradeIcon(starter);
       });
@@ -1562,7 +1550,6 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
       return false;
     }
 
-    const { uiTheme } = settings.display;
     const maxColumns = 9;
     const maxRows = 9;
     const numberOfStarters = this.filteredStarterContainers.length;
@@ -1957,7 +1944,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
                     options: natures
                       .map((n: Nature, i: number) => {
                         const option: OptionSelectItem = {
-                          label: getNatureName(n, true, true, true, uiTheme),
+                          label: getNatureName(n, true, true, true, settings.display.uiTheme),
                           handler: () => {
                             // update default nature in starter save data
                             if (!starterAttributes) {
@@ -3058,8 +3045,6 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
   };
 
   updateScroll = () => {
-    const { candyUpgradeDisplayMode } = settings.display;
-
     const maxColumns = 9;
     const maxRows = 9;
     const onScreenFirstIndex = this.scrollCursor * maxColumns;
@@ -3133,7 +3118,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
         container.favoriteIcon.setVisible(this.starterPreferences[speciesId]?.favorite ?? false);
 
         // 'Candy Icon' mode
-        if (candyUpgradeDisplayMode === CandyUpgradeDisplayMode.ICON) {
+        if (settings.display.candyUpgradeDisplayMode === CandyUpgradeDisplayMode.ICON) {
           if (!starterColors[speciesId]) {
             // Default to white if no colors are found
             starterColors[speciesId] = ["ffffff", "ffffff"];
@@ -3144,7 +3129,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
           container.candyUpgradeOverlayIcon.setTint(argbFromRgba(rgbHexToRgba(starterColors[speciesId][1])));
 
           this.setUpgradeIcon(container);
-        } else if (candyUpgradeDisplayMode === CandyUpgradeDisplayMode.ANIMATION) {
+        } else if (settings.display.candyUpgradeDisplayMode === CandyUpgradeDisplayMode.ANIMATION) {
           container.candyUpgradeIcon.setVisible(false);
           container.candyUpgradeOverlayIcon.setVisible(false);
         }
@@ -3766,8 +3751,9 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
           this.scene.ui.hideTooltip();
         }
 
-        const { uiTheme } = settings.display;
-        this.pokemonNatureText.setText(getNatureName(natureIndex as unknown as Nature, true, true, false, uiTheme));
+        this.pokemonNatureText.setText(
+          getNatureName(natureIndex as unknown as Nature, true, true, false, settings.display.uiTheme),
+        );
 
         let levelMoves: LevelMoves;
         if (

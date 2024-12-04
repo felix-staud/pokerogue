@@ -33,8 +33,6 @@ export class ReloadHelper extends GameManagerHelper {
    * the reloaded session.
    */
   async reloadSession(): Promise<void> {
-    const { battleStyle } = settings.general;
-
     const scene = this.game.scene;
     const titlePhase = new TitlePhase(scene);
 
@@ -53,7 +51,7 @@ export class ReloadHelper extends GameManagerHelper {
     this.game.phaseInterceptor.shift(); // Loading the save slot also ended TitlePhase, clean it up
 
     // Run through prompts for switching Pokemon, copied from classicModeHelper.ts
-    if (battleStyle === BattleStyle.SWITCH) {
+    if (settings.general.battleStyle === BattleStyle.SWITCH) {
       this.game.onNextPrompt(
         "CheckSwitchPhase",
         Mode.CONFIRM,

@@ -347,8 +347,6 @@ export default class SpritePipeline extends FieldSpritePipeline {
   onBind(gameObject: Phaser.GameObjects.GameObject): void {
     super.onBind(gameObject);
 
-    const { enableFusionPaletteSwaps } = settings.display;
-
     const sprite = gameObject as Phaser.GameObjects.Sprite;
 
     const data = sprite.pipelineData;
@@ -396,7 +394,7 @@ export default class SpritePipeline extends FieldSpritePipeline {
     this.set4fv("tone", tone);
     this.bindTexture(this.game.textures.get("tera").source[0].glTexture!, 1); // TODO: is this bang correct?
 
-    if (enableFusionPaletteSwaps) {
+    if (settings.display.enableFusionPaletteSwaps) {
       const spriteColors = ((ignoreOverride && data["spriteColorsBase"]) || data["spriteColors"] || []) as number[][];
       const fusionSpriteColors = ((ignoreOverride && data["fusionSpriteColorsBase"]) ||
         data["fusionSpriteColors"] ||

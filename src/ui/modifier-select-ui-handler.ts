@@ -58,7 +58,6 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
   }
 
   setup() {
-    const { uiTheme } = settings.display;
     const ui = this.getUi();
 
     this.modifierContainer = this.scene.add.container(0, 0);
@@ -66,7 +65,7 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
 
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
-    const styleOptions = getTextStyleOptions(TextStyle.PARTY, uiTheme).styleOptions;
+    const styleOptions = getTextStyleOptions(TextStyle.PARTY, settings.display.uiTheme).styleOptions;
 
     if (context) {
       context.font = styleOptions.fontSize + "px " + styleOptions.fontFamily;
@@ -180,11 +179,6 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
   }
 
   show(args: any[]): boolean {
-    const {
-      general: { gameSpeed },
-      display: { shopCursorTarget },
-    } = settings;
-
     this.scene.disableMenu = false;
 
     if (this.active) {
@@ -292,7 +286,7 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
     this.scene.getModifierBar().updateModifiers(this.scene.modifiers, true);
 
     /* Multiplies the appearance duration by the speed parameter so that it is always constant, and avoids "flashbangs" at game speed x5 */
-    this.scene.showShopOverlay(750 * gameSpeed);
+    this.scene.showShopOverlay(750 * settings.settings.general.gameSpeed);
     this.scene.updateAndShowText(750);
     this.scene.updateBiomeWaveText();
     this.scene.updateMoneyText();
@@ -355,14 +349,14 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
       });
 
       const updateCursorTarget = () => {
-        if (shopCursorTarget === ShopCursorTarget.CHECK_TEAM) {
+        if (settings.display.shopCursorTarget === ShopCursorTarget.CHECK_TEAM) {
           this.setRowCursor(0);
           this.setCursor(2);
-        } else if (shopCursorTarget === ShopCursorTarget.SHOP && this.scene.gameMode.hasNoShop) {
+        } else if (settings.display.shopCursorTarget === ShopCursorTarget.SHOP && this.scene.gameMode.hasNoShop) {
           this.setRowCursor(ShopCursorTarget.REWARDS);
           this.setCursor(0);
         } else {
-          this.setRowCursor(shopCursorTarget);
+          this.setRowCursor(settings.display.shopCursorTarget);
           this.setCursor(0);
         }
       };
@@ -638,8 +632,6 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
   }
 
   updateRerollCostText(): void {
-    const { moneyFormat } = settings.display;
-
     const rerollDisabled = this.rerollCost < 0;
     if (rerollDisabled) {
       this.rerollCostText.setVisible(false);
@@ -649,7 +641,7 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
     }
     const canReroll = this.scene.money >= this.rerollCost;
 
-    const formattedMoney = Utils.formatMoney(moneyFormat, this.rerollCost);
+    const formattedMoney = Utils.formatMoney(settings.display.moneyFormat, this.rerollCost);
 
     this.rerollCostText.setText(i18next.t("modifierSelectUiHandler:rerollCost", { formattedMoney }));
     this.rerollCostText.setColor(this.getTextColor(canReroll ? TextStyle.MONEY : TextStyle.PARTY_RED));
@@ -665,8 +657,6 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
   clear() {
     super.clear();
 
-    const { gameSpeed } = settings.general;
-
     this.moveInfoOverlay.clear();
     this.moveInfoOverlayActive = false;
     this.awaitingActionInput = false;
@@ -679,7 +669,7 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
     this.rowCursor = 0;
 
     /* Multiplies the fade time duration by the speed parameter so that it is always constant, and avoids "flashbangs" at game speed x5 */
-    this.scene.hideShopOverlay(750 * gameSpeed);
+    this.scene.hideShopOverlay(750 * settings.settings.general.gameSpeed);
     this.scene.hideLuckText(250);
 
     /* Normally already called just after the shop, but not sure if it happens in 100% of cases */
@@ -932,16 +922,14 @@ class ModifierOption extends Phaser.GameObjects.Container {
   }
 
   updateCostText(): void {
-    const { uiTheme, moneyFormat } = settings.display;
-
     const scene = this.scene as BattleScene;
     const cost = Overrides.WAIVE_ROLL_FEE_OVERRIDE ? 0 : this.modifierTypeOption.cost;
     const textStyle = cost <= scene.money ? TextStyle.MONEY : TextStyle.PARTY_RED;
 
-    const formattedMoney = Utils.formatMoney(moneyFormat, cost);
+    const formattedMoney = Utils.formatMoney(settings.display.moneyFormat, cost);
 
     this.itemCostText.setText(i18next.t("modifierSelectUiHandler:itemCost", { formattedMoney }));
-    this.itemCostText.setColor(getTextColor(textStyle, false, uiTheme));
-    this.itemCostText.setShadowColor(getTextColor(textStyle, true, uiTheme));
+    this.itemCostText.setColor(getTextColor(textStyle, false, settings.display.uiTheme));
+    this.itemCostText.setShadowColor(getTextColor(textStyle, true, settings.display.uiTheme));
   }
 }

@@ -942,8 +942,6 @@ export abstract class BattleAnim {
   }
 
   play(scene: BattleScene, onSubstitute?: boolean, callback?: Function) {
-    const { enableMoveAnimations } = settings.display;
-
     const isOppAnim = this.isOppAnim();
     const user = !isOppAnim ? this.user! : this.target!; // TODO: are those bangs correct?
     const target = !isOppAnim ? this.target! : this.user!;
@@ -1015,7 +1013,7 @@ export abstract class BattleAnim {
       }
     };
 
-    if (!enableMoveAnimations && !this.playRegardlessOfIssues) {
+    if (!settings.display.enableMoveAnimations && !this.playRegardlessOfIssues) {
       return cleanUpAndComplete();
     }
 
@@ -1287,8 +1285,6 @@ export abstract class BattleAnim {
     frameTimedEventPriority?: 0 | 1 | 3 | 5,
     callback?: Function,
   ) {
-    const { enableMoveAnimations } = settings.display;
-
     const spriteCache: SpriteCache = {
       [AnimFrameTarget.GRAPHIC]: [],
       [AnimFrameTarget.USER]: [],
@@ -1309,7 +1305,7 @@ export abstract class BattleAnim {
       }
     };
 
-    if (!enableMoveAnimations && !this.playRegardlessOfIssues) {
+    if (!settings.display.enableMoveAnimations && !this.playRegardlessOfIssues) {
       return cleanUpAndComplete();
     }
 

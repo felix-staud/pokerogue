@@ -781,7 +781,8 @@ enum AttackTypeBoosterItem {
 
 export class AttackTypeBoosterModifierType
   extends PokemonHeldItemModifierType
-  implements GeneratedPersistentModifierType {
+  implements GeneratedPersistentModifierType
+{
   public moveType: Type;
   public boostPercent: integer;
 
@@ -821,7 +822,8 @@ export type SpeciesStatBoosterItem = keyof typeof SpeciesStatBoosterModifierType
  */
 export class SpeciesStatBoosterModifierType
   extends PokemonHeldItemModifierType
-  implements GeneratedPersistentModifierType {
+  implements GeneratedPersistentModifierType
+{
   private key: SpeciesStatBoosterItem;
 
   constructor(key: SpeciesStatBoosterItem) {
@@ -878,7 +880,8 @@ export class AllPokemonLevelIncrementModifierType extends ModifierType {
 
 export class BaseStatBoosterModifierType
   extends PokemonHeldItemModifierType
-  implements GeneratedPersistentModifierType {
+  implements GeneratedPersistentModifierType
+{
   private stat: PermanentStat;
   private key: string;
 
@@ -910,7 +913,8 @@ export class BaseStatBoosterModifierType
  */
 export class PokemonBaseStatTotalModifierType
   extends PokemonHeldItemModifierType
-  implements GeneratedPersistentModifierType {
+  implements GeneratedPersistentModifierType
+{
   private readonly statModifier: integer;
 
   constructor(statModifier: integer) {
@@ -948,7 +952,8 @@ export class PokemonBaseStatTotalModifierType
  */
 export class PokemonBaseStatFlatModifierType
   extends PokemonHeldItemModifierType
-  implements GeneratedPersistentModifierType {
+  implements GeneratedPersistentModifierType
+{
   private readonly statModifier: integer;
   private readonly stats: Stat[];
 
@@ -1017,11 +1022,9 @@ export class MoneyRewardModifierType extends ModifierType {
   }
 
   getDescription(scene: BattleScene): string {
-    const { moneyFormat } = settings.display;
-
     const moneyAmount = new NumberHolder(scene.getWaveMoneyAmount(this.moneyMultiplier));
     scene.applyModifiers(MoneyMultiplierModifier, true, moneyAmount);
-    const formattedMoney = formatMoney(moneyFormat, moneyAmount.value);
+    const formattedMoney = formatMoney(settings.display.moneyFormat, moneyAmount.value);
 
     return i18next.t("modifierType:ModifierType.MoneyRewardModifierType.description", {
       moneyMultiplier: i18next.t(this.moneyMultiplierDescriptorKey as any),
@@ -1143,9 +1146,8 @@ export class TmModifierType extends PokemonModifierType {
   }
 
   getDescription(scene: BattleScene): string {
-    const { enableMoveInfo } = settings.display;
     return i18next.t(
-      enableMoveInfo
+      settings.display.enableMoveInfo
         ? "modifierType:ModifierType.TmModifierTypeWithInfo.description"
         : "modifierType:ModifierType.TmModifierType.description",
       { moveName: allMoves[this.moveId].name },

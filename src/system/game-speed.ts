@@ -8,14 +8,13 @@ type FadeIn = typeof FadeIn;
 type FadeOut = typeof FadeOut;
 
 export function initGameSpeed() {
-  const { gameSpeed } = settings.general;
-  console.log("init game speed", gameSpeed);
-
   const transformValue = (value: number | Utils.FixedInt): number => {
     if (value instanceof Utils.FixedInt) {
       return (value as Utils.FixedInt).value;
     }
-    return gameSpeed === 1 ? value : Math.ceil((value /= gameSpeed));
+    return settings.settings.general.gameSpeed === 1
+      ? value
+      : Math.ceil((value /= settings.settings.general.gameSpeed));
   };
 
   const originalAddEvent = this.time.addEvent;

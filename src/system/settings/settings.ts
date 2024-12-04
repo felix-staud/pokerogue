@@ -4,7 +4,6 @@ import { getIsInitialized, initI18n } from "#app/plugins/i18n/i18n";
 import { hasTouchscreen } from "#app/touch-controls";
 import SettingsUiHandler from "#app/ui/settings/settings-ui-handler";
 import { Mode } from "#app/ui/ui";
-import { updateWindowType } from "#app/ui/ui-theme";
 import { PlayerGender } from "#enums/player-gender";
 import i18next from "i18next";
 
@@ -734,9 +733,9 @@ export function setSetting(scene: BattleScene, setting: string, value: integer):
     // case SettingKeys.UI_Theme:
     //   scene.uiTheme = value;
     //   break;
-    case SettingKeys.Window_Type:
-      updateWindowType(scene, parseInt(Setting[index].options[value].value));
-      break;
+    // case SettingKeys.Window_Type:
+    //   reRenderAfterWindowTypeUpdate(scene, parseInt(Setting[index].options[value].value));
+    //   break;
     // case SettingKeys.Tutorials:
     //   scene.enableTutorials = Setting[index].options[value].value === "On";
     //   break;

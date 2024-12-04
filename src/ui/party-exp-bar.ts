@@ -31,8 +31,6 @@ export default class PartyExpBar extends Phaser.GameObjects.Container {
   }
 
   showPokemonExp(pokemon: Pokemon, expValue: integer, showOnlyLevelUp: boolean, newLevel: number): Promise<void> {
-    const { expGainsSpeed } = settings.general;
-
     return new Promise<void>((resolve) => {
       if (this.shown) {
         return resolve();
@@ -68,7 +66,7 @@ export default class PartyExpBar extends Phaser.GameObjects.Container {
       this.tween = this.scene.tweens.add({
         targets: this,
         x: this.scene.game.canvas.width / 6 - (this.bg.width - 5),
-        duration: 500 / Math.pow(2, expGainsSpeed),
+        duration: 500 / Math.pow(2, settings.general.expGainsSpeed),
         ease: "Sine.easeOut",
         onComplete: () => {
           this.tween = null;

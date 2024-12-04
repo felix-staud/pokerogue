@@ -9,7 +9,7 @@ import { InputsIcons } from "#app/ui/settings/abstract-control-settings-ui-handl
 import NavigationMenu, { NavigationManager } from "#app/ui/settings/navigationMenu";
 import { Setting, SettingKeys, SettingType } from "#app/system/settings/settings";
 import i18next from "i18next";
-import { settings, settingsManager } from "#app/data/settings/settings-manager";
+import { settings as settingsManager } from "#app/data/settings/settings-manager";
 import type { Settings, SettingsUiItem } from "#app/@types/Settings";
 
 /**
@@ -636,13 +636,11 @@ export default class AbstractSettingsUiHandler extends MessageUiHandler {
    * Clear the UI elements and state.
    */
   clear() {
-    const { showBgmBar } = settings.display;
-
     super.clear();
     this.settingsContainer.setVisible(false);
     this.setScrollCursor(0);
     this.eraseCursor();
-    this.getUi().bgmBar.toggleBgmBar(showBgmBar);
+    this.getUi().bgmBar.toggleBgmBar(settingsManager.display.showBgmBar);
     if (this.reloadRequired) {
       this.reloadRequired = false;
       this.scene.reset(true, false, true);

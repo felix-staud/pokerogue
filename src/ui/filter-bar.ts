@@ -41,8 +41,7 @@ export class FilterBar extends Phaser.GameObjects.Container {
     this.cursorObj.setOrigin(0, 0);
     this.add(this.cursorObj);
 
-    const { uiTheme } = settings.display;
-    this.uiTheme = uiTheme; //TODO: why buffer here!?
+    this.uiTheme = settings.display.uiTheme; //TODO: why buffer here!?
   }
 
   /**

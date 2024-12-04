@@ -26,8 +26,6 @@ export class EggLapsePhase extends Phase {
   start() {
     super.start();
 
-    const { eggSkipPreference } = settings.general;
-
     const eggsToHatch: Egg[] = this.scene.gameData.eggs.filter((egg: Egg) => {
       return Overrides.EGG_IMMEDIATE_HATCH_OVERRIDE ? true : --egg.hatchWaves < 1;
     });
@@ -35,7 +33,7 @@ export class EggLapsePhase extends Phase {
     this.eggHatchData = [];
 
     if (eggsToHatchCount > 0) {
-      if (eggsToHatchCount >= this.minEggsToSkip && eggSkipPreference === EggSkipPreference.ASK) {
+      if (eggsToHatchCount >= this.minEggsToSkip && settings.general.eggSkipPreference === EggSkipPreference.ASK) {
         this.scene.ui.showText(
           i18next.t("battle:eggHatching"),
           0,
@@ -62,7 +60,10 @@ export class EggLapsePhase extends Phase {
           100,
           true,
         );
-      } else if (eggsToHatchCount >= this.minEggsToSkip && eggSkipPreference === EggSkipPreference.ALWAYS) {
+      } else if (
+        eggsToHatchCount >= this.minEggsToSkip &&
+        settings.general.eggSkipPreference === EggSkipPreference.ALWAYS
+      ) {
         this.scene.queueMessage(i18next.t("battle:eggHatching"));
         this.hatchEggsSkipped(eggsToHatch);
         this.showSummary();

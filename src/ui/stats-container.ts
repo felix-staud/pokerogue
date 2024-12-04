@@ -108,8 +108,6 @@ export class StatsContainer extends Phaser.GameObjects.Container {
   }
 
   updateIvs(ivs: integer[], originalIvs?: integer[]): void {
-    const { uiTheme } = settings.display;
-
     if (ivs) {
       const ivChartData = new Array(6)
         .fill(null)
@@ -119,7 +117,7 @@ export class StatsContainer extends Phaser.GameObjects.Container {
         ])
         .flat();
       const lastIvChartData = this.statsIvsCache || defaultIvChartData;
-      const perfectIVColor: string = getTextColor(TextStyle.SUMMARY_GOLD, false, uiTheme);
+      const perfectIVColor: string = getTextColor(TextStyle.SUMMARY_GOLD, false, settings.display.uiTheme);
       this.statsIvsCache = ivChartData.slice(0);
 
       this.ivStatValueTexts.map((t: BBCodeText, i: integer) => {
@@ -133,7 +131,7 @@ export class StatsContainer extends Phaser.GameObjects.Container {
         }
         if (this.showDiff && originalIvs) {
           if (originalIvs[i] < ivs[i]) {
-            label += ` ([color=${getTextColor(TextStyle.SUMMARY_BLUE, false, uiTheme)}][shadow=${getTextColor(TextStyle.SUMMARY_BLUE, true, uiTheme)}]+${ivs[i] - originalIvs[i]}[/shadow][/color])`;
+            label += ` ([color=${getTextColor(TextStyle.SUMMARY_BLUE, false, settings.display.uiTheme)}][shadow=${getTextColor(TextStyle.SUMMARY_BLUE, true, settings.display.uiTheme)}]+${ivs[i] - originalIvs[i]}[/shadow][/color])`;
           } else {
             label += " (-)";
           }

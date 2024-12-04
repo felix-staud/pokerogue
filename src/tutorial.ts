@@ -24,10 +24,8 @@ const tutorialHandlers = {
     });
   },
   [Tutorial.Access_Menu]: (scene: BattleScene) => {
-    const { enableTouchControls } = settings.general;
-
     return new Promise<void>((resolve) => {
-      if (enableTouchControls) {
+      if (settings.general.enableTouchControls) {
         return resolve();
       }
       scene
@@ -128,9 +126,7 @@ const tutorialHandlers = {
  * @returns a promise with result `true` if the tutorial was run and finished, `false` otherwise
  */
 export async function handleTutorial(scene: BattleScene, tutorial: Tutorial): Promise<boolean> {
-  const { enableTutorials } = settings.general;
-
-  if (!enableTutorials && !Overrides.BYPASS_TUTORIAL_SKIP_OVERRIDE) {
+  if (!settings.general.enableTutorials && !Overrides.BYPASS_TUTORIAL_SKIP_OVERRIDE) {
     return false;
   }
 

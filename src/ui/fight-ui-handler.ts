@@ -376,9 +376,7 @@ export default class FightUiHandler extends UiHandler implements InfoToggle {
    * @returns A color or undefined if the default color should be used
    */
   private getMoveColor(pokemon: Pokemon, pokemonMove: PokemonMove): string | undefined {
-    const { enableTypeHints } = settings.display;
-
-    if (!enableTypeHints) {
+    if (!settings.display.enableTypeHints) {
       return undefined;
     }
 

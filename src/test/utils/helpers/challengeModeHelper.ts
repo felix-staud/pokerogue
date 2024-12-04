@@ -62,11 +62,9 @@ export class ChallengeModeHelper extends GameManagerHelper {
    * @returns A promise that resolves when the battle is started.
    */
   async startBattle(species?: Species[]) {
-    const { battleStyle } = settings.general;
-
     await this.runToSummon(species);
 
-    if (battleStyle === BattleStyle.SWITCH) {
+    if (settings.general.battleStyle === BattleStyle.SWITCH) {
       this.game.onNextPrompt(
         "CheckSwitchPhase",
         Mode.CONFIRM,

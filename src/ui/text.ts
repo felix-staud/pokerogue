@@ -60,10 +60,9 @@ export function addTextObject(
   style: TextStyle,
   extraStyleOptions?: Phaser.Types.GameObjects.Text.TextStyle,
 ): Phaser.GameObjects.Text {
-  const { uiTheme } = settings.display;
   const { scale, styleOptions, shadowColor, shadowXpos, shadowYpos } = getTextStyleOptions(
     style,
-    uiTheme,
+    settings.display.uiTheme,
     extraStyleOptions,
   );
 
@@ -87,10 +86,9 @@ export function setTextStyle(
   style: TextStyle,
   extraStyleOptions?: Phaser.Types.GameObjects.Text.TextStyle,
 ) {
-  const { uiTheme } = settings.display;
   const { scale, styleOptions, shadowColor, shadowXpos, shadowYpos } = getTextStyleOptions(
     style,
-    uiTheme,
+    settings.display.uiTheme,
     extraStyleOptions,
   );
   obj.setScale(scale);
@@ -112,10 +110,9 @@ export function addBBCodeTextObject(
   style: TextStyle,
   extraStyleOptions?: Phaser.Types.GameObjects.Text.TextStyle,
 ): BBCodeText {
-  const { uiTheme } = settings.display;
   const { scale, styleOptions, shadowColor, shadowXpos, shadowYpos } = getTextStyleOptions(
     style,
-    uiTheme,
+    settings.display.uiTheme,
     extraStyleOptions,
   );
 
@@ -143,8 +140,7 @@ export function addTextInputObject(
   style: TextStyle,
   extraStyleOptions?: InputText.IConfig,
 ): InputText {
-  const { uiTheme } = settings.display;
-  const { scale, styleOptions } = getTextStyleOptions(style, uiTheme, extraStyleOptions);
+  const { scale, styleOptions } = getTextStyleOptions(style, settings.display.uiTheme, extraStyleOptions);
 
   const ret = new InputText(scene, x, y, width, height, styleOptions as InputText.IConfig);
   scene.add.existing(ret);

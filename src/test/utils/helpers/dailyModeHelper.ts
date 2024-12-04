@@ -47,11 +47,9 @@ export class DailyModeHelper extends GameManagerHelper {
    * @returns A promise that resolves when the battle is started.
    */
   async startBattle() {
-    const { battleStyle } = settings.general;
-
     await this.runToSummon();
 
-    if (battleStyle === BattleStyle.SWITCH) {
+    if (settings.general.battleStyle === BattleStyle.SWITCH) {
       this.game.onNextPrompt(
         "CheckSwitchPhase",
         Mode.CONFIRM,

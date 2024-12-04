@@ -54,10 +54,8 @@ export default class TimeOfDayWidget extends Phaser.GameObjects.Container {
     super(scene, x, y);
     this.battleScene = this.scene as BattleScene;
 
-    const { showTimeOfDayWidget } = settings.display;
-
-    this.setVisible(showTimeOfDayWidget);
-    if (!showTimeOfDayWidget) {
+    this.setVisible(settings.display.showTimeOfDayWidget);
+    if (!settings.display.showTimeOfDayWidget) {
       return;
     }
 
@@ -137,15 +135,13 @@ export default class TimeOfDayWidget extends Phaser.GameObjects.Container {
 
   /** Adds the proper tween for all icons */
   private tweenTimeOfDayIcon() {
-    const { timeOfDayAnimation } = settings.display;
-
     this.scene.tweens.killTweensOf(this.timeOfDayIcons);
 
     this.resetIcons();
 
     // Tween based on the player setting
-    (timeOfDayAnimation === EaseType.BACK ? this.getBackTween() : this.getBounceTween()).forEach((tween) =>
-      this.scene.tweens.add(tween),
+    (settings.display.timeOfDayAnimation === EaseType.BACK ? this.getBackTween() : this.getBounceTween()).forEach(
+      (tween) => this.scene.tweens.add(tween),
     );
 
     // Swaps all elements of the icon arrays by shifting the first element onto the end of the array

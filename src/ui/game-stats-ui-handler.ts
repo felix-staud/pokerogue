@@ -298,9 +298,8 @@ export default class GameStatsUiHandler extends UiHandler {
     this.gameStatsContainer.add(statsBgRight);
     this.gameStatsContainer.add(this.statsContainer);
 
-    const { uiTheme } = settings.display;
     // arrows to show that we can scroll through the stats
-    const isLegacyTheme = uiTheme === UiTheme.LEGACY;
+    const isLegacyTheme = settings.display.uiTheme === UiTheme.LEGACY;
     this.arrowDown = this.scene.add.sprite(
       statsBgWidth,
       this.scene.game.canvas.height / 6 - (isLegacyTheme ? 9 : 5),
@@ -321,15 +320,13 @@ export default class GameStatsUiHandler extends UiHandler {
   show(args: any[]): boolean {
     super.show(args);
 
-    const { uiTheme } = settings.display;
-
     this.setCursor(0);
 
     this.updateStats();
 
     this.arrowUp.play("prompt");
     this.arrowDown.play("prompt");
-    if (uiTheme === UiTheme.LEGACY) {
+    if (settings.display.uiTheme === UiTheme.LEGACY) {
       this.arrowUp.setTint(0x484848);
       this.arrowDown.setTint(0x484848);
     }

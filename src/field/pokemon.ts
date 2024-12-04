@@ -228,7 +228,7 @@ import {
 import { Nature } from "#enums/nature";
 import { StatusEffect } from "#enums/status-effect";
 import { doShinySparkleAnim } from "#app/field/anims";
-import { settings, settingsManager } from "#app/data/settings/settings-manager";
+import { settings } from "#app/data/settings/settings-manager";
 import { SpriteSet } from "#app/enums/sprite-set";
 
 export enum LearnMoveSituation {
@@ -609,8 +609,6 @@ export default abstract class Pokemon extends Phaser.GameObjects.Container {
   abstract getBattlerIndex(): BattlerIndex;
 
   loadAssets(ignoreOverride: boolean = true): Promise<void> {
-    const { spriteSet } = settings.display;
-
     return new Promise((resolve) => {
       const moveIds = this.getMoveset().map((m) => m!.getMove().id); // TODO: is this bang correct?
       Promise.allSettled(moveIds.map((m) => initMoveAnim(this.scene, m))).then(() => {
@@ -678,7 +676,7 @@ export default abstract class Pokemon extends Phaser.GameObjects.Container {
                   .replace(/_[1-3]$/, "");
                 let config = variantData;
                 const useExpSprite =
-                  spriteSet === SpriteSet.MIXED &&
+                  settings.display.spriteSet === SpriteSet.MIXED &&
                   this.scene.hasExpSprite(this.getBattleSpriteKey(isBackSprite, ignoreOverride));
                 battleSpritePath.split("/").map((p) => (config ? (config = config[p]) : null));
                 const variantSet: VariantSet = config as VariantSet;
@@ -3988,7 +3986,7 @@ export default abstract class Pokemon extends Phaser.GameObjects.Container {
   }
 
   cry(soundConfig?: Phaser.Types.Sound.SoundConfig, sceneOverride?: BattleScene): AnySound {
-    const { effectiveFieldVolume } = settingsManager;
+    const { effectiveFieldVolume } = settings;
 
     const scene = sceneOverride || this.scene;
     const cry = this.getSpeciesForm().cry(scene, soundConfig);
@@ -4019,7 +4017,7 @@ export default abstract class Pokemon extends Phaser.GameObjects.Container {
       return this.fusionFaintCry(callback);
     }
 
-    const { effectiveFieldVolume } = settingsManager;
+    const { effectiveFieldVolume } = settings;
 
     const key = this.species.getCryKey(this.formIndex);
     let rate = 0.85;
@@ -4079,7 +4077,7 @@ export default abstract class Pokemon extends Phaser.GameObjects.Container {
   }
 
   private fusionFaintCry(callback: Function): void {
-    const { effectiveFieldVolume } = settingsManager;
+    const { effectiveFieldVolume } = settings;
 
     const key = this.species.getCryKey(this.formIndex);
     let i = 0;

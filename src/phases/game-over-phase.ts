@@ -45,8 +45,6 @@ export class GameOverPhase extends BattlePhase {
   start() {
     super.start();
 
-    const { enableRetries } = settings.general;
-
     // Failsafe if players somehow skip floor 200 in classic mode
     if (this.scene.gameMode.isClassic && this.scene.currentBattle.waveIndex > 200) {
       this.isVictory = true;
@@ -73,7 +71,7 @@ export class GameOverPhase extends BattlePhase {
         0,
         () => this.handleGameOver(),
       );
-    } else if (this.isVictory || !enableRetries) {
+    } else if (this.isVictory || !settings.general.enableRetries) {
       this.handleGameOver();
     } else {
       this.scene.ui.showText(i18next.t("battle:retryBattle"), null, () => {

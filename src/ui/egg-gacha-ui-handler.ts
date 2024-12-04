@@ -53,9 +53,8 @@ export default class EggGachaUiHandler extends MessageUiHandler {
   }
 
   setup() {
-    const { uiTheme } = settings.display;
     this.gachaCursor = 0;
-    this.scale = getTextStyleOptions(TextStyle.WINDOW, uiTheme).scale;
+    this.scale = getTextStyleOptions(TextStyle.WINDOW, settings.display.uiTheme).scale;
 
     const ui = this.getUi();
 

@@ -165,9 +165,7 @@ export default class MoveInfoOverlay extends Phaser.GameObjects.Container implem
 
   // show this component with infos for the specific move
   show(move: Move): boolean {
-    const { enableMoveInfo } = settings.display;
-
-    if (!enableMoveInfo) {
+    if (!settings.display.enableMoveInfo) {
       return false; // move infos have been disabled // TODO:: is `false` correct? i used to be `undeefined`
     }
     this.move = move;

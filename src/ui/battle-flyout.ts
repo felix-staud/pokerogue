@@ -105,14 +105,13 @@ export default class BattleFlyout extends Phaser.GameObjects.Container {
 
     this.flyoutContainer.add(this.flyoutText);
 
-    const { uiTheme } = settings.display;
     this.flyoutContainer.add(
       new Phaser.GameObjects.Rectangle(
         this.scene,
         this.flyoutWidth / 2,
         0,
         1,
-        this.flyoutHeight + (uiTheme === UiTheme.LEGACY ? 1 : 0),
+        this.flyoutHeight + (settings.display.uiTheme === UiTheme.LEGACY ? 1 : 0),
         0x212121,
       ).setOrigin(0.5, 0),
     );

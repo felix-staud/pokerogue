@@ -401,11 +401,10 @@ export default class UI extends Phaser.GameObjects.Container {
   }
 
   shouldSkipDialogue(i18nKey: string): boolean {
-    const { skipSeenDialogues } = settings.general;
     const battleScene = this.scene as BattleScene;
 
     if (i18next.exists(i18nKey)) {
-      if (skipSeenDialogues && battleScene.gameData.getSeenDialogues()[i18nKey] === true) {
+      if (settings.general.skipSeenDialogues && battleScene.gameData.getSeenDialogues()[i18nKey] === true) {
         return true;
       }
     }

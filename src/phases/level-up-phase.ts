@@ -25,8 +25,6 @@ export class LevelUpPhase extends PlayerPartyMemberPokemonPhase {
   public override start() {
     super.start();
 
-    const { partyExpNotificationMode } = settings.general;
-
     if (this.level > this.scene.gameData.gameStats.highestLevel) {
       this.scene.gameData.gameStats.highestLevel = this.level;
     }
@@ -36,7 +34,7 @@ export class LevelUpPhase extends PlayerPartyMemberPokemonPhase {
     const prevStats = this.pokemon.stats.slice(0);
     this.pokemon.calculateStats();
     this.pokemon.updateInfo();
-    if (partyExpNotificationMode === ExpNotification.DEFAULT) {
+    if (settings.general.partyExpNotificationMode === ExpNotification.DEFAULT) {
       this.scene.playSound("level_up_fanfare");
       this.scene.ui.showText(
         i18next.t("battle:levelUp", { pokemonName: getPokemonNameWithAffix(this.pokemon), level: this.level }),
@@ -49,7 +47,7 @@ export class LevelUpPhase extends PlayerPartyMemberPokemonPhase {
         null,
         true,
       );
-    } else if (partyExpNotificationMode === ExpNotification.SKIP) {
+    } else if (settings.general.partyExpNotificationMode === ExpNotification.SKIP) {
       this.end();
     } else {
       // we still want to display the stats if activated

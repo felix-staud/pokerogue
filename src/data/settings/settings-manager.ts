@@ -56,6 +56,27 @@ export class SettingsManager {
   }
 
   /**
+   * Quick access to general settings
+   */
+  get general() {
+    return this._settings.general;
+  }
+
+  /**
+   * Quick access to display settings
+   */
+  get display() {
+    return this._settings.display;
+  }
+
+  /**
+   * Quick access to audio settings
+   */
+  get audio() {
+    return this._settings.audio;
+  }
+
+  /**
    * Getter for bgm volume after applying the master volume multiplier
    */
   get effectiveBgmVolume() {
@@ -153,6 +174,4 @@ export class SettingsManager {
 /**
  * Singleton instance of {@linkcode SettingsManager}
  */
-export const settingsManager = new SettingsManager();
-/** READONLY Quick reference to to `settingsManager.settings` */
-export const settings = settingsManager.settings;
+export const settings = new SettingsManager();

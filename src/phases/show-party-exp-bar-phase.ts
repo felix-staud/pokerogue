@@ -20,8 +20,6 @@ export class ShowPartyExpBarPhase extends PlayerPartyMemberPokemonPhase {
   start() {
     super.start();
 
-    const { expGainsSpeed, partyExpNotificationMode } = settings.general;
-
     const pokemon = this.getPokemon();
     const exp = new Utils.NumberHolder(this.expValue);
     this.scene.applyModifiers(ExpBoosterModifier, true, exp);
@@ -36,24 +34,29 @@ export class ShowPartyExpBarPhase extends PlayerPartyMemberPokemonPhase {
     this.scene.unshiftPhase(new HidePartyExpBarPhase(this.scene));
     pokemon.updateInfo();
 
-    if (partyExpNotificationMode === ExpNotification.SKIP) {
+    if (settings.general.partyExpNotificationMode === ExpNotification.SKIP) {
       this.end();
-    } else if (partyExpNotificationMode === ExpNotification.ONLY_LEVEL_UP) {
+    } else if (settings.general.partyExpNotificationMode === ExpNotification.ONLY_LEVEL_UP) {
       if (newLevel > lastLevel) {
         // this means if we level up
         // instead of displaying the exp gain in the small frame, we display the new level
         // we use the same method for mode 0 & 1, by giving a parameter saying to display the exp or the level
         this.scene.partyExpBar
-          .showPokemonExp(pokemon, exp.value, partyExpNotificationMode === ExpNotification.ONLY_LEVEL_UP, newLevel)
+          .showPokemonExp(
+            pokemon,
+            exp.value,
+            settings.general.partyExpNotificationMode === ExpNotification.ONLY_LEVEL_UP,
+            newLevel,
+          )
           .then(() => {
-            setTimeout(() => this.end(), 800 / Math.pow(2, expGainsSpeed));
+            setTimeout(() => this.end(), 800 / Math.pow(2, settings.general.expGainsSpeed));
           });
       } else {
         this.end();
       }
-    } else if (expGainsSpeed < ExpGainsSpeed.SKIP) {
+    } else if (settings.general.expGainsSpeed < ExpGainsSpeed.SKIP) {
       this.scene.partyExpBar.showPokemonExp(pokemon, exp.value, false, newLevel).then(() => {
-        setTimeout(() => this.end(), 500 / Math.pow(2, expGainsSpeed));
+        setTimeout(() => this.end(), 500 / Math.pow(2, settings.general.expGainsSpeed));
       });
     } else {
       this.end();

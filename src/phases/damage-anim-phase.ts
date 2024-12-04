@@ -28,10 +28,8 @@ export class DamageAnimPhase extends PokemonPhase {
   start() {
     super.start();
 
-    const { enableMoveAnimations } = settings.display;
-
     if (this.damageResult === HitResult.ONE_HIT_KO) {
-      if (enableMoveAnimations) {
+      if (settings.display.enableMoveAnimations) {
         this.scene.toggleInvert(true);
       }
       this.scene.time.delayedCall(fixedInt(1000), () => {

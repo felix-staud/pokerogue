@@ -20,10 +20,9 @@ export default class DamageNumberHandler {
     result: DamageResult | HitResult.HEAL = HitResult.EFFECTIVE,
     critical: boolean = false,
   ): void {
-    const { damageNumbersMode } = settings.display;
     const scene = target.scene;
 
-    if (damageNumbersMode === DamageNumbersMode.OFF) {
+    if (settings.display.damageNumbersMode === DamageNumbersMode.OFF) {
       return;
     }
 
@@ -85,7 +84,7 @@ export default class DamageNumberHandler {
 
     this.damageNumbers.get(battlerIndex)!.push(damageNumber);
 
-    if (damageNumbersMode === DamageNumbersMode.SIMPLE) {
+    if (settings.display.damageNumbersMode === DamageNumbersMode.SIMPLE) {
       scene.tweens.add({
         targets: damageNumber,
         duration: Utils.fixedInt(750),

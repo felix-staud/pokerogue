@@ -28,14 +28,12 @@ export default class BattleMessageUiHandler extends MessageUiHandler {
   }
 
   setup(): void {
-    const { windowType } = settings.display;
-
     const ui = this.getUi();
 
     this.textTimer = null;
     this.textCallbackTimer = null;
 
-    this.bg = this.scene.add.sprite(0, 0, "bg", windowType);
+    this.bg = this.scene.add.sprite(0, 0, "bg", settings.display.windowType);
     this.bg.setName("sprite-battle-msg-bg");
     this.bg.setOrigin(0, 1);
     ui.add(this.bg);
@@ -77,7 +75,7 @@ export default class BattleMessageUiHandler extends MessageUiHandler {
     this.nameBoxContainer = this.scene.add.container(0, -16);
     this.nameBoxContainer.setVisible(false);
 
-    this.nameBox = this.scene.add.nineslice(0, 0, "namebox", windowType, 72, 16, 8, 8, 5, 5);
+    this.nameBox = this.scene.add.nineslice(0, 0, "namebox", settings.display.windowType, 72, 16, 8, 8, 5, 5);
     this.nameBox.setOrigin(0, 0);
 
     this.nameText = addTextObject(this.scene, 8, 0, "Rival", TextStyle.MESSAGE, { maxLines: 1 });
@@ -211,10 +209,8 @@ export default class BattleMessageUiHandler extends MessageUiHandler {
   }
 
   promptLevelUpStats(partyMemberIndex: integer, prevStats: integer[], showTotals: boolean): Promise<void> {
-    const { showStatsOnLevelUp } = settings.display;
-
     return new Promise((resolve) => {
-      if (showStatsOnLevelUp) {
+      if (settings.display.showStatsOnLevelUp) {
         return resolve();
       }
       const newStats = (this.scene as BattleScene).getPlayerParty()[partyMemberIndex].stats;
@@ -273,7 +269,6 @@ export default class BattleMessageUiHandler extends MessageUiHandler {
   }
 
   getIvDescriptor(value: integer, typeIv: integer, pokemonId: integer): string {
-    const { uiTheme } = settings.display;
     const starterSpecies = this.scene.getPokemonById(pokemonId)!.species.getRootSpeciesId(); // we are using getRootSpeciesId() here because we want to check against the baby form, not the mid form if it exists
     const starterIvs: number[] = this.scene.gameData.dexData[starterSpecies].ivs;
 
@@ -289,8 +284,8 @@ export default class BattleMessageUiHandler extends MessageUiHandler {
       } else {
         textStyle = TextStyle.WINDOW;
       }
-      const color = getTextColor(textStyle, false, uiTheme);
-      return `[color=${color}][shadow=${getTextColor(textStyle, true, uiTheme)}]${text}[/shadow][/color]`;
+      const color = getTextColor(textStyle, false, settings.display.uiTheme);
+      return `[color=${color}][shadow=${getTextColor(textStyle, true, settings.display.uiTheme)}]${text}[/shadow][/color]`;
     };
 
     if (value > 30) {

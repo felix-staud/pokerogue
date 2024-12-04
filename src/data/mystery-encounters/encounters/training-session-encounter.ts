@@ -181,14 +181,13 @@ export const TrainingSessionEncounter: MysteryEncounter = MysteryEncounterBuilde
       })
       .withPreOptionPhase(async (scene: BattleScene): Promise<boolean> => {
         // Open menu for selecting pokemon and Nature
-        const { uiTheme } = settings.display;
         const encounter = scene.currentBattle.mysteryEncounter!;
         const natures = new Array(25).fill(null).map((val, i) => i as Nature);
         const onPokemonSelected = (pokemon: PlayerPokemon) => {
           // Return the options for nature selection
           return natures.map((nature: Nature) => {
             const option: OptionSelectItem = {
-              label: getNatureName(nature, true, true, true, uiTheme),
+              label: getNatureName(nature, true, true, true, settings.display.uiTheme),
               handler: () => {
                 // Pokemon and second option selected
                 encounter.setDialogueToken("nature", getNatureName(nature));

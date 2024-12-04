@@ -94,8 +94,6 @@ export default class BattleInfo extends Phaser.GameObjects.Container {
     this.lastLevelExp = -1;
     this.lastLevel = -1;
 
-    const { uiTheme } = settings.display;
-
     // Initially invisible and shown via Pokemon.showInfo
     this.setVisible(false);
 
@@ -187,7 +185,7 @@ export default class BattleInfo extends Phaser.GameObjects.Container {
 
     this.hpBarSegmentDividers = [];
 
-    this.levelNumbersContainer = this.scene.add.container(9.5, uiTheme ? 0 : -0.5);
+    this.levelNumbersContainer = this.scene.add.container(9.5, settings.display.uiTheme ? 0 : -0.5);
     this.levelNumbersContainer.setName("container_level");
     this.levelContainer.add(this.levelNumbersContainer);
 
@@ -584,8 +582,6 @@ export default class BattleInfo extends Phaser.GameObjects.Container {
   }
 
   updateBossSegmentDividers(pokemon: EnemyPokemon): void {
-    const { uiTheme } = settings.display;
-
     while (this.hpBarSegmentDividers.length) {
       this.hpBarSegmentDividers.pop()?.destroy();
     }
@@ -598,7 +594,7 @@ export default class BattleInfo extends Phaser.GameObjects.Container {
           0,
           0,
           1,
-          this.hpBar.height - (uiTheme ? 0 : 1),
+          this.hpBar.height - (settings.display.uiTheme ? 0 : 1),
           pokemon.bossSegmentIndex >= s ? 0xffffff : 0x404040,
         );
         divider.setOrigin(0.5, 0);
@@ -606,7 +602,7 @@ export default class BattleInfo extends Phaser.GameObjects.Container {
         this.add(divider);
         this.moveBelow(divider as Phaser.GameObjects.GameObject, this.statsContainer);
 
-        divider.setPositionRelative(this.hpBar, dividerX, uiTheme ? 0 : 1);
+        divider.setPositionRelative(this.hpBar, dividerX, settings.display.uiTheme ? 0 : 1);
         this.hpBarSegmentDividers.push(divider);
       }
     }
@@ -625,8 +621,6 @@ export default class BattleInfo extends Phaser.GameObjects.Container {
   }
 
   updateInfo(pokemon: Pokemon, instant?: boolean): Promise<void> {
-    const { hpBarSpeed } = settings.general;
-
     return new Promise((resolve) => {
       if (!this.scene) {
         return resolve();
@@ -715,8 +709,8 @@ export default class BattleInfo extends Phaser.GameObjects.Container {
 
       const updatePokemonHp = () => {
         let duration = !instant ? Phaser.Math.Clamp(Math.abs(this.lastHp - pokemon.hp) * 5, 250, 5000) : 0;
-        if (hpBarSpeed) {
-          duration = hpBarSpeed >= 3 ? 0 : duration / Math.pow(2, hpBarSpeed);
+        if (settings.general.hpBarSpeed) {
+          duration = settings.general.hpBarSpeed >= 3 ? 0 : duration / Math.pow(2, settings.general.hpBarSpeed);
         }
         this.scene.tweens.add({
           targets: this.hpBar,
@@ -817,8 +811,6 @@ export default class BattleInfo extends Phaser.GameObjects.Container {
   }
 
   updatePokemonExp(pokemon: Pokemon, instant?: boolean, levelDurationMultiplier: number = 1): Promise<void> {
-    const { expGainsSpeed } = settings.general;
-
     return new Promise((resolve) => {
       const levelUp = this.lastLevel < pokemon.level;
       const relLevelExp = getLevelRelExp(this.lastLevel + 1, pokemon.species.growthRate);
@@ -842,8 +834,11 @@ export default class BattleInfo extends Phaser.GameObjects.Container {
             durationMultiplier *
             levelDurationMultiplier
           : 0;
-      if (expGainsSpeed && expGainsSpeed >= ExpGainsSpeed.DEFAULT) {
-        duration = expGainsSpeed >= ExpGainsSpeed.SKIP ? ExpGainsSpeed.DEFAULT : duration / Math.pow(2, expGainsSpeed);
+      if (settings.general.expGainsSpeed && settings.general.expGainsSpeed >= ExpGainsSpeed.DEFAULT) {
+        duration =
+          settings.general.expGainsSpeed >= ExpGainsSpeed.SKIP
+            ? ExpGainsSpeed.DEFAULT
+            : duration / Math.pow(2, settings.general.expGainsSpeed);
       }
       if (ratio === 1) {
         this.lastLevelExp = 0;
@@ -941,11 +936,9 @@ export default class BattleInfo extends Phaser.GameObjects.Container {
       return;
     }
 
-    const { enableTypeHints } = settings.display;
-
     this.currentEffectiveness = effectiveness;
 
-    if (!enableTypeHints || effectiveness === undefined || this.flyoutMenu?.flyoutVisible) {
+    if (!settings.display.enableTypeHints || effectiveness === undefined || this.flyoutMenu?.flyoutVisible) {
       this.effectivenessContainer.setVisible(false);
       return;
     }

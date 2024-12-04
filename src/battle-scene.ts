@@ -41,7 +41,7 @@ import {
   SpeciesFormChangeTrigger,
 } from "#app/data/pokemon-forms";
 import PokemonSpecies, { allSpecies, getPokemonSpecies, PokemonSpeciesFilter } from "#app/data/pokemon-species";
-import { settings, SettingsManager, settingsManager } from "#app/data/settings/settings-manager";
+import { settings, SettingsManager } from "#app/data/settings/settings-manager";
 import { trainerConfigs, TrainerSlot } from "#app/data/trainer-config";
 import { getTypeRgb } from "#app/data/type";
 import { Variant, variantColorCache, variantData, VariantSet } from "#app/data/variant";
@@ -110,7 +110,7 @@ import PokeballTray from "#app/ui/pokeball-tray";
 import PokemonInfoContainer from "#app/ui/pokemon-info-container";
 import { addTextObject, getTextColor, TextStyle } from "#app/ui/text";
 import UI from "#app/ui/ui";
-import { addUiThemeOverrides } from "#app/ui/ui-theme";
+import { addUiThemeOverrides, renderWindowType } from "#app/ui/ui-theme";
 import * as Utils from "#app/utils";
 import { Constructor, isNullOrUndefined, randSeedInt } from "#app/utils";
 import { BattleSpec } from "#enums/battle-spec";
@@ -313,7 +313,7 @@ export default class BattleScene extends SceneBase {
     this.eventManager = new TimedEventManager();
     this.updateGameInfo();
 
-    settingsManager.eventBus.on(SettingsManager.Event.Updated, ({ category, key, value }) => {
+    settings.eventBus.on(SettingsManager.Event.Updated, ({ category, key, value }) => {
       if (["masterVolume", "bgmVolume", "fieldVolume", "soundEffectsVolume"].includes(key)) {
         this.updateSoundVolume();
       }
@@ -324,14 +324,16 @@ export default class BattleScene extends SceneBase {
           touchControls.classList.toggle("visible", value);
         }
       }
+
+      if (key === "windowType") {
+        renderWindowType(this);
+      }
     });
   }
 
   loadPokemonAtlas(key: string, atlasPath: string, experimental?: boolean) {
-    const { spriteSet } = settings.display;
-
     if (experimental === undefined) {
-      experimental = spriteSet === SpriteSet.MIXED;
+      experimental = settings.display.spriteSet === SpriteSet.MIXED;
     }
     const variant = atlasPath.includes("variant/") || /_[0-3]$/.test(atlasPath);
     if (experimental) {
@@ -351,9 +353,7 @@ export default class BattleScene extends SceneBase {
    * Load the variant assets for the given sprite and stores them in {@linkcode variantColorCache}
    */
   loadPokemonVariantAssets(spriteKey: string, fileRoot: string, variant?: Variant) {
-    const { spriteSet } = settings.display;
-
-    const useExpSprite = spriteSet === SpriteSet.MIXED && this.hasExpSprite(spriteKey);
+    const useExpSprite = settings.display.spriteSet === SpriteSet.MIXED && this.hasExpSprite(spriteKey);
     if (useExpSprite) {
       fileRoot = `exp/${fileRoot}`;
     }
@@ -726,14 +726,12 @@ export default class BattleScene extends SceneBase {
   }
 
   async initVariantData(): Promise<void> {
-    const { spriteSet } = settings.display;
-
     Object.keys(variantData).forEach((key) => delete variantData[key]);
     await this.cachedFetch("./images/pokemon/variant/_masterlist.json")
       .then((res) => res.json())
       .then((v) => {
         Object.keys(v).forEach((k) => (variantData[k] = v[k]));
-        if (spriteSet === SpriteSet.MIXED) {
+        if (settings.display.spriteSet === SpriteSet.MIXED) {
           const expVariantData = variantData["exp"];
           const traverseVariantData = (keys: string[]) => {
             let variantTree = variantData;
@@ -1868,7 +1866,7 @@ export default class BattleScene extends SceneBase {
   }
 
   updateShopOverlayOpacity(value: number): void {
-    settingsManager.updateSetting("display", "shopOverlayOpacity", value);
+    settings.updateSetting("display", "shopOverlayOpacity", value);
 
     if (this.shopOverlayShown) {
       this.shopOverlay.setAlpha(value);
@@ -1876,13 +1874,11 @@ export default class BattleScene extends SceneBase {
   }
 
   showShopOverlay(duration: integer): Promise<void> {
-    const { shopOverlayOpacity } = settings.display;
-
     this.shopOverlayShown = true;
     return new Promise((resolve) => {
       this.tweens.add({
         targets: this.shopOverlay,
-        alpha: shopOverlayOpacity,
+        alpha: settings.display.shopOverlayOpacity,
         ease: "Sine.easeOut",
         duration,
         onComplete: () => resolve(),
@@ -1926,9 +1922,7 @@ export default class BattleScene extends SceneBase {
       return;
     }
 
-    const { moneyFormat } = settings.display;
-
-    const formattedMoney = Utils.formatMoney(moneyFormat, this.money);
+    const formattedMoney = Utils.formatMoney(settings.display.moneyFormat, this.money);
     this.moneyText.setText(i18next.t("battleScene:moneyOwned", { formattedMoney }));
     this.fieldUI.moveAbove(this.moneyText, this.luckText);
     if (forceVisible) {
@@ -2109,15 +2103,13 @@ export default class BattleScene extends SceneBase {
   }
 
   playBgm(bgmName?: string, fadeOut?: boolean): void {
-    const { effectiveBgmVolume } = settingsManager;
-
     if (bgmName === undefined) {
       bgmName = this.currentBattle?.getBgmOverride(this) || this.arena?.bgm;
     }
     if (this.bgm && bgmName === this.bgm.key) {
       if (!this.bgm.isPlaying) {
         this.bgm.play({
-          volume: effectiveBgmVolume,
+          volume: settings.effectiveBgmVolume,
         });
       }
       return;
@@ -2134,7 +2126,7 @@ export default class BattleScene extends SceneBase {
       this.ui.bgmBar.setBgmToBgmBar(bgmName);
       if (bgmName === null && this.bgm && !this.bgm.pendingRemove) {
         this.bgm.play({
-          volume: effectiveBgmVolume,
+          volume: settings.effectiveBgmVolume,
         });
         return;
       }
@@ -2143,7 +2135,7 @@ export default class BattleScene extends SceneBase {
       }
       this.bgm = this.sound.add(bgmName, { loop: true });
       this.bgm.play({
-        volume: effectiveBgmVolume,
+        volume: settings.effectiveBgmVolume,
       });
       if (loopPoint) {
         this.bgm.on("looped", () => this.bgm.play({ seek: loopPoint }));
@@ -2186,7 +2178,7 @@ export default class BattleScene extends SceneBase {
 
   updateSoundVolume(): void {
     console.log("Updating sound!");
-    const { effectiveBgmVolume, effectiveFieldVolume, effectiveSoundEffectsVolume } = settingsManager;
+    const { effectiveBgmVolume, effectiveFieldVolume, effectiveSoundEffectsVolume } = settings;
 
     if (this.sound) {
       for (const sound of this.sound.getAllPlaying() as AnySound[]) {
@@ -2239,8 +2231,7 @@ export default class BattleScene extends SceneBase {
   }
 
   playSound(sound: string | AnySound, config?: object): AnySound {
-    const { effectiveBgmVolume, effectiveFieldVolume, effectiveUiVolume, effectiveSoundEffectsVolume } =
-      settingsManager;
+    const { effectiveBgmVolume, effectiveFieldVolume, effectiveUiVolume, effectiveSoundEffectsVolume } = settings;
 
     const key = typeof sound === "string" ? sound : sound.key;
     config = config ?? {};

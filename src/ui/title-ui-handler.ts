@@ -30,7 +30,6 @@ export default class TitleUiHandler extends OptionSelectUiHandler {
   setup() {
     super.setup();
 
-    const { uiTheme } = settings.display;
     const ui = this.getUi();
 
     this.titleContainer = this.scene.add.container(0, -(this.scene.game.canvas.height / 6));
@@ -51,7 +50,9 @@ export default class TitleUiHandler extends OptionSelectUiHandler {
     this.playerCountLabel = addTextObject(
       this.scene,
       this.scene.game.canvas.width / 6 - 2,
-      this.scene.game.canvas.height / 6 - 13 - 576 * getTextStyleOptions(TextStyle.WINDOW, uiTheme).scale,
+      this.scene.game.canvas.height / 6 -
+        13 -
+        576 * getTextStyleOptions(TextStyle.WINDOW, settings.display.uiTheme).scale,
       `? ${i18next.t("menu:playersOnline")}`,
       TextStyle.MESSAGE,
       { fontSize: "54px" },

@@ -58,8 +58,6 @@ export class StatStageChangePhase extends PokemonPhase {
   }
 
   start() {
-    const { enableMoveAnimations } = settings.display;
-
     // Check if multiple stats are being changed at the same time, then run SSCPhase for each of them
     if (this.stats.length > 1) {
       for (let i = 0; i < this.stats.length; i++) {
@@ -187,7 +185,7 @@ export class StatStageChangePhase extends PokemonPhase {
       handleTutorial(this.scene, Tutorial.Stat_Change).then(() => super.end());
     };
 
-    if (relLevels.filter((l) => l).length && enableMoveAnimations) {
+    if (relLevels.filter((l) => l).length && settings.display.enableMoveAnimations) {
       pokemon.enableMask();
       const pokemonMaskSprite = pokemon.maskSprite;
 

@@ -120,13 +120,11 @@ export const GlobalTradeSystemEncounter: MysteryEncounter = MysteryEncounterBuil
   .withDescription(`${namespace}:description`)
   .withQuery(`${namespace}:query`)
   .withOnInit((scene: BattleScene) => {
-    const { musicPreference } = settings.audio;
-
     const encounter = scene.currentBattle.mysteryEncounter!;
 
     // Load bgm
     let bgmKey: string;
-    if (musicPreference === MusicPreference.CONSISTENT) {
+    if (settings.audio.musicPreference === MusicPreference.CONSISTENT) {
       bgmKey = "mystery_encounter_gen_5_gts";
       scene.loadBgm(bgmKey, `${bgmKey}.mp3`);
     } else {

@@ -4,7 +4,7 @@ import Phaser from "phaser";
 import BattleScene from "./battle-scene";
 import { gameSpeedOptions } from "./data/settings/settings-ui-items";
 import { InputsController } from "./inputs-controller";
-import { settings, settingsManager } from "#app/data/settings/settings-manager";
+import { settings } from "#app/data/settings/settings-manager";
 import MessageUiHandler from "./ui/message-ui-handler";
 import RunInfoUiHandler from "./ui/run-info-ui-handler";
 import SettingsAudioUiHandler from "./ui/settings/settings-audio-ui-handler";
@@ -74,9 +74,7 @@ export class UiInputs {
   }
 
   doVibration(inputSuccess: boolean, vibrationLength: number): void {
-    const { enableVibration } = settings.general;
-
-    if (inputSuccess && enableVibration && typeof navigator.vibrate !== "undefined") {
+    if (inputSuccess && settings.general.enableVibration && typeof navigator.vibrate !== "undefined") {
       navigator.vibrate(vibrationLength);
     }
   }
@@ -163,15 +161,13 @@ export class UiInputs {
   }
 
   buttonInfo(pressed: boolean = true): void {
-    const { showMovesetFlyout, showArenaFlyout } = settings.display;
-
-    if (showMovesetFlyout) {
+    if (settings.display.showMovesetFlyout) {
       for (const p of this.scene.getField().filter((p) => p?.isActive(true))) {
         p.toggleFlyout(pressed);
       }
     }
 
-    if (showArenaFlyout) {
+    if (settings.display.showArenaFlyout) {
       this.scene.ui.processInfoButton(pressed);
     }
   }
@@ -223,11 +219,10 @@ export class UiInputs {
   }
 
   buttonSpeedChange(up = true): void {
-    const { gameSpeed } = settings.general;
-    const optionIndex = gameSpeedOptions.findIndex((n) => n === gameSpeed);
+    const optionIndex = gameSpeedOptions.findIndex((n) => n === settings.settings.general.gameSpeed);
 
     if (up && optionIndex < gameSpeedOptions.length - 1) {
-      settingsManager.updateSetting("general", "gameSpeed", gameSpeedOptions[optionIndex + 1]);
+      settings.updateSetting("general", "gameSpeed", gameSpeedOptions[optionIndex + 1]);
       // this.scene.gameData.saveSetting(
       // SettingKeys.Game_Speed,
       // Setting[settingGameSpeed].options.findIndex((item) => item.label === `${this.scene.gameSpeed}x`) + 1,
@@ -236,7 +231,7 @@ export class UiInputs {
       //   (this.scene.ui.getHandler() as SettingsUiHandler).show([]);
       // }
     } else if (!up && optionIndex > 0) {
-      settingsManager.updateSetting("general", "gameSpeed", gameSpeedOptions[optionIndex - 1]);
+      settings.updateSetting("general", "gameSpeed", gameSpeedOptions[optionIndex - 1]);
       // this.scene.gameData.saveSetting(
       //   SettingKeys.Game_Speed,
       //   Math.max(

@@ -37,8 +37,7 @@ export default abstract class UiHandler {
   }
 
   getTextColor(style: TextStyle, shadow: boolean = false): string {
-    const { uiTheme } = settings.display;
-    return getTextColor(style, shadow, uiTheme);
+    return getTextColor(style, shadow, settings.display.uiTheme);
   }
 
   getCursor(): integer {

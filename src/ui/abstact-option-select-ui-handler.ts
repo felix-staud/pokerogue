@@ -58,7 +58,6 @@ export default abstract class AbstractOptionSelectUiHandler extends UiHandler {
   }
 
   setup() {
-    const { uiTheme } = settings.display;
     const ui = this.getUi();
 
     this.optionSelectContainer = this.scene.add.container(this.scene.game.canvas.width / 6 - 1, -48);
@@ -73,7 +72,7 @@ export default abstract class AbstractOptionSelectUiHandler extends UiHandler {
 
     this.optionSelectIcons = [];
 
-    this.scale = getTextStyleOptions(TextStyle.WINDOW, uiTheme).scale;
+    this.scale = getTextStyleOptions(TextStyle.WINDOW, settings.display.uiTheme).scale;
 
     this.setCursor(0);
   }
