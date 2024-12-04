@@ -25,13 +25,17 @@ export function addPokeballOpenParticles(scene: BattleScene, x: number, y: numbe
 }
 
 function doDefaultPbOpenParticles(scene: BattleScene, x: number, y: number, radius: number) {
-  const pbOpenParticlesFrameNames = scene.anims.generateFrameNames("pb_particles", { start: 0, end: 3, suffix: ".png" });
-  if (!(scene.anims.exists("pb_open_particle"))) {
+  const pbOpenParticlesFrameNames = scene.anims.generateFrameNames("pb_particles", {
+    start: 0,
+    end: 3,
+    suffix: ".png",
+  });
+  if (!scene.anims.exists("pb_open_particle")) {
     scene.anims.create({
       key: "pb_open_particle",
       frames: pbOpenParticlesFrameNames,
       frameRate: 16,
-      repeat: -1
+      repeat: -1,
     });
   }
 
@@ -41,17 +45,17 @@ function doDefaultPbOpenParticles(scene: BattleScene, x: number, y: number, radi
     const particle = scene.add.sprite(x, y, "pb_open_particle");
     scene.field.add(particle);
     const angle = index * 45;
-    const [ xCoord, yCoord ] = [ radius * Math.cos(angle * Math.PI / 180), radius * Math.sin(angle * Math.PI / 180) ];
+    const [xCoord, yCoord] = [radius * Math.cos((angle * Math.PI) / 180), radius * Math.sin((angle * Math.PI) / 180)];
     scene.tweens.add({
       targets: particle,
       x: x + xCoord,
       y: y + yCoord,
-      duration: 575
+      duration: 575,
     });
     particle.play({
       key: "pb_open_particle",
       startFrame: (index + 3) % 4,
-      frameRate: Math.floor(16 * gameSpeed)
+      frameRate: Math.floor(16 * gameSpeed),
     });
     scene.tweens.add({
       targets: particle,
@@ -59,7 +63,7 @@ function doDefaultPbOpenParticles(scene: BattleScene, x: number, y: number, radi
       duration: 75,
       alpha: 0,
       ease: "Sine.easeIn",
-      onComplete: () => particle.destroy()
+      onComplete: () => particle.destroy(),
     });
   };
 
@@ -67,7 +71,7 @@ function doDefaultPbOpenParticles(scene: BattleScene, x: number, y: number, radi
   scene.time.addEvent({
     delay: 20,
     repeat: 16,
-    callback: () => addParticle(++particleCount)
+    callback: () => addParticle(++particleCount),
   });
 }
 
@@ -87,7 +91,7 @@ function doUbOpenParticles(scene: BattleScene, x: number, y: number, frameIndex:
       for (const particle of particles) {
         particle.destroy();
       }
-    }
+    },
   });
 }
 
@@ -108,12 +112,21 @@ function doMbOpenParticles(scene: BattleScene, x: number, y: number) {
         for (const particle of particles) {
           particle.destroy();
         }
-      }
+      },
     });
   }
 }
 
-function doFanOutParticle(scene: BattleScene, trigIndex: integer, x: integer, y: integer, xSpeed: integer, ySpeed: integer, angle: integer, frameIndex: integer): Phaser.GameObjects.Image {
+function doFanOutParticle(
+  scene: BattleScene,
+  trigIndex: integer,
+  x: integer,
+  y: integer,
+  xSpeed: integer,
+  ySpeed: integer,
+  angle: integer,
+  frameIndex: integer,
+): Phaser.GameObjects.Image {
   let f = 0;
 
   const particle = scene.add.image(x, y, "pb_particles", `${frameIndex}.png`);
@@ -125,7 +138,7 @@ function doFanOutParticle(scene: BattleScene, trigIndex: integer, x: integer, y:
     }
     particle.x = x + sin(trigIndex, f * xSpeed);
     particle.y = y + cos(trigIndex, f * ySpeed);
-    trigIndex = (trigIndex + angle);
+    trigIndex = trigIndex + angle;
     f++;
   };
 
@@ -134,7 +147,7 @@ function doFanOutParticle(scene: BattleScene, trigIndex: integer, x: integer, y:
     duration: getFrameMs(1),
     onRepeat: () => {
       updateParticle();
-    }
+    },
   });
 
   return particle;
@@ -158,16 +171,16 @@ export function addPokeballCaptureStars(scene: BattleScene, pokeball: Phaser.Gam
           y: pokeball.y,
           alpha: 0,
           ease: "Sine.easeIn",
-          duration: 250
+          duration: 250,
         });
-      }
+      },
     });
 
     const dist = randGauss(25);
     scene.tweens.add({
       targets: particle,
       x: pokeball.x + dist,
-      duration: 500
+      duration: 500,
     });
 
     scene.tweens.add({
@@ -175,7 +188,7 @@ export function addPokeballCaptureStars(scene: BattleScene, pokeball: Phaser.Gam
       alpha: 0,
       delay: 425,
       duration: 75,
-      onComplete: () => particle.destroy()
+      onComplete: () => particle.destroy(),
     });
   };
 

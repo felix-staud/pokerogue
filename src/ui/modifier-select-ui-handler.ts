@@ -11,6 +11,15 @@ import { allMoves } from "../data/move";
 import { HealShopCostModifier, LockModifierTiersModifier, PokemonHeldItemModifier } from "../modifier/modifier";
 import { getPlayerShopModifierTypeOptionsForWave, ModifierTypeOption, TmModifierType } from "../modifier/modifier-type";
 import { handleTutorial, Tutorial } from "../tutorial";
+import { Button } from "#enums/buttons";
+import type { PokeballType } from "#enums/pokeball";
+import i18next from "i18next";
+import Phaser from "phaser";
+import BattleScene from "../battle-scene";
+import { allMoves } from "../data/move";
+import { HealShopCostModifier, LockModifierTiersModifier, PokemonHeldItemModifier } from "../modifier/modifier";
+import { getPlayerShopModifierTypeOptionsForWave, ModifierTypeOption, TmModifierType } from "../modifier/modifier-type";
+import { handleTutorial, Tutorial } from "../tutorial";
 import * as Utils from "./../utils";
 import { IntegerHolder } from "./../utils";
 import AwaitableUiHandler from "./awaitable-ui-handler";
@@ -75,19 +84,28 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
     }
 
     this.transferButtonContainer = this.scene.add.container(
+      
       (this.scene.game.canvas.width - this.checkButtonWidth) / 6 - 21,
+     
       OPTION_BUTTON_YPOSITION
+    ,
     );
     this.transferButtonContainer.setName("transfer-btn");
     this.transferButtonContainer.setVisible(false);
     ui.add(this.transferButtonContainer);
 
     const transferButtonText = addTextObject(
+      
       this.scene,
+     
       -4,
+     
       -2,
+     
       i18next.t("modifierSelectUiHandler:transfer"),
+     
       TextStyle.PARTY
+    ,
     );
     transferButtonText.setName("text-transfer-btn");
     transferButtonText.setOrigin(1, 0);
@@ -99,11 +117,17 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
     ui.add(this.checkButtonContainer);
 
     const checkButtonText = addTextObject(
+      
       this.scene,
+     
       -4,
+     
       -2,
+     
       i18next.t("modifierSelectUiHandler:checkTeam"),
+     
       TextStyle.PARTY
+    ,
     );
     checkButtonText.setName("text-use-btn");
     checkButtonText.setOrigin(1, 0);
@@ -115,11 +139,17 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
     ui.add(this.rerollButtonContainer);
 
     const rerollButtonText = addTextObject(
+      
       this.scene,
+     
       -4,
+     
       -2,
+     
       i18next.t("modifierSelectUiHandler:reroll"),
+     
       TextStyle.PARTY
+    ,
     );
     rerollButtonText.setName("text-reroll-btn");
     rerollButtonText.setOrigin(0, 0);
@@ -136,11 +166,17 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
     ui.add(this.lockRarityButtonContainer);
 
     this.lockRarityButtonText = addTextObject(
+      
       this.scene,
+     
       -4,
+     
       -2,
+     
       i18next.t("modifierSelectUiHandler:lockRarities"),
+     
       TextStyle.PARTY
+    ,
     );
     this.lockRarityButtonText.setOrigin(0, 0);
     this.lockRarityButtonContainer.add(this.lockRarityButtonText);
@@ -154,11 +190,17 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
 
     // Create continue button
     const continueButtonText = addTextObject(
+      
       this.scene,
+     
       -24,
+     
       5,
+     
       i18next.t("modifierSelectUiHandler:continueNextWaveButton"),
+     
       TextStyle.MESSAGE
+    ,
     );
     continueButtonText.setName("text-continue-btn");
     this.continueButtonContainer.add(continueButtonText);
@@ -181,7 +223,6 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
 
   show(args: any[]): boolean {
     const { gameSpeed } = settings.general;
-
     this.scene.disableMenu = false;
 
     if (this.active) {
@@ -305,8 +346,11 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
         if (index > i && index <= typeOptions.length) {
           const option = this.options[i];
           option?.show(
+            
             Math.floor((1 - value) * 1250) * 0.325 + 2000 * maxUpgradeCount,
+           
             -(maxUpgradeCount - typeOptions[i].upgradeCount)
+          ,
           );
           i++;
         }
@@ -340,13 +384,13 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
       this.lockRarityButtonContainer.setVisible(canLockRarities);
 
       this.scene.tweens.add({
-        targets: [ this.checkButtonContainer, this.continueButtonContainer ],
+        targets: [this.checkButtonContainer, this.continueButtonContainer],
         alpha: 1,
         duration: 250,
       });
 
       this.scene.tweens.add({
-        targets: [ this.rerollButtonContainer, this.lockRarityButtonContainer ],
+        targets: [this.rerollButtonContainer, this.lockRarityButtonContainer],
         alpha: this.rerollCost < 0 ? 0.5 : 1,
         duration: 250,
       });
@@ -530,6 +574,7 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
       }
 
       const sliceWidth = this.scene.game.canvas.width / 6 / (options.length + 2);
+      const sliceWidth = this.scene.game.canvas.width / 6 / (options.length + 2);
       if (this.rowCursor < 2) {
         // Cursor on free items
         this.cursorObj.setPosition(
@@ -561,14 +606,20 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
       ui.showText(i18next.t("modifierSelectUiHandler:rerollDesc"));
     } else if (cursor === 1) {
       this.cursorObj.setPosition(
+        
         (this.scene.game.canvas.width - this.transferButtonWidth - this.checkButtonWidth) / 6 - 30,
+       
         OPTION_BUTTON_YPOSITION + 4
+      ,
       );
       ui.showText(i18next.t("modifierSelectUiHandler:transferDesc"));
     } else if (cursor === 2) {
       this.cursorObj.setPosition(
+        
         (this.scene.game.canvas.width - this.checkButtonWidth) / 6 - 10,
+       
         OPTION_BUTTON_YPOSITION + 4
+      ,
       );
       ui.showText(i18next.t("modifierSelectUiHandler:checkTeamDesc"));
     } else {
@@ -585,7 +636,9 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
     if (rowCursor !== lastRowCursor) {
       this.rowCursor = rowCursor;
       let newCursor = Math.round(
-        (this.cursor / Math.max(this.getRowItems(lastRowCursor) - 1, 1)) * (this.getRowItems(rowCursor) - 1)
+        (
+        (this.cursor / Math.max(this.getRowItems(lastRowCursor) - 1, 1))) * (this.getRowItems(rowCursor) - 1)
+      ,
       );
       if (rowCursor === 1 && this.options.length === 0) {
         // Handle empty shop
@@ -784,7 +837,9 @@ class ModifierOption extends Phaser.GameObjects.Container {
     this.itemText.setOrigin(0.5, 0);
     this.itemText.setAlpha(0);
     this.itemText.setTint(
+      
       this.modifierTypeOption.type?.tier ? getModifierTierTextTint(this.modifierTypeOption.type?.tier) : undefined
+    ,
     );
     this.add(this.itemText);
 

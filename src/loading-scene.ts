@@ -141,6 +141,10 @@ export class LoadingScene extends SceneBase {
     this.loadImage("summary_profile_prompt_a", "ui"); // The pixel A button prompt
     this.loadImage("summary_profile_ability", "ui"); // Pixel text 'ABILITY'
     this.loadImage("summary_profile_passive", "ui"); // Pixel text 'PASSIVE'
+    this.loadImage("summary_profile_prompt_z", "ui"); // The pixel Z button prompt
+    this.loadImage("summary_profile_prompt_a", "ui"); // The pixel A button prompt
+    this.loadImage("summary_profile_ability", "ui"); // Pixel text 'ABILITY'
+    this.loadImage("summary_profile_passive", "ui"); // Pixel text 'PASSIVE'
     this.loadImage("summary_status", "ui");
     this.loadImage("summary_stats", "ui");
     this.loadImage("summary_stats_overlay_exp", "ui");
@@ -247,7 +251,7 @@ export class LoadingScene extends SceneBase {
       this.loadAtlas("statuses", "");
       this.loadAtlas("types", "");
     }
-    const availableLangs = [ "en", "de", "it", "fr", "ja", "ko", "es-ES", "pt-BR", "zh-CN" ];
+    const availableLangs = ["en", "de", "it", "fr", "ja", "ko", "es-ES", "pt-BR", "zh-CN"];
     if (lang && availableLangs.includes(lang)) {
       this.loadImage("halloween2024-event-" + lang, "events");
     } else {
@@ -349,9 +353,13 @@ export class LoadingScene extends SceneBase {
     this.loadBgm("evolution_fanfare", "bw/evolution_fanfare.mp3");
 
     this.load.plugin(
+      
       "rextexteditplugin",
+     
       "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rextexteditplugin.min.js",
+     
       true
+    ,
     );
 
     this.loadLoadingScreen();
@@ -447,15 +455,25 @@ export class LoadingScene extends SceneBase {
     disclaimerDescriptionText.setOrigin(0.5, 0.5);
 
     loadingGraphics.push(
+      
       bg,
+     
       graphics,
+     
       progressBar,
+     
       progressBox,
+     
       logo,
+     
       percentText,
+     
       assetText,
+     
       disclaimerText,
+     
       disclaimerDescriptionText
+    ,
     );
 
     if (!mobile) {

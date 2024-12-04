@@ -1,6 +1,6 @@
 import BattleScene from "../../battle-scene";
 import { Mode } from "../ui";
-"#app/inputs-controller";
+("#app/inputs-controller");
 import AbstractSettingsUiHandler from "./abstract-settings-ui-handler";
 import { SettingKeys, SettingType } from "#app/system/settings/settings";
 import { useDisplaySettingsUiItems } from "#app/data/settings/settings-ui-items";
@@ -23,7 +23,7 @@ export default class SettingsDisplayUiHandler extends AbstractSettingsUiHandler 
      */
 
     if (!this.uiItems) {
-      const languageIndex = this.settings.findIndex(s => s.key === SettingKeys.Language);
+      const languageIndex = this.settings.findIndex((s) => s.key === SettingKeys.Language);
       if (languageIndex >= 0) {
         const currentLocale = localStorage.getItem("prLang");
         switch (currentLocale) {
