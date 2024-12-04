@@ -184,7 +184,7 @@ export default class AbstractSettingsUiHandler extends MessageUiHandler {
       }
     });
 
-      this.optionCursors = this.settings.map(((setting)) => setting.default);
+      this.optionCursors = this.settings.map((setting) => setting.default);
 
       this.scrollBar = new ScrollBar(
         
