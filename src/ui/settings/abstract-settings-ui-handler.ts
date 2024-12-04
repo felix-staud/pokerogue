@@ -122,7 +122,9 @@ export default class AbstractSettingsUiHandler extends MessageUiHandler {
     cancelText.setOrigin(0, 0.15);
     cancelText.setPositionRelative(iconCancel, -cancelText.width / 6 - 2, 0);
 
-    const requiresReloadInfoText = addTextObject(this.scene, 0, 0, "*: Requires Reload", TextStyle.SUMMARY_GRAY, { fontSize: "3rem" });
+    const requiresReloadInfoText = addTextObject(this.scene, 0, 0, "*: Requires Reload", TextStyle.SUMMARY_GRAY, {
+      fontSize: "3rem",
+    });
     requiresReloadInfoText.setOrigin(0, 0.15);
     requiresReloadInfoText.setPositionRelative(actionsBg, 10, 10);
 
@@ -140,34 +142,30 @@ export default class AbstractSettingsUiHandler extends MessageUiHandler {
           settingName += ` (${i18next.t("settings:requireReload")})`;
         }
 
-      this.settingLabels[s] = addTextObject(this.scene, 8, 28 + s * 16, settingName, TextStyle.SETTINGS_LABEL);
-      this.settingLabels[s].setOrigin(0, 0);
+        this.settingLabels[s] = addTextObject(this.scene, 8, 28 + s * 16, settingName, TextStyle.SETTINGS_LABEL);
+        this.settingLabels[s].setOrigin(0, 0);
 
-      this.optionsContainer.add(this.settingLabels[s]);
-      this.optionValueLabels.push(
-          
-        setting.options.map((option, o) => {
+        this.optionsContainer.add(this.settingLabels[s]);
+        this.optionValueLabels.push(
+          setting.options.map((option, o) => {
             const valueLabel = addTextObject(
-              
-            this.scene,
-             
-            0,
-             
-            0,
-             
-            option.label,
-             
-            setting.default === o ? TextStyle.SETTINGS_SELECTED : TextStyle.SETTINGS_VALUE
-            ,
-          );
+              this.scene,
+
+              0,
+
+              0,
+
+              option.label,
+
+              setting.default === o ? TextStyle.SETTINGS_SELECTED : TextStyle.SETTINGS_VALUE,
+            );
             valueLabel.setOrigin(0, 0);
 
             this.optionsContainer.add(valueLabel);
 
             return valueLabel;
-          })
-        ,
-      );
+          }),
+        );
 
         const totalWidth = this.optionValueLabels[s].map((o) => o.width).reduce((total, width) => (total += width), 0);
 
@@ -176,31 +174,29 @@ export default class AbstractSettingsUiHandler extends MessageUiHandler {
         const totalSpace = 297 - labelWidth - totalWidth / 6;
         const optionSpacing = Math.floor(totalSpace / (this.optionValueLabels[s].length - 1));
 
-      let xOffset = 0;
+        let xOffset = 0;
 
-      for (const value of this.optionValueLabels[s]) {
-        value.setPositionRelative(this.settingLabels[s], labelWidth + xOffset, 0);
-        xOffset += value.width / 6 + optionSpacing;
-      }
-    });
+        for (const value of this.optionValueLabels[s]) {
+          value.setPositionRelative(this.settingLabels[s], labelWidth + xOffset, 0);
+          xOffset += value.width / 6 + optionSpacing;
+        }
+      });
 
       this.optionCursors = this.settings.map((setting) => setting.default);
 
       this.scrollBar = new ScrollBar(
-        
-      this.scene,
-       
-      this.optionsBg.width - 9,
-       
-      this.optionsBg.y + 5,
-       
-      4,
-       
-      this.optionsBg.height - 11,
-       
-      this.rowsToDisplay
-      ,
-    );
+        this.scene,
+
+        this.optionsBg.width - 9,
+
+        this.optionsBg.y + 5,
+
+        4,
+
+        this.optionsBg.height - 11,
+
+        this.rowsToDisplay,
+      );
       this.scrollBar.setTotalRows(this.settings.length);
     } else {
       // this.reloadSettings = this.settings.filter((s) => s?.requireReload);
@@ -224,14 +220,14 @@ export default class AbstractSettingsUiHandler extends MessageUiHandler {
               option.label,
               option.value === settingsManager.settings[this.category][uiItem.key]
                 ? TextStyle.SETTINGS_SELECTED
-                : TextStyle.SETTINGS_VALUE
+                : TextStyle.SETTINGS_VALUE,
             );
             valueLabel.setOrigin(0, 0);
 
             this.optionsContainer.add(valueLabel);
 
             return valueLabel;
-          })
+          }),
         );
 
         const totalWidth = this.optionValueLabels[i].map((o) => o.width).reduce((total, width) => (total += width), 0);
@@ -253,12 +249,17 @@ export default class AbstractSettingsUiHandler extends MessageUiHandler {
         const index = setting.options.findIndex((o) => {
           return o.value === settingsManager.settings[this.category][setting.key];
         });
-        if (index < 0 ) {
-          console.warn("Could not find index for ", setting.key, setting.options.map(o => o.value), settingsManager.settings[this.category], setting.key);
+        if (index < 0) {
+          console.warn(
+            "Could not find index for ",
+            setting.key,
+            setting.options.map((o) => o.value),
+            settingsManager.settings[this.category],
+            setting.key,
+          );
         }
         return index ?? 0;
-      }
-      );
+      });
 
       this.scrollBar = new ScrollBar(
         this.scene,
@@ -266,7 +267,7 @@ export default class AbstractSettingsUiHandler extends MessageUiHandler {
         this.optionsBg.y + 5,
         4,
         this.optionsBg.height - 11,
-        this.rowsToDisplay
+        this.rowsToDisplay,
       );
       this.scrollBar.setTotalRows(this.uiItems.length);
     }
@@ -347,13 +348,23 @@ export default class AbstractSettingsUiHandler extends MessageUiHandler {
 
     if (!this.uiItems) {
       this.settings.forEach((setting, s) =>
-      this.setOptionCursor(s, settings.hasOwnProperty(setting.key) ? settings[setting.key] : this.settings[s].default),
-    );
+        this.setOptionCursor(
+          s,
+          settings.hasOwnProperty(setting.key) ? settings[setting.key] : this.settings[s].default,
+        ),
+      );
     } else {
       this.uiItems.forEach((item, s) => {
-        const index = item.options.findIndex((option) => option.value === settingsManager.settings[this.category][item.key]);
+        const index = item.options.findIndex(
+          (option) => option.value === settingsManager.settings[this.category][item.key],
+        );
         if (index < 0) {
-          console.warn("Could not find index for ", item.key, item.options.map(o => o.value), settingsManager.settings[this.category][item.key]);
+          console.warn(
+            "Could not find index for ",
+            item.key,
+            item.options.map((o) => o.value),
+            settingsManager.settings[this.category][item.key],
+          );
         }
         this.setOptionCursor(s, index > 0 ? index : 0);
       });
@@ -521,7 +532,13 @@ export default class AbstractSettingsUiHandler extends MessageUiHandler {
       lastValueLabel.setColor(this.getTextColor(TextStyle.SETTINGS_VALUE));
       lastValueLabel.setShadowColor(this.getTextColor(TextStyle.SETTINGS_VALUE, true));
     } else {
-      console.warn("Could no determine lastValue label for ", setting.key, settingIndex, lastCursor, this.optionValueLabels[settingIndex].map(l => l.text));
+      console.warn(
+        "Could no determine lastValue label for ",
+        setting.key,
+        settingIndex,
+        lastCursor,
+        this.optionValueLabels[settingIndex].map((l) => l.text),
+      );
     }
 
     this.optionCursors[settingIndex] = cursor;
@@ -531,7 +548,13 @@ export default class AbstractSettingsUiHandler extends MessageUiHandler {
       newValueLabel.setColor(this.getTextColor(TextStyle.SETTINGS_SELECTED));
       newValueLabel.setShadowColor(this.getTextColor(TextStyle.SETTINGS_SELECTED, true));
     } else {
-      console.warn("Could no determine newValueLabel label for ", setting.key, settingIndex, cursor, this.optionValueLabels[settingIndex].map(l => l.text));
+      console.warn(
+        "Could no determine newValueLabel label for ",
+        setting.key,
+        settingIndex,
+        cursor,
+        this.optionValueLabels[settingIndex].map((l) => l.text),
+      );
     }
 
     if (save) {
@@ -542,7 +565,7 @@ export default class AbstractSettingsUiHandler extends MessageUiHandler {
             this.reloadRequired = true;
           }
         } else {
-          settingsManager.updateSetting(this.category, setting.key as any,  setting.options[cursor].value);
+          settingsManager.updateSetting(this.category, setting.key as any, setting.options[cursor].value);
         }
       };
 

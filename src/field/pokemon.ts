@@ -4001,13 +4001,7 @@ export default abstract class Pokemon extends Phaser.GameObjects.Container {
             scene,
             Object.assign({ seek: Math.max(fusionCry.totalDuration * 0.4, 0) }, soundConfig),
           );
-          SoundFade.fadeIn(
-            scene,
-            fusionCry,
-            Utils.fixedInt(Math.ceil(duration * 0.2)),
-            effectiveFieldVolume,
-            0,
-          );
+          SoundFade.fadeIn(scene, fusionCry, Utils.fixedInt(Math.ceil(duration * 0.2)), effectiveFieldVolume, 0);
         } catch (err) {
           console.error(err);
         }

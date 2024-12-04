@@ -1,42 +1,42 @@
 export const supportedLanguages = [
   {
     label: "English",
-    key: "en"
+    key: "en",
   },
   {
     label: "Español (ES)",
-    key: "es-ES"
+    key: "es-ES",
   },
   {
     label: "Italiano",
-    key: "it"
+    key: "it",
   },
   {
     label: "Français",
-    key: "fr"
+    key: "fr",
   },
   {
     label: "Deutsch",
-    key: "de"
+    key: "de",
   },
   {
     label: "Português (BR)",
-    key: "pt-BR"
+    key: "pt-BR",
   },
   {
     label: "简体中文",
-    key: "zh-CN"
+    key: "zh-CN",
   },
   {
     label: "繁體中文",
-    key: "zh-TW"
+    key: "zh-TW",
   },
   {
     label: "한국어",
-    key: "ko"
+    key: "ko",
   },
   {
     label: "日本語",
-    key: "ja"
+    key: "ja",
   },
 ];

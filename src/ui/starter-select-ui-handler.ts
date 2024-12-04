@@ -3744,9 +3744,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
         }
 
         const { uiTheme } = settings.display;
-        this.pokemonNatureText.setText(
-          getNatureName(natureIndex as unknown as Nature, true, true, false, uiTheme),
-        );
+        this.pokemonNatureText.setText(getNatureName(natureIndex as unknown as Nature, true, true, false, uiTheme));
 
         let levelMoves: LevelMoves;
         if (

@@ -1,15 +1,37 @@
 import Battle, { BattleType, FixedBattleConfig } from "#app/battle";
-import { allAbilities, applyAbAttrs, applyPostBattleInitAbAttrs, applyPostItemLostAbAttrs, BlockItemTheftAbAttr, DoubleBattleChanceAbAttr, PostBattleInitAbAttr, PostItemLostAbAttr } from "#app/data/ability";
+import {
+  allAbilities,
+  applyAbAttrs,
+  applyPostBattleInitAbAttrs,
+  applyPostItemLostAbAttrs,
+  BlockItemTheftAbAttr,
+  DoubleBattleChanceAbAttr,
+  PostBattleInitAbAttr,
+  PostItemLostAbAttr,
+} from "#app/data/ability";
 import { biomeDepths, getBiomeName } from "#app/data/balance/biomes";
 import { pokemonPrevolutions } from "#app/data/balance/pokemon-evolutions";
 import { FRIENDSHIP_GAIN_FROM_BATTLE } from "#app/data/balance/starters";
-import { initCommonAnims, initMoveAnim, loadCommonAnimAssets, loadMoveAnimAssets, populateAnims } from "#app/data/battle-anims";
+import {
+  initCommonAnims,
+  initMoveAnim,
+  loadCommonAnimAssets,
+  loadMoveAnimAssets,
+  populateAnims,
+} from "#app/data/battle-anims";
 import { battleSpecDialogue } from "#app/data/dialogue";
 import { Gender } from "#app/data/gender";
 import { allMoves } from "#app/data/move";
 import MysteryEncounter from "#app/data/mystery-encounters/mystery-encounter";
 import { MysteryEncounterSaveData } from "#app/data/mystery-encounters/mystery-encounter-save-data";
-import { allMysteryEncounters, ANTI_VARIANCE_WEIGHT_MODIFIER, AVERAGE_ENCOUNTERS_PER_RUN_TARGET, BASE_MYSTERY_ENCOUNTER_SPAWN_WEIGHT, MYSTERY_ENCOUNTER_SPAWN_MAX_WEIGHT, mysteryEncountersByBiome } from "#app/data/mystery-encounters/mystery-encounters";
+import {
+  allMysteryEncounters,
+  ANTI_VARIANCE_WEIGHT_MODIFIER,
+  AVERAGE_ENCOUNTERS_PER_RUN_TARGET,
+  BASE_MYSTERY_ENCOUNTER_SPAWN_WEIGHT,
+  MYSTERY_ENCOUNTER_SPAWN_MAX_WEIGHT,
+  mysteryEncountersByBiome,
+} from "#app/data/mystery-encounters/mystery-encounters";
 import {
   FormChangeItem,
   pokemonFormChanges,
@@ -34,7 +56,18 @@ import { InputsController } from "#app/inputs-controller";
 import HeldModifierConfig from "#app/interfaces/held-modifier-config";
 import { Localizable } from "#app/interfaces/locales";
 import { LoadingScene } from "#app/loading-scene";
-import { getDefaultModifierTypeForTier, getEnemyModifierTypesForWave, getLuckString, getLuckTextTint, getModifierPoolForType, getModifierType, getPartyLuckValue, ModifierPoolType, modifierTypes, PokemonHeldItemModifierType } from "#app/modifier/modifier-type";
+import {
+  getDefaultModifierTypeForTier,
+  getEnemyModifierTypesForWave,
+  getLuckString,
+  getLuckTextTint,
+  getModifierPoolForType,
+  getModifierType,
+  getPartyLuckValue,
+  ModifierPoolType,
+  modifierTypes,
+  PokemonHeldItemModifierType,
+} from "#app/modifier/modifier-type";
 import Overrides from "#app/overrides";
 import { Phase } from "#app/phase";
 import { ExpPhase } from "#app/phases/exp-phase";
@@ -108,7 +141,28 @@ import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import { PRSFX_SOUND_ADJUSTMENT_RATIO } from "./constants";
 import { MusicPreference } from "./enums/music-preference";
 import { SettingsManager, settingsManager } from "#app/data/settings/settings-manager";
-import { ConsumableModifier, ConsumablePokemonModifier, DoubleBattleChanceBoosterModifier, ExpBalanceModifier, ExpShareModifier, FusePokemonModifier, HealingBoosterModifier, Modifier, ModifierBar, ModifierPredicate, MultipleParticipantExpBonusModifier, PersistentModifier, PokemonExpBoosterModifier, PokemonFormChangeItemModifier, PokemonHeldItemModifier, PokemonHpRestoreModifier, PokemonIncrementingStatModifier, RememberMoveModifier, TerastallizeModifier, TurnHeldItemTransferModifier } from "./modifier/modifier";
+import {
+  ConsumableModifier,
+  ConsumablePokemonModifier,
+  DoubleBattleChanceBoosterModifier,
+  ExpBalanceModifier,
+  ExpShareModifier,
+  FusePokemonModifier,
+  HealingBoosterModifier,
+  Modifier,
+  ModifierBar,
+  ModifierPredicate,
+  MultipleParticipantExpBonusModifier,
+  PersistentModifier,
+  PokemonExpBoosterModifier,
+  PokemonFormChangeItemModifier,
+  PokemonHeldItemModifier,
+  PokemonHpRestoreModifier,
+  PokemonIncrementingStatModifier,
+  RememberMoveModifier,
+  TerastallizeModifier,
+  TurnHeldItemTransferModifier,
+} from "./modifier/modifier";
 
 export const bypassLogin = import.meta.env.VITE_BYPASS_LOGIN === "1";
 
@@ -345,7 +399,7 @@ export default class BattleScene extends SceneBase {
     this.updateGameInfo();
 
     settingsManager.eventBus.on(SettingsManager.Event.Updated, ({ category, key, value }) => {
-      if ([ "masterVolume", "bgmVolume", "fieldVolume", "soundEffectsVolume" ].includes(key)) {
+      if (["masterVolume", "bgmVolume", "fieldVolume", "soundEffectsVolume"].includes(key)) {
         this.updateSoundVolume();
       }
     });
@@ -2199,7 +2253,7 @@ export default class BattleScene extends SceneBase {
 
   updateSoundVolume(): void {
     console.log("Updating sound!");
-    const { effectiveBgmVolume, effectiveFieldVolume, effectiveSoundEffectsVolume }  = settingsManager;
+    const { effectiveBgmVolume, effectiveFieldVolume, effectiveSoundEffectsVolume } = settingsManager;
 
     if (this.sound) {
       for (const sound of this.sound.getAllPlaying() as AnySound[]) {
@@ -2252,7 +2306,8 @@ export default class BattleScene extends SceneBase {
   }
 
   playSound(sound: string | AnySound, config?: object): AnySound {
-    const { effectiveBgmVolume, effectiveFieldVolume, effectiveUiVolume, effectiveSoundEffectsVolume } = settingsManager;
+    const { effectiveBgmVolume, effectiveFieldVolume, effectiveUiVolume, effectiveSoundEffectsVolume } =
+      settingsManager;
 
     const key = typeof sound === "string" ? sound : sound.key;
     config = config ?? {};

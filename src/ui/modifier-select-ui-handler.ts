@@ -76,7 +76,7 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
 
     this.transferButtonContainer = this.scene.add.container(
       (this.scene.game.canvas.width - this.checkButtonWidth) / 6 - 21,
-      OPTION_BUTTON_YPOSITION
+      OPTION_BUTTON_YPOSITION,
     );
     this.transferButtonContainer.setName("transfer-btn");
     this.transferButtonContainer.setVisible(false);
@@ -87,7 +87,7 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
       -4,
       -2,
       i18next.t("modifierSelectUiHandler:transfer"),
-      TextStyle.PARTY
+      TextStyle.PARTY,
     );
     transferButtonText.setName("text-transfer-btn");
     transferButtonText.setOrigin(1, 0);
@@ -103,7 +103,7 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
       -4,
       -2,
       i18next.t("modifierSelectUiHandler:checkTeam"),
-      TextStyle.PARTY
+      TextStyle.PARTY,
     );
     checkButtonText.setName("text-use-btn");
     checkButtonText.setOrigin(1, 0);
@@ -119,7 +119,7 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
       -4,
       -2,
       i18next.t("modifierSelectUiHandler:reroll"),
-      TextStyle.PARTY
+      TextStyle.PARTY,
     );
     rerollButtonText.setName("text-reroll-btn");
     rerollButtonText.setOrigin(0, 0);
@@ -140,14 +140,14 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
       -4,
       -2,
       i18next.t("modifierSelectUiHandler:lockRarities"),
-      TextStyle.PARTY
+      TextStyle.PARTY,
     );
     this.lockRarityButtonText.setOrigin(0, 0);
     this.lockRarityButtonContainer.add(this.lockRarityButtonText);
 
     this.continueButtonContainer = this.scene.add.container(
       this.scene.game.canvas.width / 12,
-      -(this.scene.game.canvas.height / 12)
+      -(this.scene.game.canvas.height / 12),
     );
     this.continueButtonContainer.setVisible(false);
     ui.add(this.continueButtonContainer);
@@ -158,7 +158,7 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
       -24,
       5,
       i18next.t("modifierSelectUiHandler:continueNextWaveButton"),
-      TextStyle.MESSAGE
+      TextStyle.MESSAGE,
     );
     continueButtonText.setName("text-continue-btn");
     this.continueButtonContainer.add(continueButtonText);
@@ -244,7 +244,7 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
         this.scene,
         sliceWidth * (m + 1) + sliceWidth * 0.5,
         -this.scene.game.canvas.height / 12 + optionsYOffset,
-        typeOptions[m]
+        typeOptions[m],
       );
       option.setScale(0.5);
       this.scene.add.existing(option);
@@ -262,14 +262,14 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
       const col = m < SHOP_OPTIONS_ROW_LIMIT ? m : m - SHOP_OPTIONS_ROW_LIMIT;
       const rowOptions = shopTypeOptions.slice(
         row ? SHOP_OPTIONS_ROW_LIMIT : 0,
-        row ? undefined : SHOP_OPTIONS_ROW_LIMIT
+        row ? undefined : SHOP_OPTIONS_ROW_LIMIT,
       );
       const sliceWidth = this.scene.game.canvas.width / 6 / (rowOptions.length + 2);
       const option = new ModifierOption(
         this.scene,
         sliceWidth * (col + 1) + sliceWidth * 0.5,
         -this.scene.game.canvas.height / 12 - this.scene.game.canvas.height / 32 - (42 - (28 * row - 1)),
-        shopTypeOptions[m]
+        shopTypeOptions[m],
       );
       option.setScale(0.375);
       this.scene.add.existing(option);
@@ -306,7 +306,7 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
           const option = this.options[i];
           option?.show(
             Math.floor((1 - value) * 1250) * 0.325 + 2000 * maxUpgradeCount,
-            -(maxUpgradeCount - typeOptions[i].upgradeCount)
+            -(maxUpgradeCount - typeOptions[i].upgradeCount),
           );
           i++;
         }
@@ -523,7 +523,7 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
         this.cursorObj.setPosition(
           this.scene.game.canvas.width / 18 + 23,
           -this.scene.game.canvas.height / 12 -
-          (this.shopOptionsRows.length > 1 ? SINGLE_SHOP_ROW_YOFFSET - 2 : DOUBLE_SHOP_ROW_YOFFSET - 2)
+            (this.shopOptionsRows.length > 1 ? SINGLE_SHOP_ROW_YOFFSET - 2 : DOUBLE_SHOP_ROW_YOFFSET - 2),
         );
         ui.showText(i18next.t("modifierSelectUiHandler:continueNextWaveDescription"));
         return ret;
@@ -535,15 +535,15 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
         this.cursorObj.setPosition(
           sliceWidth * (cursor + 1) + sliceWidth * 0.5 - 20,
           -this.scene.game.canvas.height / 12 -
-          (this.shopOptionsRows.length > 1 ? SINGLE_SHOP_ROW_YOFFSET - 2 : DOUBLE_SHOP_ROW_YOFFSET - 2)
+            (this.shopOptionsRows.length > 1 ? SINGLE_SHOP_ROW_YOFFSET - 2 : DOUBLE_SHOP_ROW_YOFFSET - 2),
         );
       } else {
         // Cursor on paying items
         this.cursorObj.setPosition(
           sliceWidth * (cursor + 1) + sliceWidth * 0.5 - 16,
           -this.scene.game.canvas.height / 12 -
-          this.scene.game.canvas.height / 32 -
-          (-14 + 28 * (this.rowCursor - (this.shopOptionsRows.length - 1)))
+            this.scene.game.canvas.height / 32 -
+            (-14 + 28 * (this.rowCursor - (this.shopOptionsRows.length - 1))),
         );
       }
 
@@ -556,19 +556,19 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
     } else if (cursor === 0) {
       this.cursorObj.setPosition(
         6,
-        this.lockRarityButtonContainer.visible ? OPTION_BUTTON_YPOSITION - 8 : OPTION_BUTTON_YPOSITION + 4
+        this.lockRarityButtonContainer.visible ? OPTION_BUTTON_YPOSITION - 8 : OPTION_BUTTON_YPOSITION + 4,
       );
       ui.showText(i18next.t("modifierSelectUiHandler:rerollDesc"));
     } else if (cursor === 1) {
       this.cursorObj.setPosition(
         (this.scene.game.canvas.width - this.transferButtonWidth - this.checkButtonWidth) / 6 - 30,
-        OPTION_BUTTON_YPOSITION + 4
+        OPTION_BUTTON_YPOSITION + 4,
       );
       ui.showText(i18next.t("modifierSelectUiHandler:transferDesc"));
     } else if (cursor === 2) {
       this.cursorObj.setPosition(
         (this.scene.game.canvas.width - this.checkButtonWidth) / 6 - 10,
-        OPTION_BUTTON_YPOSITION + 4
+        OPTION_BUTTON_YPOSITION + 4,
       );
       ui.showText(i18next.t("modifierSelectUiHandler:checkTeamDesc"));
     } else {
@@ -585,7 +585,7 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
     if (rowCursor !== lastRowCursor) {
       this.rowCursor = rowCursor;
       let newCursor = Math.round(
-        (this.cursor / Math.max(this.getRowItems(lastRowCursor) - 1, 1)) * (this.getRowItems(rowCursor) - 1)
+        (this.cursor / Math.max(this.getRowItems(lastRowCursor) - 1, 1)) * (this.getRowItems(rowCursor) - 1),
       );
       if (rowCursor === 1 && this.options.length === 0) {
         // Handle empty shop
@@ -784,7 +784,7 @@ class ModifierOption extends Phaser.GameObjects.Container {
     this.itemText.setOrigin(0.5, 0);
     this.itemText.setAlpha(0);
     this.itemText.setTint(
-      this.modifierTypeOption.type?.tier ? getModifierTierTextTint(this.modifierTypeOption.type?.tier) : undefined
+      this.modifierTypeOption.type?.tier ? getModifierTierTextTint(this.modifierTypeOption.type?.tier) : undefined,
     );
     this.add(this.itemText);
 
@@ -850,7 +850,7 @@ class ModifierOption extends Phaser.GameObjects.Container {
               onComplete: () => {
                 this.pb.setTexture(
                   "pb",
-                  this.getPbAtlasKey(-this.modifierTypeOption.upgradeCount + (upgradeIndex + 1))
+                  this.getPbAtlasKey(-this.modifierTypeOption.upgradeCount + (upgradeIndex + 1)),
                 );
                 this.scene.tweens.add({
                   targets: this.pbTint,
@@ -863,7 +863,7 @@ class ModifierOption extends Phaser.GameObjects.Container {
                 });
               },
             });
-          }
+          },
         );
       }
     }

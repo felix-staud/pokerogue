@@ -69,7 +69,6 @@ export interface AudioSettings {
   musicPreference: MusicPreference;
 }
 
-
 export type SettingUiItemOption = {
   value: number | string | boolean;
   label: string;

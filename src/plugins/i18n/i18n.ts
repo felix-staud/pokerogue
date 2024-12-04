@@ -164,7 +164,7 @@ export async function initI18n(): Promise<void> {
   i18next.use(new KoreanPostpositionProcessor());
   await i18next.init({
     fallbackLng: "en",
-    supportedLngs: supportedLanguages.map(lang => lang.key),
+    supportedLngs: supportedLanguages.map((lang) => lang.key),
     backend: {
       loadPath(lng: string, [ns]: string[]) {
         let fileName: string;

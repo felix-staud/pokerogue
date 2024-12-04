@@ -92,7 +92,7 @@ export class SettingsManager {
   updateSetting(
     category: keyof Settings,
     key: keyof GeneralSettings | keyof DisplaySettings | keyof AudioSettings,
-    value: any
+    value: any,
   ) {
     if (!this._settings[category]) {
       this.eventBus.emit(SettingsManager.Event.UpdateFailed, { category, key, value });

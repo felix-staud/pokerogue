@@ -74,7 +74,7 @@ export class SceneBase extends Phaser.Scene {
       this.getCachedUrl(`images/${folder}${filenameRoot}.png`),
       this.getCachedUrl(`images/${folder}${filenameRoot}.json`),
     );
-    if (folder.startsWith("ui")  && settings.display.uiTheme === UiTheme.LEGACY) {
+    if (folder.startsWith("ui") && settings.display.uiTheme === UiTheme.LEGACY) {
       legacyCompatibleImages.push(key);
       folder = folder.replace("ui", "ui/legacy");
       this.load.atlas(

@@ -195,7 +195,7 @@ export class LoadingScene extends SceneBase {
       }
       if (getBiomeHasProps(bt)) {
         for (let p = 1; p <= 3; p++) {
-          const isPropAnimated = p === 3 && [ "power_plant", "end" ].find((b) => b === btKey);
+          const isPropAnimated = p === 3 && ["power_plant", "end"].find((b) => b === btKey);
           const propKey = `${btKey}_b_${p}`;
           if (!isPropAnimated) {
             this.loadImage(propKey, "arenas");
@@ -353,13 +353,11 @@ export class LoadingScene extends SceneBase {
     this.loadBgm("evolution_fanfare", "bw/evolution_fanfare.mp3");
 
     this.load.plugin(
-      
       "rextexteditplugin",
-     
+
       "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rextexteditplugin.min.js",
-     
-      true
-    ,
+
+      true,
     );
 
     this.loadLoadingScreen();
@@ -455,25 +453,23 @@ export class LoadingScene extends SceneBase {
     disclaimerDescriptionText.setOrigin(0.5, 0.5);
 
     loadingGraphics.push(
-      
       bg,
-     
+
       graphics,
-     
+
       progressBar,
-     
+
       progressBox,
-     
+
       logo,
-     
+
       percentText,
-     
+
       assetText,
-     
+
       disclaimerText,
-     
-      disclaimerDescriptionText
-    ,
+
+      disclaimerDescriptionText,
     );
 
     if (!mobile) {

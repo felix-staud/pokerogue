@@ -220,26 +220,26 @@ export class UiInputs {
 
   buttonSpeedChange(up = true): void {
     const { gameSpeed } = settings.general;
-    const optionIndex = gameSpeedOptions.findIndex(n => n === gameSpeed);
+    const optionIndex = gameSpeedOptions.findIndex((n) => n === gameSpeed);
 
     if (up && optionIndex < gameSpeedOptions.length - 1) {
       settingsManager.updateSetting("general", "gameSpeed", gameSpeedOptions[optionIndex + 1]);
       // this.scene.gameData.saveSetting(
-        SettingKeys.Game_Speed,
-        Setting[settingGameSpeed].options.findIndex((item) => item.label === `${this.scene.gameSpeed}x`) + 1,
-      );
+      // SettingKeys.Game_Speed,
+      // Setting[settingGameSpeed].options.findIndex((item) => item.label === `${this.scene.gameSpeed}x`) + 1,
+      // );
       // if (this.scene.ui?.getMode() === Mode.SETTINGS) {
       //   (this.scene.ui.getHandler() as SettingsUiHandler).show([]);
       // }
     } else if (!up && optionIndex > 0) {
       settingsManager.updateSetting("general", "gameSpeed", gameSpeedOptions[optionIndex - 1]);
       // this.scene.gameData.saveSetting(
-        SettingKeys.Game_Speed,
-        Math.max(
-          Setting[settingGameSpeed].options.findIndex((item) => item.label === `${this.scene.gameSpeed}x`) - 1,
-          0,
-        ),
-      );
+      //   SettingKeys.Game_Speed,
+      //   Math.max(
+      //     Setting[settingGameSpeed].options.findIndex((item) => item.label === `${this.scene.gameSpeed}x`) - 1,
+      //     0,
+      //   ),
+      // );
       // if (this.scene.ui?.getMode() === Mode.SETTINGS) {
       //   (this.scene.ui.getHandler() as SettingsUiHandler).show([]);
       // }

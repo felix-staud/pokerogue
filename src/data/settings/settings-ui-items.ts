@@ -1,4 +1,10 @@
-import type { AudioSettings, DisplaySettings, GeneralSettings, SettingsUiItem, SettingUiItemOption } from "#app/@types/Settings";
+import type {
+  AudioSettings,
+  DisplaySettings,
+  GeneralSettings,
+  SettingsUiItem,
+  SettingUiItemOption,
+} from "#app/@types/Settings";
 import { BattleStyle } from "#app/enums/battle-style";
 import { CandyUpgradeDisplayMode } from "#app/enums/candy-upgrade-display";
 import { CandyUpgradeNotificationMode } from "#app/enums/candy-upgrade-notification-mode";
@@ -21,7 +27,7 @@ import { t } from "i18next";
 
 function useBoolOptions(
   trueI18nKey: string = "settings:off",
-  falseI18nKey: string = "settings:on"
+  falseI18nKey: string = "settings:on",
 ): SettingUiItemOption[] {
   return [
     { value: true, label: t(trueI18nKey) },
@@ -40,7 +46,7 @@ function useVolumeOptions(): SettingUiItemOption[] {
 
 //#region Constants
 
-export const gameSpeedOptions: number[] = [ 1, 1.25, 1.5, 2, 2.5, 3, 4, 5 ];
+export const gameSpeedOptions: number[] = [1, 1.25, 1.5, 2, 2.5, 3, 4, 5];
 
 //#endregion
 
@@ -156,14 +162,14 @@ export function useDisplaySettingsUiItems(language: string = "en"): SettingsUiIt
     {
       key: "windowType",
       label: t("settings:windowType"),
-      options: Array.from({ length: 5 }).map((_, i) => ({ value: i + 1, label: `${i + 1}` }))
+      options: Array.from({ length: 5 }).map((_, i) => ({ value: i + 1, label: `${i + 1}` })),
     },
     {
       key: "moneyFormat",
       label: t("settings:moneyFormat"),
       options: [
         { value: MoneyFormat.NORMAL, label: t("settings:normal") },
-        { value: MoneyFormat.ABBREVIATED, label: t("settings:abbreviated") }
+        { value: MoneyFormat.ABBREVIATED, label: t("settings:abbreviated") },
       ],
     },
     {
@@ -172,7 +178,7 @@ export function useDisplaySettingsUiItems(language: string = "en"): SettingsUiIt
       options: [
         { value: DamageNumbersMode.OFF, label: t("settings:off") },
         { value: DamageNumbersMode.SIMPLE, label: t("settings:simple") },
-        { value: DamageNumbersMode.FANCY, label: t("settings:fancy") }
+        { value: DamageNumbersMode.FANCY, label: t("settings:fancy") },
       ],
     },
     {
@@ -191,17 +197,17 @@ export function useDisplaySettingsUiItems(language: string = "en"): SettingsUiIt
       options: [
         { value: CandyUpgradeNotificationMode.OFF, label: t("settings:off") },
         { value: CandyUpgradeNotificationMode.PASSIVES_ONLY, label: t("settings:passivesOnly") },
-        { value: CandyUpgradeNotificationMode.ON, label: t("settings:on") }
-      ]
+        { value: CandyUpgradeNotificationMode.ON, label: t("settings:on") },
+      ],
     },
     {
       key: "candyUpgradeDisplayMode",
       label: t("settings:candyUpgradeDisplay"),
       options: [
         { value: CandyUpgradeDisplayMode.ICON, label: t("settings:icon") },
-        { value: CandyUpgradeDisplayMode.ANIMATION, label: t("settings:animation") }
+        { value: CandyUpgradeDisplayMode.ANIMATION, label: t("settings:animation") },
       ],
-      requireReload: true
+      requireReload: true,
     },
     {
       key: "enableMoveInfo",
@@ -228,7 +234,7 @@ export function useDisplaySettingsUiItems(language: string = "en"): SettingsUiIt
       label: t("settings:timeOfDayAnimation"),
       options: [
         { value: EaseType.BOUNCE, label: t("settings:bounce") },
-        { value: EaseType.BACK, label: t("settings:timeOfDay_back") }
+        { value: EaseType.BACK, label: t("settings:timeOfDay_back") },
       ],
     },
     {
@@ -236,9 +242,9 @@ export function useDisplaySettingsUiItems(language: string = "en"): SettingsUiIt
       label: t("settings:spriteSet"),
       options: [
         { value: SpriteSet.CONSISTENT, label: t("settings:consistent") },
-        { value: SpriteSet.MIXED, label: t("settings:mixedAnimated") }
+        { value: SpriteSet.MIXED, label: t("settings:mixedAnimated") },
       ],
-      requireReload: true
+      requireReload: true,
     },
     {
       key: "enableFusionPaletteSwaps",
@@ -251,7 +257,7 @@ export function useDisplaySettingsUiItems(language: string = "en"): SettingsUiIt
       options: [
         { value: PlayerGender.MALE, label: t("settings:boy") },
         { value: PlayerGender.FEMALE, label: t("settings:girl") },
-      ]
+      ],
     },
     {
       key: "enableTypeHints",
@@ -270,7 +276,7 @@ export function useDisplaySettingsUiItems(language: string = "en"): SettingsUiIt
         { value: ShopCursorTarget.REWARDS, label: t("settings:rewards") },
         { value: ShopCursorTarget.SHOP, label: t("settings:shop") },
         { value: ShopCursorTarget.REROLL, label: t("settings:reroll") },
-        { value: ShopCursorTarget.CHECK_TEAM, label: t("settings:checkTeam") }
+        { value: ShopCursorTarget.CHECK_TEAM, label: t("settings:checkTeam") },
       ],
     },
     {
@@ -278,10 +284,10 @@ export function useDisplaySettingsUiItems(language: string = "en"): SettingsUiIt
       label: t("settings:shopOverlayOpacity"),
       options: Array.from({ length: 9 }).map((_, i) => ({
         value: Number((i * 0.1).toFixed(1)),
-        label: `${(i + 1) * 10}`
+        label: `${(i + 1) * 10}`,
       })),
-      requireReload: false
-    }
+      requireReload: false,
+    },
     // TODO:
   ];
 }
