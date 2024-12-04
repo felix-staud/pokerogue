@@ -70,6 +70,7 @@ import { BASE_HIDDEN_ABILITY_CHANCE, BASE_SHINY_CHANCE, SHINY_EPIC_CHANCE, SHINY
 import { Nature } from "#enums/nature";
 import { StatusEffect } from "#enums/status-effect";
 import { doShinySparkleAnim } from "#app/field/anims";
+import { settingsManager } from "#app/managers/settings-manager";
 
 export enum LearnMoveSituation {
   MISC,
@@ -3320,6 +3321,8 @@ export default abstract class Pokemon extends Phaser.GameObjects.Container {
   }
 
   cry(soundConfig?: Phaser.Types.Sound.SoundConfig, sceneOverride?: BattleScene): AnySound {
+    const { effectiveFieldVolume } = settingsManager;
+
     const scene = sceneOverride || this.scene;
     const cry = this.getSpeciesForm().cry(scene, soundConfig);
     let duration = cry.totalDuration * 1000;
@@ -3331,7 +3334,7 @@ export default abstract class Pokemon extends Phaser.GameObjects.Container {
         try {
           SoundFade.fadeOut(scene, cry, Utils.fixedInt(Math.ceil(duration * 0.2)));
           fusionCry = this.getFusionSpeciesForm().cry(scene, Object.assign({ seek: Math.max(fusionCry.totalDuration * 0.4, 0) }, soundConfig));
-          SoundFade.fadeIn(scene, fusionCry, Utils.fixedInt(Math.ceil(duration * 0.2)), scene.masterVolume * scene.fieldVolume, 0);
+          SoundFade.fadeIn(scene, fusionCry, Utils.fixedInt(Math.ceil(duration * 0.2)), effectiveFieldVolume, 0);
         } catch (err) {
           console.error(err);
         }
@@ -3346,10 +3349,12 @@ export default abstract class Pokemon extends Phaser.GameObjects.Container {
       return this.fusionFaintCry(callback);
     }
 
+    const { effectiveFieldVolume } = settingsManager;
+
     const key = this.species.getCryKey(this.formIndex);
     let rate = 0.85;
     const cry = this.scene.playSound(key, { rate: rate }) as AnySound;
-    if (!cry || this.scene.fieldVolume === 0) {
+    if (!cry || effectiveFieldVolume === 0) {
       return callback();
     }
     const sprite = this.getSprite();
@@ -3404,6 +3409,8 @@ export default abstract class Pokemon extends Phaser.GameObjects.Container {
   }
 
   private fusionFaintCry(callback: Function): void {
+    const { effectiveFieldVolume } = settingsManager;
+
     const key = this.species.getCryKey(this.formIndex);
     let i = 0;
     let rate = 0.85;
@@ -3414,7 +3421,7 @@ export default abstract class Pokemon extends Phaser.GameObjects.Container {
 
     const fusionCryKey = this.fusionSpecies!.getCryKey(this.fusionFormIndex);
     let fusionCry = this.scene.playSound(fusionCryKey, { rate: rate }) as AnySound;
-    if (!cry || !fusionCry || this.scene.fieldVolume === 0) {
+    if (!cry || !fusionCry || effectiveFieldVolume === 0) {
       return callback();
     }
     fusionCry.stop();
@@ -3460,7 +3467,7 @@ export default abstract class Pokemon extends Phaser.GameObjects.Container {
         if (i === transitionIndex && fusionCryKey) {
           SoundFade.fadeOut(this.scene, cry, Utils.fixedInt(Math.ceil((duration / rate) * 0.2)));
           fusionCry = this.scene.playSound(fusionCryKey, Object.assign({ seek: Math.max(fusionCry.totalDuration * 0.4, 0), rate: rate }));
-          SoundFade.fadeIn(this.scene, fusionCry, Utils.fixedInt(Math.ceil((duration / rate) * 0.2)), this.scene.masterVolume * this.scene.fieldVolume, 0);
+          SoundFade.fadeIn(this.scene, fusionCry, Utils.fixedInt(Math.ceil((duration / rate) * 0.2)), effectiveFieldVolume, 0);
         }
         rate *= 0.99;
         if (cry && !cry.pendingRemove) {

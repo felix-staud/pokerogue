@@ -7,6 +7,7 @@ import UiHandler from "./ui-handler";
 import { addWindow } from "./ui-theme";
 import { Button } from "#enums/buttons";
 import { CommandPhase } from "#app/phases/command-phase";
+import { settings } from "#app/managers/settings-manager";
 
 export default class BallUiHandler extends UiHandler {
   private pokeballSelectContainer: Phaser.GameObjects.Container;
@@ -22,9 +23,10 @@ export default class BallUiHandler extends UiHandler {
   }
 
   setup() {
+    const { uiTheme } = settings.display;
     const ui = this.getUi();
 
-    this.scale = getTextStyleOptions(TextStyle.WINDOW, this.scene.uiTheme).scale;
+    this.scale = getTextStyleOptions(TextStyle.WINDOW, uiTheme).scale;
 
     let optionsTextContent = "";
 

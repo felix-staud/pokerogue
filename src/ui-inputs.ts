@@ -1,17 +1,17 @@
-import Phaser from "phaser";
-import { Mode } from "./ui/ui";
-import { InputsController } from "./inputs-controller";
-import MessageUiHandler from "./ui/message-ui-handler";
-import StarterSelectUiHandler from "./ui/starter-select-ui-handler";
-import { Setting, SettingKeys, settingIndex } from "./system/settings/settings";
-import SettingsUiHandler from "./ui/settings/settings-ui-handler";
-import { Button } from "#enums/buttons";
-import SettingsGamepadUiHandler from "./ui/settings/settings-gamepad-ui-handler";
 import SettingsKeyboardUiHandler from "#app/ui/settings/settings-keyboard-ui-handler";
+import { Button } from "#enums/buttons";
+import Phaser from "phaser";
 import BattleScene from "./battle-scene";
-import SettingsDisplayUiHandler from "./ui/settings/settings-display-ui-handler";
-import SettingsAudioUiHandler from "./ui/settings/settings-audio-ui-handler";
+import { InputsController } from "./inputs-controller";
+import { gameSpeedOptions, settings, settingsManager } from "./managers/settings-manager";
+import MessageUiHandler from "./ui/message-ui-handler";
 import RunInfoUiHandler from "./ui/run-info-ui-handler";
+import SettingsAudioUiHandler from "./ui/settings/settings-audio-ui-handler";
+import SettingsDisplayUiHandler from "./ui/settings/settings-display-ui-handler";
+import SettingsGamepadUiHandler from "./ui/settings/settings-gamepad-ui-handler";
+import SettingsUiHandler from "./ui/settings/settings-ui-handler";
+import StarterSelectUiHandler from "./ui/starter-select-ui-handler";
+import { Mode } from "./ui/ui";
 
 type ActionKeys = Record<Button, () => void>;
 
@@ -202,17 +202,21 @@ export class UiInputs {
   }
 
   buttonSpeedChange(up = true): void {
-    const settingGameSpeed = settingIndex(SettingKeys.Game_Speed);
-    if (up && this.scene.gameSpeed < 5) {
-      this.scene.gameData.saveSetting(SettingKeys.Game_Speed, Setting[settingGameSpeed].options.findIndex((item) => item.label === `${this.scene.gameSpeed}x`) + 1);
-      if (this.scene.ui?.getMode() === Mode.SETTINGS) {
-        (this.scene.ui.getHandler() as SettingsUiHandler).show([]);
-      }
-    } else if (!up && this.scene.gameSpeed > 1) {
-      this.scene.gameData.saveSetting(SettingKeys.Game_Speed, Math.max(Setting[settingGameSpeed].options.findIndex((item) => item.label === `${this.scene.gameSpeed}x`) - 1, 0));
-      if (this.scene.ui?.getMode() === Mode.SETTINGS) {
-        (this.scene.ui.getHandler() as SettingsUiHandler).show([]);
-      }
+    const { gameSpeed } = settings.general;
+    const optionIndex = gameSpeedOptions.findIndex(n => n === gameSpeed);
+
+    if (up && optionIndex < gameSpeedOptions.length - 1) {
+      settingsManager.updateSetting("general", "gameSpeed", gameSpeedOptions[optionIndex + 1]);
+      // this.scene.gameData.saveSetting(SettingKeys.Game_Speed, Setting[settingGameSpeed].options.findIndex((item) => item.label === `${this.scene.gameSpeed}x`) + 1);
+      // if (this.scene.ui?.getMode() === Mode.SETTINGS) {
+      //   (this.scene.ui.getHandler() as SettingsUiHandler).show([]);
+      // }
+    } else if (!up && optionIndex > 0) {
+      settingsManager.updateSetting("general", "gameSpeed", gameSpeedOptions[optionIndex - 1]);
+      // this.scene.gameData.saveSetting(SettingKeys.Game_Speed, Math.max(Setting[settingGameSpeed].options.findIndex((item) => item.label === `${this.scene.gameSpeed}x`) - 1, 0));
+      // if (this.scene.ui?.getMode() === Mode.SETTINGS) {
+      //   (this.scene.ui.getHandler() as SettingsUiHandler).show([]);
+      // }
     }
   }
 

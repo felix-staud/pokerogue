@@ -5,6 +5,7 @@ import { getMoveTargets } from "#app/data/move";
 import { EnemyPokemon, PlayerPokemon } from "#app/field/pokemon";
 import Trainer from "#app/field/trainer";
 import { GameModes, getGameMode } from "#app/game-mode";
+import { settingsManager } from "#app/managers/settings-manager";
 import { ModifierTypeOption, modifierTypes } from "#app/modifier/modifier-type";
 import overrides from "#app/overrides";
 import { CheckSwitchPhase } from "#app/phases/check-switch-phase";
@@ -147,7 +148,8 @@ export default class GameManager {
     this.phaseInterceptor.pop();
     await this.phaseInterceptor.run(TitlePhase);
 
-    this.scene.gameSpeed = 5;
+    settingsManager.updateSetting("general", "gameSpeed", 5);
+    // this.scene.gameSpeed = 5;
     this.scene.moveAnimations = false;
     this.scene.showLevelUpStats = false;
     this.scene.expGainsSpeed = ExpGainsSpeed.SKIP;
@@ -156,7 +158,8 @@ export default class GameManager {
     this.scene.enableTutorials = false;
     this.scene.gameData.gender = PlayerGender.MALE; // set initial player gender
     this.scene.battleStyle = this.settings.battleStyle;
-    this.scene.fieldVolume = 0;
+    settingsManager.updateSetting("audio", "fieldVolume", 0);
+    // this.scene.fieldVolume = 0;
   }
 
   /**

@@ -1,20 +1,20 @@
-import SoundFade from "phaser3-rex-plugins/plugins/soundfade";
+import { settings } from "#app/managers/settings-manager";
 import FadeIn from "phaser3-rex-plugins/plugins/audio/fade/FadeIn";
 import FadeOut from "phaser3-rex-plugins/plugins/audio/fade/FadeOut";
-import BattleScene from "../battle-scene";
+import SoundFade from "phaser3-rex-plugins/plugins/soundfade";
 import * as Utils from "../utils";
 
 type FadeIn = typeof FadeIn;
 type FadeOut = typeof FadeOut;
 
 export function initGameSpeed() {
-  const thisArg = this as BattleScene;
+  const { gameSpeed } = settings.general;
 
   const transformValue = (value: number | Utils.FixedInt): number => {
     if (value instanceof Utils.FixedInt) {
       return (value as Utils.FixedInt).value;
     }
-    return thisArg.gameSpeed === 1 ? value : Math.ceil(value /= thisArg.gameSpeed);
+    return gameSpeed === 1 ? value : Math.ceil(value /= gameSpeed);
   };
 
   const originalAddEvent = this.time.addEvent;

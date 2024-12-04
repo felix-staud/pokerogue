@@ -3,6 +3,7 @@ import { Mode } from "../ui";
 "#app/inputs-controller";
 import AbstractSettingsUiHandler from "./abstract-settings-ui-handler";
 import { SettingType } from "#app/system/settings/settings";
+import { audioSettingsUiItems } from "#app/managers/settings-manager";
 
 export default class SettingsAudioUiHandler extends AbstractSettingsUiHandler {
   /**
@@ -12,7 +13,7 @@ export default class SettingsAudioUiHandler extends AbstractSettingsUiHandler {
    * @param mode - The UI mode, optional.
    */
   constructor(scene: BattleScene, mode: Mode | null = null) {
-    super(scene, SettingType.AUDIO, mode);
+    super(scene, SettingType.AUDIO, mode, audioSettingsUiItems);
     this.title = "Audio";
     this.localStorageKey = "settings";
     this.rowsToDisplay = 6;

@@ -13,6 +13,7 @@ import BattleFlyout from "./battle-flyout";
 import { WindowVariant, addWindow } from "./ui-theme";
 import i18next from "i18next";
 import { ExpGainsSpeed } from "#app/enums/exp-gains-speed";
+import { settings } from "#app/managers/settings-manager";
 
 export default class BattleInfo extends Phaser.GameObjects.Container {
   public static readonly EXP_GAINS_DURATION_BASE = 1650;
@@ -92,6 +93,8 @@ export default class BattleInfo extends Phaser.GameObjects.Container {
     this.lastExp = -1;
     this.lastLevelExp = -1;
     this.lastLevel = -1;
+
+    const { uiTheme } = settings.display;
 
     // Initially invisible and shown via Pokemon.showInfo
     this.setVisible(false);
@@ -184,7 +187,7 @@ export default class BattleInfo extends Phaser.GameObjects.Container {
 
     this.hpBarSegmentDividers = [];
 
-    this.levelNumbersContainer = this.scene.add.container(9.5, (this.scene as BattleScene).uiTheme ? 0 : -0.5);
+    this.levelNumbersContainer = this.scene.add.container(9.5, uiTheme ? 0 : -0.5);
     this.levelNumbersContainer.setName("container_level");
     this.levelContainer.add(this.levelNumbersContainer);
 
@@ -496,12 +499,13 @@ export default class BattleInfo extends Phaser.GameObjects.Container {
   }
 
   updateBossSegmentDividers(pokemon: EnemyPokemon): void {
+    const { uiTheme } = settings.display;
+
     while (this.hpBarSegmentDividers.length) {
       this.hpBarSegmentDividers.pop()?.destroy();
     }
 
     if (this.boss && this.bossSegments > 1) {
-      const uiTheme = (this.scene as BattleScene).uiTheme;
       const maxHp = pokemon.getMaxHp();
       for (let s = 1; s < this.bossSegments; s++) {
         const dividerX = (Math.round((maxHp / this.bossSegments) * s) /  maxHp) * this.hpBar.width;

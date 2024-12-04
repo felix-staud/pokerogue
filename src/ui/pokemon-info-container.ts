@@ -13,6 +13,7 @@ import { StatsContainer } from "./stats-container";
 import { TextStyle, addBBCodeTextObject, addTextObject, getTextColor } from "./text";
 import { addWindow } from "./ui-theme";
 import { Species } from "#enums/species";
+import { settings } from "#app/managers/settings-manager";
 
 interface LanguageSetting {
   infoContainerTextSize: string;
@@ -192,6 +193,8 @@ export default class PokemonInfoContainer extends Phaser.GameObjects.Container {
   }
 
   show(pokemon: Pokemon, showMoves: boolean = false, speedMultiplier: number = 1, dexEntry?: DexEntry, starterEntry?: StarterDataEntry, eggInfo = false): Promise<void> {
+    const { uiTheme } = settings.display;
+
     return new Promise<void>(resolve => {
       if (!dexEntry) {
         dexEntry = pokemon.scene.gameData.dexData[pokemon.species.speciesId];
@@ -209,8 +212,8 @@ export default class PokemonInfoContainer extends Phaser.GameObjects.Container {
 
         const newGender = BigInt(1 << pokemon.gender) * DexAttr.MALE;
         this.pokemonGenderNewText.setText("(+)");
-        this.pokemonGenderNewText.setColor(getTextColor(TextStyle.SUMMARY_BLUE, false, this.scene.uiTheme));
-        this.pokemonGenderNewText.setShadowColor(getTextColor(TextStyle.SUMMARY_BLUE, true, this.scene.uiTheme));
+        this.pokemonGenderNewText.setColor(getTextColor(TextStyle.SUMMARY_BLUE, false, uiTheme));
+        this.pokemonGenderNewText.setShadowColor(getTextColor(TextStyle.SUMMARY_BLUE, true, uiTheme));
         this.pokemonGenderNewText.setVisible((newGender & caughtAttr) === BigInt(0));
       } else {
         this.pokemonGenderNewText.setVisible(false);
@@ -241,11 +244,11 @@ export default class PokemonInfoContainer extends Phaser.GameObjects.Container {
         const newForm = BigInt(1 << pokemon.formIndex) * DexAttr.DEFAULT_FORM;
 
         if ((newForm & caughtAttr) === BigInt(0)) {
-          this.pokemonFormLabelText.setColor(getTextColor(TextStyle.SUMMARY_BLUE, false, this.scene.uiTheme));
-          this.pokemonFormLabelText.setShadowColor(getTextColor(TextStyle.SUMMARY_BLUE, true, this.scene.uiTheme));
+          this.pokemonFormLabelText.setColor(getTextColor(TextStyle.SUMMARY_BLUE, false, uiTheme));
+          this.pokemonFormLabelText.setShadowColor(getTextColor(TextStyle.SUMMARY_BLUE, true, uiTheme));
         } else {
-          this.pokemonFormLabelText.setColor(getTextColor(TextStyle.WINDOW, false, this.scene.uiTheme));
-          this.pokemonFormLabelText.setShadowColor(getTextColor(TextStyle.WINDOW, true, this.scene.uiTheme));
+          this.pokemonFormLabelText.setColor(getTextColor(TextStyle.WINDOW, false, uiTheme));
+          this.pokemonFormLabelText.setShadowColor(getTextColor(TextStyle.WINDOW, true, uiTheme));
         }
 
         this.pokemonFormText.setText(formName.length > this.numCharsBeforeCutoff ? formName.substring(0, this.numCharsBeforeCutoff - 3) + "..." : formName);
@@ -264,31 +267,31 @@ export default class PokemonInfoContainer extends Phaser.GameObjects.Container {
 
       const abilityTextStyle = pokemon.abilityIndex === 2 ? TextStyle.MONEY : TextStyle.WINDOW;
       this.pokemonAbilityText.setText(pokemon.getAbility(true).name);
-      this.pokemonAbilityText.setColor(getTextColor(abilityTextStyle, false, this.scene.uiTheme));
-      this.pokemonAbilityText.setShadowColor(getTextColor(abilityTextStyle, true, this.scene.uiTheme));
+      this.pokemonAbilityText.setColor(getTextColor(abilityTextStyle, false, uiTheme));
+      this.pokemonAbilityText.setShadowColor(getTextColor(abilityTextStyle, true, uiTheme));
 
       // Check if the player owns ability for the root form
       const playerOwnsThisAbility = pokemon.checkIfPlayerHasAbilityOfStarter(starterEntry.abilityAttr);
 
       if (!playerOwnsThisAbility) {
-        this.pokemonAbilityLabelText.setColor(getTextColor(TextStyle.SUMMARY_BLUE, false, this.scene.uiTheme));
-        this.pokemonAbilityLabelText.setShadowColor(getTextColor(TextStyle.SUMMARY_BLUE, true, this.scene.uiTheme));
+        this.pokemonAbilityLabelText.setColor(getTextColor(TextStyle.SUMMARY_BLUE, false, uiTheme));
+        this.pokemonAbilityLabelText.setShadowColor(getTextColor(TextStyle.SUMMARY_BLUE, true, uiTheme));
       } else {
-        this.pokemonAbilityLabelText.setColor(getTextColor(TextStyle.WINDOW, false, this.scene.uiTheme));
-        this.pokemonAbilityLabelText.setShadowColor(getTextColor(TextStyle.WINDOW, true, this.scene.uiTheme));
+        this.pokemonAbilityLabelText.setColor(getTextColor(TextStyle.WINDOW, false, uiTheme));
+        this.pokemonAbilityLabelText.setShadowColor(getTextColor(TextStyle.WINDOW, true, uiTheme));
       }
 
-      this.pokemonNatureText.setText(getNatureName(pokemon.getNature(), true, false, false, this.scene.uiTheme));
+      this.pokemonNatureText.setText(getNatureName(pokemon.getNature(), true, false, false, uiTheme));
 
       const dexNatures = dexEntry.natureAttr;
       const newNature = 1 << (pokemon.nature + 1);
 
       if (!(dexNatures & newNature)) {
-        this.pokemonNatureLabelText.setColor(getTextColor(TextStyle.SUMMARY_BLUE, false, this.scene.uiTheme));
-        this.pokemonNatureLabelText.setShadowColor(getTextColor(TextStyle.SUMMARY_BLUE, true, this.scene.uiTheme));
+        this.pokemonNatureLabelText.setColor(getTextColor(TextStyle.SUMMARY_BLUE, false, uiTheme));
+        this.pokemonNatureLabelText.setShadowColor(getTextColor(TextStyle.SUMMARY_BLUE, true, uiTheme));
       } else {
-        this.pokemonNatureLabelText.setColor(getTextColor(TextStyle.WINDOW, false, this.scene.uiTheme));
-        this.pokemonNatureLabelText.setShadowColor(getTextColor(TextStyle.WINDOW, true, this.scene.uiTheme));
+        this.pokemonNatureLabelText.setColor(getTextColor(TextStyle.WINDOW, false, uiTheme));
+        this.pokemonNatureLabelText.setShadowColor(getTextColor(TextStyle.WINDOW, true, uiTheme));
       }
 
       const isFusion = pokemon.isFusion();
@@ -309,15 +312,15 @@ export default class PokemonInfoContainer extends Phaser.GameObjects.Container {
         const newVariant = BigInt(1 << (pokemon.variant + 4));
 
         this.pokemonShinyNewIcon.setText("(+)");
-        this.pokemonShinyNewIcon.setColor(getTextColor(TextStyle.SUMMARY_BLUE, false, this.scene.uiTheme));
-        this.pokemonShinyNewIcon.setShadowColor(getTextColor(TextStyle.SUMMARY_BLUE, true, this.scene.uiTheme));
+        this.pokemonShinyNewIcon.setColor(getTextColor(TextStyle.SUMMARY_BLUE, false, uiTheme));
+        this.pokemonShinyNewIcon.setShadowColor(getTextColor(TextStyle.SUMMARY_BLUE, true, uiTheme));
         const newShinyOrVariant = ((newShiny & caughtAttr) === BigInt(0)) || ((newVariant & caughtAttr) === BigInt(0));
         this.pokemonShinyNewIcon.setVisible(!!newShinyOrVariant);
       } else if ((caughtAttr & DexAttr.NON_SHINY) === BigInt(0) && ((caughtAttr & DexAttr.SHINY) === DexAttr.SHINY)) { //If the player has *only* caught any shiny variant of this species, not a non-shiny
         this.pokemonShinyNewIcon.setVisible(true);
         this.pokemonShinyNewIcon.setText("(+)");
-        this.pokemonShinyNewIcon.setColor(getTextColor(TextStyle.SUMMARY_BLUE, false, this.scene.uiTheme));
-        this.pokemonShinyNewIcon.setShadowColor(getTextColor(TextStyle.SUMMARY_BLUE, true, this.scene.uiTheme));
+        this.pokemonShinyNewIcon.setColor(getTextColor(TextStyle.SUMMARY_BLUE, false, uiTheme));
+        this.pokemonShinyNewIcon.setShadowColor(getTextColor(TextStyle.SUMMARY_BLUE, true, uiTheme));
       } else {
         this.pokemonShinyNewIcon.setVisible(false);
       }

@@ -10,6 +10,7 @@ import { speciesStarterCosts } from "#app/data/balance/starters";
 import { Button } from "#enums/buttons";
 import i18next from "i18next";
 import { UiTheme } from "#enums/ui-theme";
+import { settings } from "#app/managers/settings-manager";
 
 interface DisplayStat {
   label_key?: string;
@@ -274,8 +275,9 @@ export default class GameStatsUiHandler extends UiHandler {
     this.gameStatsContainer.add(statsBgRight);
     this.gameStatsContainer.add(this.statsContainer);
 
+    const { uiTheme } = settings.display;
     // arrows to show that we can scroll through the stats
-    const isLegacyTheme = this.scene.uiTheme === UiTheme.LEGACY;
+    const isLegacyTheme = uiTheme === UiTheme.LEGACY;
     this.arrowDown = this.scene.add.sprite(statsBgWidth, this.scene.game.canvas.height / 6 - (isLegacyTheme ? 9 : 5), "prompt");
     this.gameStatsContainer.add(this.arrowDown);
     this.arrowUp = this.scene.add.sprite(statsBgWidth, headerBg.height + (isLegacyTheme ? 7 : 3), "prompt");
@@ -292,13 +294,15 @@ export default class GameStatsUiHandler extends UiHandler {
   show(args: any[]): boolean {
     super.show(args);
 
+    const { uiTheme } = settings.display;
+
     this.setCursor(0);
 
     this.updateStats();
 
     this.arrowUp.play("prompt");
     this.arrowDown.play("prompt");
-    if (this.scene.uiTheme === UiTheme.LEGACY) {
+    if (uiTheme === UiTheme.LEGACY) {
       this.arrowUp.setTint(0x484848);
       this.arrowDown.setTint(0x484848);
     }

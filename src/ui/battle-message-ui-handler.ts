@@ -7,6 +7,7 @@ import BBCodeText from "phaser3-rex-plugins/plugins/bbcodetext";
 import { Button } from "#enums/buttons";
 import i18next from "i18next";
 import { Stat, PERMANENT_STATS, getStatKey } from "#app/enums/stat";
+import { settings } from "#app/managers/settings-manager";
 
 export default class BattleMessageUiHandler extends MessageUiHandler {
   private levelUpStatsContainer: Phaser.GameObjects.Container;
@@ -226,9 +227,9 @@ export default class BattleMessageUiHandler extends MessageUiHandler {
   }
 
   getIvDescriptor(value: integer, typeIv: integer, pokemonId: integer): string {
+    const { uiTheme } = settings.display;
     const starterSpecies = this.scene.getPokemonById(pokemonId)!.species.getRootSpeciesId(); // we are using getRootSpeciesId() here because we want to check against the baby form, not the mid form if it exists
     const starterIvs: number[] = this.scene.gameData.dexData[starterSpecies].ivs;
-    const uiTheme = (this.scene as BattleScene).uiTheme; // Assuming uiTheme is accessible
 
     // Function to wrap text in color based on comparison
     const coloredText = (text: string, isBetter: boolean, ivValue) => {

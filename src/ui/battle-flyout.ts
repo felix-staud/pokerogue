@@ -8,6 +8,7 @@ import { BerryType } from "#enums/berry-type";
 import { Moves } from "#enums/moves";
 import { UiTheme } from "#enums/ui-theme";
 import { getPokemonNameWithAffix } from "#app/messages";
+import { settings } from "#app/managers/settings-manager";
 
 /** Container for info about a {@linkcode Move} */
 interface MoveInfo {
@@ -101,8 +102,9 @@ export default class BattleFlyout extends Phaser.GameObjects.Container {
 
     this.flyoutContainer.add(this.flyoutText);
 
+    const { uiTheme } = settings.display;
     this.flyoutContainer.add(
-      new Phaser.GameObjects.Rectangle(this.scene, this.flyoutWidth / 2, 0, 1, this.flyoutHeight + (this.battleScene.uiTheme === UiTheme.LEGACY ? 1 : 0), 0x212121).setOrigin(0.5, 0));
+      new Phaser.GameObjects.Rectangle(this.scene, this.flyoutWidth / 2, 0, 1, this.flyoutHeight + (uiTheme === UiTheme.LEGACY ? 1 : 0), 0x212121).setOrigin(0.5, 0));
     this.flyoutContainer.add(
       new Phaser.GameObjects.Rectangle(this.scene, 0, this.flyoutHeight / 2, this.flyoutWidth + 6, 1, 0x212121).setOrigin(0, 0.5));
   }

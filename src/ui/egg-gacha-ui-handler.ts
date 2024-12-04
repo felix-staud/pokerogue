@@ -13,6 +13,7 @@ import Overrides from "#app/overrides";
 import { GachaType } from "#app/enums/gacha-types";
 import i18next from "i18next";
 import { EggTier } from "#enums/egg-type";
+import { settings } from "#app/managers/settings-manager";
 
 export default class EggGachaUiHandler extends MessageUiHandler {
   private eggGachaContainer: Phaser.GameObjects.Container;
@@ -52,8 +53,9 @@ export default class EggGachaUiHandler extends MessageUiHandler {
   }
 
   setup() {
+    const { uiTheme } = settings.display;
     this.gachaCursor = 0;
-    this.scale = getTextStyleOptions(TextStyle.WINDOW, this.scene.uiTheme).scale;
+    this.scale = getTextStyleOptions(TextStyle.WINDOW, uiTheme).scale;
 
     const ui = this.getUi();
 

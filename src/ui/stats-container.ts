@@ -3,6 +3,7 @@ import BattleScene from "../battle-scene";
 import { TextStyle, addBBCodeTextObject, addTextObject, getTextColor } from "./text";
 import { PERMANENT_STATS, getStatKey } from "#app/enums/stat";
 import i18next from "i18next";
+import { settings } from "#app/managers/settings-manager";
 
 
 const ivChartSize = 24;
@@ -76,10 +77,12 @@ export class StatsContainer extends Phaser.GameObjects.Container {
   }
 
   updateIvs(ivs: integer[], originalIvs?: integer[]): void {
+    const { uiTheme } = settings.display;
+
     if (ivs) {
       const ivChartData = new Array(6).fill(null).map((_, i) => [ (ivs[ivChartStatIndexes[i]] / 31) * ivChartSize * ivChartStatCoordMultipliers[ivChartStatIndexes[i]][0], (ivs[ivChartStatIndexes[i]] / 31) * ivChartSize * ivChartStatCoordMultipliers[ivChartStatIndexes[i]][1] ] ).flat();
       const lastIvChartData = this.statsIvsCache || defaultIvChartData;
-      const perfectIVColor: string = getTextColor(TextStyle.SUMMARY_GOLD, false, (this.scene as BattleScene).uiTheme);
+      const perfectIVColor: string = getTextColor(TextStyle.SUMMARY_GOLD, false, uiTheme);
       this.statsIvsCache = ivChartData.slice(0);
 
       this.ivStatValueTexts.map((t: BBCodeText, i: integer) => {
@@ -93,7 +96,7 @@ export class StatsContainer extends Phaser.GameObjects.Container {
         }
         if (this.showDiff && originalIvs) {
           if (originalIvs[i] < ivs[i]) {
-            label += ` ([color=${getTextColor(TextStyle.SUMMARY_BLUE, false, (this.scene as BattleScene).uiTheme)}][shadow=${getTextColor(TextStyle.SUMMARY_BLUE, true, (this.scene as BattleScene).uiTheme)}]+${ivs[i] - originalIvs[i]}[/shadow][/color])`;
+            label += ` ([color=${getTextColor(TextStyle.SUMMARY_BLUE, false, uiTheme)}][shadow=${getTextColor(TextStyle.SUMMARY_BLUE, true, uiTheme)}]+${ivs[i] - originalIvs[i]}[/shadow][/color])`;
           } else {
             label += " (-)";
           }

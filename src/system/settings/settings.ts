@@ -10,7 +10,6 @@ import { MoneyFormat } from "#enums/money-format";
 import { PlayerGender } from "#enums/player-gender";
 import { getIsInitialized, initI18n } from "#app/plugins/i18n";
 import { ShopCursorTarget } from "#app/enums/shop-cursor-target";
-import { settingsManager } from "#app/managers/SettingsManager";
 import { MusicPreference } from "#app/enums/music-preference";
 
 function getTranslation(key: string): string {
@@ -718,38 +717,38 @@ export function setSetting(scene: BattleScene, setting: string, value: integer):
     return false;
   }
   switch (Setting[index].key) {
-    case SettingKeys.Game_Speed:
-      scene.gameSpeed = parseFloat(Setting[index].options[value].value.replace("x", ""));
-      break;
-    case SettingKeys.Master_Volume:
-      scene.masterVolume = value ? parseInt(Setting[index].options[value].value) * 0.01 : 0;
-      scene.updateSoundVolume();
-      break;
-    case SettingKeys.BGM_Volume:
-      settingsManager.updateSetting("audio", "bgmVolume", value ? parseInt(Setting[index].options[value].value) * 0.01 : 0);
-      scene.updateSoundVolume();
-      break;
-    case SettingKeys.Field_Volume:
-      settingsManager.updateSetting("audio", "fieldVolume", value ? parseInt(Setting[index].options[value].value) * 0.01 : 0);
-      // scene.fieldVolume = value ? parseInt(Setting[index].options[value].value) * 0.01 : 0;
-      scene.updateSoundVolume();
-      break;
-    case SettingKeys.SE_Volume:
-      scene.seVolume = value ? parseInt(Setting[index].options[value].value) * 0.01 : 0;
-      scene.updateSoundVolume();
-      break;
-    case SettingKeys.UI_Volume:
-      scene.uiVolume = value ? parseInt(Setting[index].options[value].value) * 0.01 : 0;
-      break;
+    // case SettingKeys.Game_Speed:
+    //   scene.gameSpeed = parseFloat(Setting[index].options[value].value.replace("x", ""));
+    //   break;
+    // case SettingKeys.Master_Volume:
+    //   scene.masterVolume = value ? parseInt(Setting[index].options[value].value) * 0.01 : 0;
+    //   scene.updateSoundVolume();
+    // break;
+    // case SettingKeys.BGM_Volume:
+    //   settingsManager.updateSetting("audio", "bgmVolume", value ? parseInt(Setting[index].options[value].value) * 0.01 : 0);
+    //   scene.updateSoundVolume();
+    //   break;
+    // case SettingKeys.Field_Volume:
+    //   settingsManager.updateSetting("audio", "fieldVolume", value ? parseInt(Setting[index].options[value].value) * 0.01 : 0);
+    //   scene.fieldVolume = value ? parseInt(Setting[index].options[value].value) * 0.01 : 0;
+    //   scene.updateSoundVolume();
+    //   break;
+    // case SettingKeys.SE_Volume:
+    //   scene.seVolume = value ? parseInt(Setting[index].options[value].value) * 0.01 : 0;
+    //   scene.updateSoundVolume();
+    //   break;
+    // case SettingKeys.UI_Volume:
+    //   scene.uiVolume = value ? parseInt(Setting[index].options[value].value) * 0.01 : 0;
+    //   break;
     case SettingKeys.Music_Preference:
       scene.musicPreference = value;
       break;
     case SettingKeys.Damage_Numbers:
       scene.damageNumbersMode = value;
       break;
-    case SettingKeys.UI_Theme:
-      scene.uiTheme = value;
-      break;
+    // case SettingKeys.UI_Theme:
+    //   scene.uiTheme = value;
+    //   break;
     case SettingKeys.Window_Type:
       updateWindowType(scene, parseInt(Setting[index].options[value].value));
       break;

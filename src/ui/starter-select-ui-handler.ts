@@ -51,6 +51,7 @@ import { getPassiveCandyCount, getValueReductionCandyCounts, getSameSpeciesEggCa
 import { BooleanHolder, capitalizeString, fixedInt, getLocalizedSpriteKey, isNullOrUndefined, NumberHolder, padInt, randIntRange, rgbHexToRgba, toReadableString } from "#app/utils";
 import type { Nature } from "#enums/nature";
 import { PLAYER_PARTY_MAX_SIZE } from "#app/constants";
+import { settings } from "#app/managers/settings-manager";
 
 export type StarterSelectCallback = (starters: Starter[]) => void;
 
@@ -501,7 +502,9 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
     // Offset the generation filter dropdown to avoid covering the filtered pokemon
     this.filterBar.offsetHybridFilters();
 
-    if (!this.scene.uiTheme) {
+    const { uiTheme } = settings.display;
+
+    if (!uiTheme) {
       starterContainerWindow.setVisible(false);
     }
 
@@ -1264,6 +1267,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
       return false;
     }
 
+    const { uiTheme } = settings.display;
     const maxColumns = 9;
     const maxRows = 9;
     const numberOfStarters = this.filteredStarterContainers.length;
@@ -1607,7 +1611,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
                   ui.setModeWithoutClear(Mode.OPTION_SELECT, {
                     options: natures.map((n: Nature, i: number) => {
                       const option: OptionSelectItem = {
-                        label: getNatureName(n, true, true, true, this.scene.uiTheme),
+                        label: getNatureName(n, true, true, true, uiTheme),
                         handler: () => {
                           // update default nature in starter save data
                           if (!starterAttributes) {
@@ -3238,7 +3242,8 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
           this.scene.ui.hideTooltip();
         }
 
-        this.pokemonNatureText.setText(getNatureName(natureIndex as unknown as Nature, true, true, false, this.scene.uiTheme));
+        const { uiTheme } = settings.display;
+        this.pokemonNatureText.setText(getNatureName(natureIndex as unknown as Nature, true, true, false, uiTheme));
 
         let levelMoves: LevelMoves;
         if (pokemonFormLevelMoves.hasOwnProperty(species.speciesId) && formIndex && pokemonFormLevelMoves[species.speciesId].hasOwnProperty(formIndex)) {

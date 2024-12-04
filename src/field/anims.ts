@@ -2,6 +2,7 @@ import BattleScene from "#app/battle-scene";
 import { PokeballType } from "#enums/pokeball";
 import { Variant } from "#app/data/variant";
 import { getFrameMs, randGauss } from "#app/utils";
+import { settings } from "#app/managers/settings-manager";
 
 export function addPokeballOpenParticles(scene: BattleScene, x: number, y: number, pokeballType: PokeballType): void {
   switch (pokeballType) {
@@ -35,6 +36,8 @@ function doDefaultPbOpenParticles(scene: BattleScene, x: number, y: number, radi
   }
 
   const addParticle = (index: integer) => {
+    const { gameSpeed } = settings.general;
+
     const particle = scene.add.sprite(x, y, "pb_open_particle");
     scene.field.add(particle);
     const angle = index * 45;
@@ -48,7 +51,7 @@ function doDefaultPbOpenParticles(scene: BattleScene, x: number, y: number, radi
     particle.play({
       key: "pb_open_particle",
       startFrame: (index + 3) % 4,
-      frameRate: Math.floor(16 * scene.gameSpeed)
+      frameRate: Math.floor(16 * gameSpeed)
     });
     scene.tweens.add({
       targets: particle,

@@ -26,6 +26,7 @@ import { PlayerGender } from "#enums/player-gender";
 import { SettingKeyboard } from "#app/system/settings/settings-keyboard";
 import { getBiomeName } from "#app/data/balance/biomes";
 import { MysteryEncounterType } from "#enums/mystery-encounter-type";
+import { settings } from "#app/managers/settings-manager";
 
 /**
  * RunInfoUiMode indicates possible overlays of RunInfoUiHandler.
@@ -478,6 +479,7 @@ export default class RunInfoUiHandler extends UiHandler {
    * @param windowY These two params are the coordinates of the window's bottom right corner. This is used to dynamically position Luck based on its length, creating a nice layout regardless of language / luck value.
    */
   private async parseRunInfo(windowX: number, windowY: number) {
+    const { uiTheme } = settings.display;
     // Parsing and displaying the mode.
     // In the future, parsing Challenges + Challenge Rules may have to be reworked as PokeRogue adds additional challenges and users can stack these challenges in various ways.
     const modeText = addBBCodeTextObject(this.scene, 7, 0, "", TextStyle.WINDOW, { fontSize : "50px", lineSpacing:3 });
@@ -527,7 +529,7 @@ export default class RunInfoUiHandler extends UiHandler {
     const runTime = Utils.getPlayTimeString(this.runInfo.playTime);
     runInfoText.appendText(`${i18next.t("runHistory:runLength")}: ${runTime}`, false);
     const runMoney = Utils.formatMoney(this.scene.moneyFormat, this.runInfo.money);
-    const moneyTextColor = getTextColor(TextStyle.MONEY_WINDOW, false, this.scene.uiTheme);
+    const moneyTextColor = getTextColor(TextStyle.MONEY_WINDOW, false, uiTheme);
     runInfoText.appendText(`[color=${moneyTextColor}]${i18next.t("battleScene:moneyOwned", { formattedMoney : runMoney })}[/color]`);
     runInfoText.setPosition(7, 70);
     runInfoTextContainer.add(runInfoText);

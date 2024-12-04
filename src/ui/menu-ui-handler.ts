@@ -15,6 +15,7 @@ import AwaitableUiHandler from "./awaitable-ui-handler";
 import { SelectModifierPhase } from "#app/phases/select-modifier-phase";
 import { AdminMode, getAdminModeName } from "./admin-ui-handler";
 import { pokerogueApi } from "#app/plugins/api/pokerogue-api";
+import { settings } from "#app/managers/settings-manager";
 
 enum MenuOptions {
   GAME_SETTINGS,
@@ -123,7 +124,8 @@ export default class MenuUiHandler extends MessageUiHandler {
     this.optionSelectText = addTextObject(this.scene, 0, 0, this.menuOptions.map(o => `${i18next.t(`menuUiHandler:${MenuOptions[o]}`)}`).join("\n"), TextStyle.WINDOW, { maxLines: this.menuOptions.length });
     this.optionSelectText.setLineSpacing(12);
 
-    this.scale = getTextStyleOptions(TextStyle.WINDOW, (this.scene as BattleScene).uiTheme).scale;
+    const { uiTheme } = settings.display;
+    this.scale = getTextStyleOptions(TextStyle.WINDOW, uiTheme).scale;
     this.menuBg = addWindow(this.scene,
       (this.scene.game.canvas.width / 6) - (this.optionSelectText.displayWidth + 25),
       0,

@@ -6,6 +6,7 @@ import { addWindow } from "./ui-theme";
 import * as Utils from "../utils";
 import { argbFromRgba } from "@material/material-color-utilities";
 import { Button } from "#enums/buttons";
+import { settings } from "#app/managers/settings-manager";
 
 export interface OptionSelectConfig {
   xOffset?: number;
@@ -57,6 +58,7 @@ export default abstract class AbstractOptionSelectUiHandler extends UiHandler {
   }
 
   setup() {
+    const { uiTheme } = settings.display;
     const ui = this.getUi();
 
     this.optionSelectContainer = this.scene.add.container((this.scene.game.canvas.width / 6) - 1, -48);
@@ -71,7 +73,7 @@ export default abstract class AbstractOptionSelectUiHandler extends UiHandler {
 
     this.optionSelectIcons = [];
 
-    this.scale = getTextStyleOptions(TextStyle.WINDOW, (this.scene as BattleScene).uiTheme).scale;
+    this.scale = getTextStyleOptions(TextStyle.WINDOW, uiTheme).scale;
 
     this.setCursor(0);
   }

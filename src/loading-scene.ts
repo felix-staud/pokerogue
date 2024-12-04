@@ -1,25 +1,27 @@
-import { GachaType } from "#enums/gacha-types";
+import { initAbilities } from "#app/data/ability";
+import { initBiomes } from "#app/data/balance/biomes";
+import { initEggMoves } from "#app/data/balance/egg-moves";
+import { initPokemonPrevolutions } from "#app/data/balance/pokemon-evolutions";
+import { initChallenges } from "#app/data/challenge";
+import { initTrainerTypeDialogue } from "#app/data/dialogue";
+import { initMoves } from "#app/data/move";
+import { initMysteryEncounters } from "#app/data/mystery-encounters/mystery-encounters";
+import { initPokemonForms } from "#app/data/pokemon-forms";
+import { initSpecies } from "#app/data/pokemon-species";
 import { getBiomeHasProps } from "#app/field/arena";
 import CacheBustedLoaderPlugin from "#app/plugins/cache-busted-loader-plugin";
 import { SceneBase } from "#app/scene-base";
-import { WindowVariant, getWindowVariantSuffix } from "#app/ui/ui-theme";
-import { isMobile } from "#app/touch-controls";
-import * as Utils from "#app/utils";
-import { initPokemonPrevolutions } from "#app/data/balance/pokemon-evolutions";
-import { initBiomes } from "#app/data/balance/biomes";
-import { initEggMoves } from "#app/data/balance/egg-moves";
-import { initPokemonForms } from "#app/data/pokemon-forms";
-import { initSpecies } from "#app/data/pokemon-species";
-import { initMoves } from "#app/data/move";
-import { initAbilities } from "#app/data/ability";
 import { initAchievements } from "#app/system/achv";
-import { initTrainerTypeDialogue } from "#app/data/dialogue";
-import { initChallenges } from "#app/data/challenge";
-import i18next from "i18next";
-import { initStatsKeys } from "#app/ui/game-stats-ui-handler";
 import { initVouchers } from "#app/system/voucher";
+import { isMobile } from "#app/touch-controls";
+import { initStatsKeys } from "#app/ui/game-stats-ui-handler";
+import { WindowVariant, getWindowVariantSuffix } from "#app/ui/ui-theme";
+import * as Utils from "#app/utils";
 import { Biome } from "#enums/biome";
-import { initMysteryEncounters } from "#app/data/mystery-encounters/mystery-encounters";
+import { GachaType } from "#enums/gacha-types";
+import i18next from "i18next";
+import { UiTheme } from "./enums/ui-theme";
+import { settings } from "./managers/settings-manager";
 
 export class LoadingScene extends SceneBase {
   public static readonly KEY = "loading";
@@ -33,6 +35,7 @@ export class LoadingScene extends SceneBase {
   }
 
   preload() {
+    console.log("Loading scene |  UI THEME: ", UiTheme[settings.display.uiTheme]);
     Utils.localPing();
     this.load["manifest"] = this.game["manifest"];
 
@@ -134,10 +137,10 @@ export class LoadingScene extends SceneBase {
     this.loadImage("summary_bg", "ui");
     this.loadImage("summary_overlay_shiny", "ui");
     this.loadImage("summary_profile", "ui");
-    this.loadImage("summary_profile_prompt_z", "ui");      // The pixel Z button prompt
-    this.loadImage("summary_profile_prompt_a", "ui");     // The pixel A button prompt
-    this.loadImage("summary_profile_ability", "ui");      // Pixel text 'ABILITY'
-    this.loadImage("summary_profile_passive", "ui");      // Pixel text 'PASSIVE'
+    this.loadImage("summary_profile_prompt_z", "ui"); // The pixel Z button prompt
+    this.loadImage("summary_profile_prompt_a", "ui"); // The pixel A button prompt
+    this.loadImage("summary_profile_ability", "ui"); // Pixel text 'ABILITY'
+    this.loadImage("summary_profile_passive", "ui"); // Pixel text 'PASSIVE'
     this.loadImage("summary_status", "ui");
     this.loadImage("summary_stats", "ui");
     this.loadImage("summary_stats_overlay_exp", "ui");
@@ -170,7 +173,7 @@ export class LoadingScene extends SceneBase {
 
     this.loadImage("default_bg", "arenas");
     // Load arena images
-    Utils.getEnumValues(Biome).map(bt => {
+    Utils.getEnumValues(Biome).map((bt) => {
       const btKey = Biome[bt].toLowerCase();
       const isBaseAnimated = btKey === "end";
       const baseAKey = `${btKey}_a`;
@@ -188,7 +191,7 @@ export class LoadingScene extends SceneBase {
       }
       if (getBiomeHasProps(bt)) {
         for (let p = 1; p <= 3; p++) {
-          const isPropAnimated = p === 3 && [ "power_plant", "end" ].find(b => b === btKey);
+          const isPropAnimated = p === 3 && [ "power_plant", "end" ].find((b) => b === btKey);
           const propKey = `${btKey}_b_${p}`;
           if (!isPropAnimated) {
             this.loadImage(propKey, "arenas");
@@ -259,7 +262,7 @@ export class LoadingScene extends SceneBase {
     this.loadAtlas("egg_icons", "egg");
     this.loadAtlas("egg_shard", "egg");
     this.loadAtlas("egg_lightrays", "egg");
-    Utils.getEnumKeys(GachaType).forEach(gt => {
+    Utils.getEnumKeys(GachaType).forEach((gt) => {
       const key = gt.toLowerCase();
       this.loadImage(`gacha_${key}`, "egg");
       this.loadAtlas(`gacha_underlay_${key}`, "egg");
@@ -345,7 +348,11 @@ export class LoadingScene extends SceneBase {
     this.loadBgm("evolution", "bw/evolution.mp3");
     this.loadBgm("evolution_fanfare", "bw/evolution_fanfare.mp3");
 
-    this.load.plugin("rextexteditplugin", "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rextexteditplugin.min.js", true);
+    this.load.plugin(
+      "rextexteditplugin",
+      "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rextexteditplugin.min.js",
+      true
+    );
 
     this.loadLoadingScreen();
 
@@ -434,15 +441,25 @@ export class LoadingScene extends SceneBase {
       style: {
         font: "48px emerald",
         color: "#ffffff",
-        align: "center"
+        align: "center",
       },
     });
     disclaimerDescriptionText.setOrigin(0.5, 0.5);
 
-    loadingGraphics.push(bg, graphics, progressBar, progressBox, logo, percentText, assetText, disclaimerText, disclaimerDescriptionText);
+    loadingGraphics.push(
+      bg,
+      graphics,
+      progressBar,
+      progressBox,
+      logo,
+      percentText,
+      assetText,
+      disclaimerText,
+      disclaimerDescriptionText
+    );
 
     if (!mobile) {
-      loadingGraphics.map(g => g.setVisible(false));
+      loadingGraphics.map((g) => g.setVisible(false));
     }
 
     const intro = this.add.video(0, 0);
@@ -454,7 +471,7 @@ export class LoadingScene extends SceneBase {
         ease: "Sine.easeIn",
         onComplete: () => video.destroy(),
       });
-      loadingGraphics.forEach(g => g.setVisible(true));
+      loadingGraphics.forEach((g) => g.setVisible(true));
     });
     intro.setOrigin(0, 0);
     intro.setScale(3);
@@ -495,7 +512,7 @@ export class LoadingScene extends SceneBase {
     });
 
     this.load.on(this.LOAD_EVENTS.COMPLETE, () => {
-      loadingGraphics.forEach(go => go.destroy());
+      loadingGraphics.forEach((go) => go.destroy());
       intro.destroy();
     });
   }

@@ -7,6 +7,7 @@ import { getTextColor, TextStyle } from "#app/ui/text";
 import { Mode } from "#app/ui/ui";
 import i18next from "i18next";
 import { PokemonPhase } from "./pokemon-phase";
+import { settings } from "#app/managers/settings-manager";
 
 export class ScanIvsPhase extends PokemonPhase {
   private shownIvs: integer;
@@ -24,13 +25,13 @@ export class ScanIvsPhase extends PokemonPhase {
       return this.end();
     }
 
+    const { uiTheme } = settings.display;
     const pokemon = this.getPokemon();
 
     let enemyIvs: number[] = [];
     let statsContainer: Phaser.GameObjects.Sprite[] = [];
     let statsContainerLabels: Phaser.GameObjects.Sprite[] = [];
     const enemyField = this.scene.getEnemyField();
-    const uiTheme = (this.scene as BattleScene).uiTheme; // Assuming uiTheme is accessible
     for (let e = 0; e < enemyField.length; e++) {
       enemyIvs = enemyField[e].ivs;
       const currentIvs = this.scene.gameData.dexData[enemyField[e].species.getRootSpeciesId()].ivs;  // we are using getRootSpeciesId() here because we want to check against the baby form, not the mid form if it exists

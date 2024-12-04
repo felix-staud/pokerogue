@@ -8,6 +8,7 @@ import i18next from "i18next";
 import { TimedEventDisplay } from "#app/timed-event-manager";
 import { version } from "../../package.json";
 import { pokerogueApi } from "#app/plugins/api/pokerogue-api";
+import { settings } from "#app/managers/settings-manager";
 
 export default class TitleUiHandler extends OptionSelectUiHandler {
   /** If the stats can not be retrieved, use this fallback value */
@@ -29,6 +30,7 @@ export default class TitleUiHandler extends OptionSelectUiHandler {
   setup() {
     super.setup();
 
+    const { uiTheme } = settings.display;
     const ui = this.getUi();
 
     this.titleContainer = this.scene.add.container(0, -(this.scene.game.canvas.height / 6));
@@ -49,7 +51,7 @@ export default class TitleUiHandler extends OptionSelectUiHandler {
     this.playerCountLabel = addTextObject(
       this.scene,
       (this.scene.game.canvas.width / 6) - 2,
-      (this.scene.game.canvas.height / 6) - 13 - 576 * getTextStyleOptions(TextStyle.WINDOW, this.scene.uiTheme).scale,
+      (this.scene.game.canvas.height / 6) - 13 - 576 * getTextStyleOptions(TextStyle.WINDOW, uiTheme).scale,
       `? ${i18next.t("menu:playersOnline")}`,
       TextStyle.MESSAGE,
       { fontSize: "54px" }

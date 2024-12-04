@@ -1,3 +1,6 @@
+import { UiTheme } from "./enums/ui-theme";
+import { settings } from "./managers/settings-manager";
+
 export const legacyCompatibleImages: string[] = [];
 
 export class SceneBase extends Phaser.Scene {
@@ -34,7 +37,7 @@ export class SceneBase extends Phaser.Scene {
       filename = `${key}.png`;
     }
     this.load.image(key, this.getCachedUrl(`images/${folder}/${filename}`));
-    if (folder.startsWith("ui")) {
+    if (folder.startsWith("ui") && settings.display.uiTheme === UiTheme.LEGACY) {
       legacyCompatibleImages.push(key);
       folder = folder.replace("ui", "ui/legacy");
       this.load.image(`${key}_legacy`, this.getCachedUrl(`images/${folder}/${filename}`));
@@ -46,7 +49,7 @@ export class SceneBase extends Phaser.Scene {
       filename = `${key}.png`;
     }
     this.load.spritesheet(key, this.getCachedUrl(`images/${folder}/${filename}`), { frameWidth: size, frameHeight: size });
-    if (folder.startsWith("ui")) {
+    if (folder.startsWith("ui") && settings.display.uiTheme === UiTheme.LEGACY) {
       legacyCompatibleImages.push(key);
       folder = folder.replace("ui", "ui/legacy");
       this.load.spritesheet(`${key}_legacy`, this.getCachedUrl(`images/${folder}/${filename}`), { frameWidth: size, frameHeight: size });
@@ -61,7 +64,7 @@ export class SceneBase extends Phaser.Scene {
       folder += "/";
     }
     this.load.atlas(key, this.getCachedUrl(`images/${folder}${filenameRoot}.png`), this.getCachedUrl(`images/${folder}${filenameRoot}.json`));
-    if (folder.startsWith("ui")) {
+    if (folder.startsWith("ui")  && settings.display.uiTheme === UiTheme.LEGACY) {
       legacyCompatibleImages.push(key);
       folder = folder.replace("ui", "ui/legacy");
       this.load.atlas(`${key}_legacy`, this.getCachedUrl(`images/${folder}${filenameRoot}.png`), this.getCachedUrl(`images/${folder}${filenameRoot}.json`));

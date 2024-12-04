@@ -1,3 +1,4 @@
+import { generalSettingsUiItems } from "#app/managers/settings-manager";
 import BattleScene from "../../battle-scene";
 import { SettingType } from "../../system/settings/settings";
 import { Mode } from "../ui";
@@ -11,7 +12,7 @@ export default class SettingsUiHandler extends AbstractSettingsUiHandler {
    * @param mode - The UI mode, optional.
    */
   constructor(scene: BattleScene, mode: Mode | null = null) {
-    super(scene, SettingType.GENERAL, mode);
+    super(scene, SettingType.GENERAL, mode, generalSettingsUiItems);
     this.title = "General";
     this.localStorageKey = "settings";
   }

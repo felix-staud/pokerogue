@@ -4,6 +4,7 @@ import { StarterContainer } from "./starter-container";
 import { addTextObject, getTextColor, TextStyle } from "./text";
 import { UiTheme } from "#enums/ui-theme";
 import { addWindow, WindowVariant } from "./ui-theme";
+import { settings } from "#app/managers/settings-manager";
 
 export enum DropDownColumn {
   GEN,
@@ -40,7 +41,8 @@ export class FilterBar extends Phaser.GameObjects.Container {
     this.cursorObj.setOrigin(0, 0);
     this.add(this.cursorObj);
 
-    this.uiTheme = scene.uiTheme;
+    const { uiTheme } = settings.display;
+    this.uiTheme = uiTheme; //TODO: why buffer here!?
   }
 
   /**
