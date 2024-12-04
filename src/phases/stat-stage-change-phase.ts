@@ -18,6 +18,7 @@ import { NumberHolder, BooleanHolder } from "#app/utils";
 import i18next from "i18next";
 import { PokemonPhase } from "./pokemon-phase";
 import { Stat, type BattleStat, getStatKey, getStatStageChangeDescriptionKey } from "#enums/stat";
+import { settings } from "#app/data/settings/settings-manager";
 
 export type StatStageChangeCallback = (
   target: Pokemon | null,
@@ -57,6 +58,8 @@ export class StatStageChangePhase extends PokemonPhase {
   }
 
   start() {
+    const { enableMoveAnimations } = settings.display;
+
     // Check if multiple stats are being changed at the same time, then run SSCPhase for each of them
     if (this.stats.length > 1) {
       for (let i = 0; i < this.stats.length; i++) {
@@ -184,7 +187,7 @@ export class StatStageChangePhase extends PokemonPhase {
       handleTutorial(this.scene, Tutorial.Stat_Change).then(() => super.end());
     };
 
-    if (relLevels.filter((l) => l).length && this.scene.moveAnimations) {
+    if (relLevels.filter((l) => l).length && enableMoveAnimations) {
       pokemon.enableMask();
       const pokemonMaskSprite = pokemon.maskSprite;
 

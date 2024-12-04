@@ -1,4 +1,5 @@
 import type BattleScene from "#app/battle-scene";
+import { settings } from "#app/data/settings/settings-manager";
 import { ExpNotification } from "#app/enums/exp-notification";
 import type { PlayerPokemon } from "#app/field/pokemon";
 import { getPokemonNameWithAffix } from "#app/messages";
@@ -24,6 +25,8 @@ export class LevelUpPhase extends PlayerPartyMemberPokemonPhase {
   public override start() {
     super.start();
 
+    const { partyExpNotificationMode } = settings.general;
+
     if (this.level > this.scene.gameData.gameStats.highestLevel) {
       this.scene.gameData.gameStats.highestLevel = this.level;
     }
@@ -33,7 +36,7 @@ export class LevelUpPhase extends PlayerPartyMemberPokemonPhase {
     const prevStats = this.pokemon.stats.slice(0);
     this.pokemon.calculateStats();
     this.pokemon.updateInfo();
-    if (this.scene.expParty === ExpNotification.DEFAULT) {
+    if (partyExpNotificationMode === ExpNotification.DEFAULT) {
       this.scene.playSound("level_up_fanfare");
       this.scene.ui.showText(
         i18next.t("battle:levelUp", { pokemonName: getPokemonNameWithAffix(this.pokemon), level: this.level }),
@@ -46,7 +49,7 @@ export class LevelUpPhase extends PlayerPartyMemberPokemonPhase {
         null,
         true,
       );
-    } else if (this.scene.expParty === ExpNotification.SKIP) {
+    } else if (partyExpNotificationMode === ExpNotification.SKIP) {
       this.end();
     } else {
       // we still want to display the stats if activated

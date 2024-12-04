@@ -4,6 +4,7 @@ import { BattleSpec } from "#enums/battle-spec";
 import { type DamageResult, HitResult } from "#app/field/pokemon";
 import { fixedInt } from "#app/utils";
 import { PokemonPhase } from "#app/phases/pokemon-phase";
+import { settings } from "#app/data/settings/settings-manager";
 
 export class DamageAnimPhase extends PokemonPhase {
   private amount: integer;
@@ -27,8 +28,10 @@ export class DamageAnimPhase extends PokemonPhase {
   start() {
     super.start();
 
+    const { enableMoveAnimations } = settings.display;
+
     if (this.damageResult === HitResult.ONE_HIT_KO) {
-      if (this.scene.moveAnimations) {
+      if (enableMoveAnimations) {
         this.scene.toggleInvert(true);
       }
       this.scene.time.delayedCall(fixedInt(1000), () => {

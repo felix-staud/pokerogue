@@ -16,7 +16,6 @@ import { ExpNotification } from "#app/enums/exp-notification";
 import { HpBarSpeed } from "#app/enums/hp-bar-speed";
 import { MoneyFormat } from "#app/enums/money-format";
 import { MusicPreference } from "#app/enums/music-preference";
-import { PlayerGender } from "#app/enums/player-gender";
 import { ShopCursorTarget } from "#app/enums/shop-cursor-target";
 import { SpriteSet } from "#app/enums/sprite-set";
 import { UiTheme } from "#app/enums/ui-theme";
@@ -80,7 +79,7 @@ export const generalSettingsUiItems: SettingsUiItem<keyof GeneralSettings>[] = [
     ],
   },
   {
-    key: "showExpParty",
+    key: "partyExpNotificationMode",
     label: t("settings:expPartyDisplay"),
     options: [
       { value: ExpNotification.DEFAULT, label: t("settings:normal") },
@@ -182,7 +181,7 @@ export function useDisplaySettingsUiItems(language: string = "en"): SettingsUiIt
       ],
     },
     {
-      key: "moveAnimations",
+      key: "enableMoveAnimations",
       label: t("settings:moveAnimations"),
       options: useBoolOptions(),
     },
@@ -251,14 +250,14 @@ export function useDisplaySettingsUiItems(language: string = "en"): SettingsUiIt
       label: t("settings:fusionPaletteSwaps"),
       options: useBoolOptions(),
     },
-    {
-      key: "playerGender",
-      label: t("settings:playerGender"),
-      options: [
-        { value: PlayerGender.MALE, label: t("settings:boy") },
-        { value: PlayerGender.FEMALE, label: t("settings:girl") },
-      ],
-    },
+    // {
+    //   key: "playerGender",
+    //   label: t("settings:playerGender"),
+    //   options: [
+    //     { value: PlayerGender.MALE, label: t("settings:boy") },
+    //     { value: PlayerGender.FEMALE, label: t("settings:girl") },
+    //   ],
+    // },
     {
       key: "enableTypeHints",
       label: t("settings:typeHints"),

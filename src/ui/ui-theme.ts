@@ -1,7 +1,7 @@
 import { UiTheme } from "#enums/ui-theme";
 import { legacyCompatibleImages } from "#app/scene-base";
 import BattleScene from "../battle-scene";
-import { settings } from "#app/data/settings/settings-manager";
+import { settings, settingsManager } from "#app/data/settings/settings-manager";
 
 export enum WindowVariant {
   NORMAL,
@@ -49,6 +49,8 @@ export function addWindow(
   maskOffsetY?: number,
   windowVariant?: WindowVariant,
 ): Phaser.GameObjects.NineSlice {
+  const { windowType } = settings.display;
+
   if (windowVariant === undefined) {
     windowVariant = WindowVariant.NORMAL;
   }
@@ -60,7 +62,7 @@ export function addWindow(
   const window = scene.add.nineslice(
     x,
     y,
-    `window_${scene.windowType}${getWindowVariantSuffix(windowVariant)}`,
+    `window_${windowType}${getWindowVariantSuffix(windowVariant)}`,
     undefined,
     width,
     height,
@@ -131,7 +133,7 @@ export function updateWindowType(scene: BattleScene, windowTypeIndex: integer): 
 
   traverse(scene);
 
-  scene.windowType = windowTypeIndex;
+  settingsManager.updateSetting("display", "windowType", windowTypeIndex);
 
   const rootStyle = document.documentElement.style;
   ["base", "light", "dark"].map((k, i) =>

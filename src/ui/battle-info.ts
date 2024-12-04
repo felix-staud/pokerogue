@@ -625,6 +625,8 @@ export default class BattleInfo extends Phaser.GameObjects.Container {
   }
 
   updateInfo(pokemon: Pokemon, instant?: boolean): Promise<void> {
+    const { hpBarSpeed } = settings.general;
+
     return new Promise((resolve) => {
       if (!this.scene) {
         return resolve();
@@ -713,9 +715,8 @@ export default class BattleInfo extends Phaser.GameObjects.Container {
 
       const updatePokemonHp = () => {
         let duration = !instant ? Phaser.Math.Clamp(Math.abs(this.lastHp - pokemon.hp) * 5, 250, 5000) : 0;
-        const speed = (this.scene as BattleScene).hpBarSpeed;
-        if (speed) {
-          duration = speed >= 3 ? 0 : duration / Math.pow(2, speed);
+        if (hpBarSpeed) {
+          duration = hpBarSpeed >= 3 ? 0 : duration / Math.pow(2, hpBarSpeed);
         }
         this.scene.tweens.add({
           targets: this.hpBar,
@@ -816,6 +817,8 @@ export default class BattleInfo extends Phaser.GameObjects.Container {
   }
 
   updatePokemonExp(pokemon: Pokemon, instant?: boolean, levelDurationMultiplier: number = 1): Promise<void> {
+    const { expGainsSpeed } = settings.general;
+
     return new Promise((resolve) => {
       const levelUp = this.lastLevel < pokemon.level;
       const relLevelExp = getLevelRelExp(this.lastLevel + 1, pokemon.species.growthRate);
@@ -839,9 +842,8 @@ export default class BattleInfo extends Phaser.GameObjects.Container {
             durationMultiplier *
             levelDurationMultiplier
           : 0;
-      const speed = (this.scene as BattleScene).expGainsSpeed;
-      if (speed && speed >= ExpGainsSpeed.DEFAULT) {
-        duration = speed >= ExpGainsSpeed.SKIP ? ExpGainsSpeed.DEFAULT : duration / Math.pow(2, speed);
+      if (expGainsSpeed && expGainsSpeed >= ExpGainsSpeed.DEFAULT) {
+        duration = expGainsSpeed >= ExpGainsSpeed.SKIP ? ExpGainsSpeed.DEFAULT : duration / Math.pow(2, expGainsSpeed);
       }
       if (ratio === 1) {
         this.lastLevelExp = 0;
@@ -938,9 +940,12 @@ export default class BattleInfo extends Phaser.GameObjects.Container {
     if (this.player) {
       return;
     }
+
+    const { enableTypeHints } = settings.display;
+
     this.currentEffectiveness = effectiveness;
 
-    if (!(this.scene as BattleScene).typeHints || effectiveness === undefined || this.flyoutMenu?.flyoutVisible) {
+    if (!enableTypeHints || effectiveness === undefined || this.flyoutMenu?.flyoutVisible) {
       this.effectivenessContainer.setVisible(false);
       return;
     }

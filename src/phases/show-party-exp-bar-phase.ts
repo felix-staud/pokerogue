@@ -1,4 +1,5 @@
 import BattleScene from "#app/battle-scene";
+import { settings } from "#app/data/settings/settings-manager";
 import { ExpGainsSpeed } from "#app/enums/exp-gains-speed";
 import { ExpNotification } from "#app/enums/exp-notification";
 import { ExpBoosterModifier } from "#app/modifier/modifier";
@@ -19,6 +20,8 @@ export class ShowPartyExpBarPhase extends PlayerPartyMemberPokemonPhase {
   start() {
     super.start();
 
+    const { expGainsSpeed, partyExpNotificationMode } = settings.general;
+
     const pokemon = this.getPokemon();
     const exp = new Utils.NumberHolder(this.expValue);
     this.scene.applyModifiers(ExpBoosterModifier, true, exp);
@@ -33,24 +36,24 @@ export class ShowPartyExpBarPhase extends PlayerPartyMemberPokemonPhase {
     this.scene.unshiftPhase(new HidePartyExpBarPhase(this.scene));
     pokemon.updateInfo();
 
-    if (this.scene.expParty === ExpNotification.SKIP) {
+    if (partyExpNotificationMode === ExpNotification.SKIP) {
       this.end();
-    } else if (this.scene.expParty === ExpNotification.ONLY_LEVEL_UP) {
+    } else if (partyExpNotificationMode === ExpNotification.ONLY_LEVEL_UP) {
       if (newLevel > lastLevel) {
         // this means if we level up
         // instead of displaying the exp gain in the small frame, we display the new level
         // we use the same method for mode 0 & 1, by giving a parameter saying to display the exp or the level
         this.scene.partyExpBar
-          .showPokemonExp(pokemon, exp.value, this.scene.expParty === ExpNotification.ONLY_LEVEL_UP, newLevel)
+          .showPokemonExp(pokemon, exp.value, partyExpNotificationMode === ExpNotification.ONLY_LEVEL_UP, newLevel)
           .then(() => {
-            setTimeout(() => this.end(), 800 / Math.pow(2, this.scene.expGainsSpeed));
+            setTimeout(() => this.end(), 800 / Math.pow(2, expGainsSpeed));
           });
       } else {
         this.end();
       }
-    } else if (this.scene.expGainsSpeed < ExpGainsSpeed.SKIP) {
+    } else if (expGainsSpeed < ExpGainsSpeed.SKIP) {
       this.scene.partyExpBar.showPokemonExp(pokemon, exp.value, false, newLevel).then(() => {
-        setTimeout(() => this.end(), 500 / Math.pow(2, this.scene.expGainsSpeed));
+        setTimeout(() => this.end(), 500 / Math.pow(2, expGainsSpeed));
       });
     } else {
       this.end();

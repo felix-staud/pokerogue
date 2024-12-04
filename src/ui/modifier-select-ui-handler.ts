@@ -180,7 +180,10 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
   }
 
   show(args: any[]): boolean {
-    const { gameSpeed } = settings.general;
+    const {
+      general: { gameSpeed },
+      display: { shopCursorTarget },
+    } = settings;
 
     this.scene.disableMenu = false;
 
@@ -352,14 +355,14 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
       });
 
       const updateCursorTarget = () => {
-        if (this.scene.shopCursorTarget === ShopCursorTarget.CHECK_TEAM) {
+        if (shopCursorTarget === ShopCursorTarget.CHECK_TEAM) {
           this.setRowCursor(0);
           this.setCursor(2);
-        } else if (this.scene.shopCursorTarget === ShopCursorTarget.SHOP && this.scene.gameMode.hasNoShop) {
+        } else if (shopCursorTarget === ShopCursorTarget.SHOP && this.scene.gameMode.hasNoShop) {
           this.setRowCursor(ShopCursorTarget.REWARDS);
           this.setCursor(0);
         } else {
-          this.setRowCursor(this.scene.shopCursorTarget);
+          this.setRowCursor(shopCursorTarget);
           this.setCursor(0);
         }
       };
@@ -635,6 +638,8 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
   }
 
   updateRerollCostText(): void {
+    const { moneyFormat } = settings.display;
+
     const rerollDisabled = this.rerollCost < 0;
     if (rerollDisabled) {
       this.rerollCostText.setVisible(false);
@@ -644,7 +649,7 @@ export default class ModifierSelectUiHandler extends AwaitableUiHandler {
     }
     const canReroll = this.scene.money >= this.rerollCost;
 
-    const formattedMoney = Utils.formatMoney(this.scene.moneyFormat, this.rerollCost);
+    const formattedMoney = Utils.formatMoney(moneyFormat, this.rerollCost);
 
     this.rerollCostText.setText(i18next.t("modifierSelectUiHandler:rerollCost", { formattedMoney }));
     this.rerollCostText.setColor(this.getTextColor(canReroll ? TextStyle.MONEY : TextStyle.PARTY_RED));
@@ -927,12 +932,13 @@ class ModifierOption extends Phaser.GameObjects.Container {
   }
 
   updateCostText(): void {
-    const { uiTheme } = settings.display;
+    const { uiTheme, moneyFormat } = settings.display;
+
     const scene = this.scene as BattleScene;
     const cost = Overrides.WAIVE_ROLL_FEE_OVERRIDE ? 0 : this.modifierTypeOption.cost;
     const textStyle = cost <= scene.money ? TextStyle.MONEY : TextStyle.PARTY_RED;
 
-    const formattedMoney = Utils.formatMoney(scene.moneyFormat, cost);
+    const formattedMoney = Utils.formatMoney(moneyFormat, cost);
 
     this.itemCostText.setText(i18next.t("modifierSelectUiHandler:itemCost", { formattedMoney }));
     this.itemCostText.setColor(getTextColor(textStyle, false, uiTheme));

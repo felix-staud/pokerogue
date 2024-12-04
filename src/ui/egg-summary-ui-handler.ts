@@ -10,6 +10,8 @@ import { EggHatchData } from "#app/data/egg-hatch-data";
 import ScrollableGridUiHandler from "./scrollable-grid-handler";
 import { HatchedPokemonContainer } from "./hatched-pokemon-container";
 import { ScrollBar } from "#app/ui/scroll-bar";
+import { settings } from "#app/data/settings/settings-manager";
+import { EggSkipPreference } from "#app/enums/egg-skip-preference";
 
 const iconContainerX = 112;
 const iconContainerY = 9;
@@ -146,6 +148,9 @@ export default class EggSummaryUiHandler extends MessageUiHandler {
    */
   show(args: EggHatchData[][]): boolean {
     super.show(args);
+
+    const { eggSkipPreference } = settings.general;
+
     if (args.length >= 1) {
       // sort the egg hatch data by egg tier then by species number (then by order hatched)
       this.eggHatchData = args[0].sort(function sortHatchData(a: EggHatchData, b: EggHatchData) {
@@ -181,7 +186,7 @@ export default class EggSummaryUiHandler extends MessageUiHandler {
 
     // Prevent exiting the egg summary for 2 seconds if the egg hatching
     // was skipped automatically and for 1 second otherwise
-    const exitBlockingDuration = this.scene.eggSkipPreference === 2 ? 2000 : 1000;
+    const exitBlockingDuration = eggSkipPreference === EggSkipPreference.ALWAYS ? 2000 : 1000;
     this.blockExit = true;
     this.scene.time.delayedCall(exitBlockingDuration, () => (this.blockExit = false));
 

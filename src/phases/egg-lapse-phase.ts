@@ -9,6 +9,8 @@ import { achvs } from "#app/system/achv";
 import { PlayerPokemon } from "#app/field/pokemon";
 import { EggSummaryPhase } from "./egg-summary-phase";
 import { EggHatchData } from "#app/data/egg-hatch-data";
+import { settings } from "#app/data/settings/settings-manager";
+import { EggSkipPreference } from "#app/enums/egg-skip-preference";
 
 /**
  * Phase that handles updating eggs, and hatching any ready eggs
@@ -23,6 +25,9 @@ export class EggLapsePhase extends Phase {
 
   start() {
     super.start();
+
+    const { eggSkipPreference } = settings.general;
+
     const eggsToHatch: Egg[] = this.scene.gameData.eggs.filter((egg: Egg) => {
       return Overrides.EGG_IMMEDIATE_HATCH_OVERRIDE ? true : --egg.hatchWaves < 1;
     });
@@ -30,7 +35,7 @@ export class EggLapsePhase extends Phase {
     this.eggHatchData = [];
 
     if (eggsToHatchCount > 0) {
-      if (eggsToHatchCount >= this.minEggsToSkip && this.scene.eggSkipPreference === 1) {
+      if (eggsToHatchCount >= this.minEggsToSkip && eggSkipPreference === EggSkipPreference.ASK) {
         this.scene.ui.showText(
           i18next.t("battle:eggHatching"),
           0,
@@ -57,7 +62,7 @@ export class EggLapsePhase extends Phase {
           100,
           true,
         );
-      } else if (eggsToHatchCount >= this.minEggsToSkip && this.scene.eggSkipPreference === 2) {
+      } else if (eggsToHatchCount >= this.minEggsToSkip && eggSkipPreference === EggSkipPreference.ALWAYS) {
         this.scene.queueMessage(i18next.t("battle:eggHatching"));
         this.hatchEggsSkipped(eggsToHatch);
         this.showSummary();

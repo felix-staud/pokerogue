@@ -3,6 +3,7 @@ import MessageUiHandler from "./message-ui-handler";
 import { TextStyle, addTextObject } from "./text";
 import { Mode } from "./ui";
 import { Button } from "#enums/buttons";
+import { settings } from "#app/data/settings/settings-manager";
 
 export default class EvolutionSceneHandler extends MessageUiHandler {
   public evolutionContainer: Phaser.GameObjects.Container;
@@ -16,6 +17,8 @@ export default class EvolutionSceneHandler extends MessageUiHandler {
   }
 
   setup() {
+    const { windowType } = settings.display;
+
     this.canCancel = false;
     this.cancelled = false;
 
@@ -24,7 +27,7 @@ export default class EvolutionSceneHandler extends MessageUiHandler {
     this.evolutionContainer = this.scene.add.container(0, -this.scene.game.canvas.height / 6);
     ui.add(this.evolutionContainer);
 
-    const messageBg = this.scene.add.sprite(0, 0, "bg", this.scene.windowType);
+    const messageBg = this.scene.add.sprite(0, 0, "bg", windowType);
     messageBg.setOrigin(0, 1);
     messageBg.setVisible(false);
     ui.add(messageBg);

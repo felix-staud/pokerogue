@@ -5,7 +5,7 @@ import { getMoveTargets } from "#app/data/move";
 import { EnemyPokemon, PlayerPokemon } from "#app/field/pokemon";
 import Trainer from "#app/field/trainer";
 import { GameModes, getGameMode } from "#app/game-mode";
-import { settingsManager } from "#app/data/settings/settings-manager";
+import { settings, settingsManager } from "#app/data/settings/settings-manager";
 import { ModifierTypeOption, modifierTypes } from "#app/modifier/modifier-type";
 import overrides from "#app/overrides";
 import { CheckSwitchPhase } from "#app/phases/check-switch-phase";
@@ -55,6 +55,7 @@ import TextInterceptor from "#test/utils/TextInterceptor";
 import { AES, enc } from "crypto-js";
 import fs from "fs";
 import { expect, vi } from "vitest";
+import { HpBarSpeed } from "#app/enums/hp-bar-speed";
 
 /**
  * Class to manage the game state and transitions between phases.
@@ -156,14 +157,21 @@ export default class GameManager {
 
     settingsManager.updateSetting("general", "gameSpeed", 5);
     // this.scene.gameSpeed = 5;
-    this.scene.moveAnimations = false;
-    this.scene.showLevelUpStats = false;
-    this.scene.expGainsSpeed = ExpGainsSpeed.SKIP;
-    this.scene.expParty = ExpNotification.SKIP;
-    this.scene.hpBarSpeed = 3;
-    this.scene.enableTutorials = false;
+    settingsManager.updateSetting("display", "enableMoveAnimations", false);
+    // this.scene.moveAnimations = false;
+    settingsManager.updateSetting("display", "showStatsOnLevelUp", false);
+    // this.scene.showLevelUpStats = false;
+    settingsManager.updateSetting("general", "expGainsSpeed", ExpGainsSpeed.SKIP);
+    // this.scene.expGainsSpeed = ExpGainsSpeed.SKIP;
+    settingsManager.updateSetting("general", "partyExpNotificationMode", ExpNotification.SKIP);
+    // this.scene.expParty = ExpNotification.SKIP;
+    settingsManager.updateSetting("general", "hpBarSpeed", HpBarSpeed.SKIP);
+    // this.scene.hpBarSpeed = 3;
+    settingsManager.updateSetting("general", "enableTutorials", false);
+    // this.scene.enableTutorials = false;
     this.scene.gameData.gender = PlayerGender.MALE; // set initial player gender
-    this.scene.battleStyle = this.settings.battleStyle;
+    settingsManager.updateSetting("general", "battleStyle", this.settings.battleStyle);
+    // this.scene.battleStyle = this.settings.battleStyle;
     settingsManager.updateSetting("audio", "fieldVolume", 0);
     // this.scene.fieldVolume = 0;
   }
@@ -250,9 +258,11 @@ export default class GameManager {
    * @returns A promise that resolves when the battle is started.
    */
   async startBattle(species?: Species[]) {
+    const { battleStyle } = settings.general;
+
     await this.classicMode.runToSummon(species);
 
-    if (this.scene.battleStyle === BattleStyle.SWITCH) {
+    if (battleStyle === BattleStyle.SWITCH) {
       this.onNextPrompt(
         "CheckSwitchPhase",
         Mode.CONFIRM,

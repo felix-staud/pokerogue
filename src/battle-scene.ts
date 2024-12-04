@@ -41,10 +41,10 @@ import {
   SpeciesFormChangeTrigger,
 } from "#app/data/pokemon-forms";
 import PokemonSpecies, { allSpecies, getPokemonSpecies, PokemonSpeciesFilter } from "#app/data/pokemon-species";
+import { settings, SettingsManager, settingsManager } from "#app/data/settings/settings-manager";
 import { trainerConfigs, TrainerSlot } from "#app/data/trainer-config";
 import { getTypeRgb } from "#app/data/type";
 import { Variant, variantColorCache, variantData, VariantSet } from "#app/data/variant";
-import { ShopCursorTarget } from "#app/enums/shop-cursor-target";
 import { NewArenaEvent } from "#app/events/battle-scene";
 import { Arena, ArenaBase } from "#app/field/arena";
 import DamageNumberHandler from "#app/field/damage-number-handler";
@@ -114,13 +114,8 @@ import { addUiThemeOverrides } from "#app/ui/ui-theme";
 import * as Utils from "#app/utils";
 import { Constructor, isNullOrUndefined, randSeedInt } from "#app/utils";
 import { BattleSpec } from "#enums/battle-spec";
-import { BattleStyle } from "#enums/battle-style";
 import { BattlerTagType } from "#enums/battler-tag-type";
 import { Biome } from "#enums/biome";
-import { EaseType } from "#enums/ease-type";
-import { ExpGainsSpeed } from "#enums/exp-gains-speed";
-import { ExpNotification } from "#enums/exp-notification";
-import { MoneyFormat } from "#enums/money-format";
 import { Moves } from "#enums/moves";
 import { MysteryEncounterMode } from "#enums/mystery-encounter-mode";
 import { MysteryEncounterTier } from "#enums/mystery-encounter-tier";
@@ -133,14 +128,11 @@ import { Species } from "#enums/species";
 import { StatusEffect } from "#enums/status-effect";
 import { TrainerType } from "#enums/trainer-type";
 import { Type } from "#enums/type";
-import { UiTheme } from "#enums/ui-theme";
 import i18next from "i18next";
 import Phaser from "phaser";
 import SoundFade from "phaser3-rex-plugins/plugins/soundfade";
 import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import { PRSFX_SOUND_ADJUSTMENT_RATIO } from "./constants";
-import { MusicPreference } from "./enums/music-preference";
-import { SettingsManager, settingsManager } from "#app/data/settings/settings-manager";
 import {
   ConsumableModifier,
   ConsumablePokemonModifier,
@@ -163,6 +155,7 @@ import {
   TerastallizeModifier,
   TurnHeldItemTransferModifier,
 } from "./modifier/modifier";
+import { SpriteSet } from "./enums/sprite-set";
 
 export const bypassLogin = import.meta.env.VITE_BYPASS_LOGIN === "1";
 
@@ -201,85 +194,8 @@ export default class BattleScene extends SceneBase {
 
   public sessionPlayTime: integer | null = null;
   public lastSavePlayTime: integer | null = null;
-  // public masterVolume: number = 0.5;
-  // public bgmVolume: number = 1;
-  // public fieldVolume: number = 1;
-  // public seVolume: number = 1;
-  // public uiVolume: number = 1;
-  // public gameSpeed: integer = 1;
-  public damageNumbersMode: integer = 0;
+
   public reroll: boolean = false;
-  public shopCursorTarget: number = ShopCursorTarget.REWARDS;
-  public showMovesetFlyout: boolean = true;
-  public showArenaFlyout: boolean = true;
-  public showTimeOfDayWidget: boolean = true;
-  public timeOfDayAnimation: EaseType = EaseType.NONE;
-  public showLevelUpStats: boolean = true;
-  public enableTutorials: boolean = import.meta.env.VITE_BYPASS_TUTORIAL === "1";
-  public enableMoveInfo: boolean = true;
-  public enableRetries: boolean = false;
-  public hideIvs: boolean = false;
-  /**
-   * Determines the condition for a notification should be shown for Candy Upgrades
-   * - 0 = 'Off'
-   * - 1 = 'Passives Only'
-   * - 2 = 'On'
-   */
-  public candyUpgradeNotification: integer = 0;
-  /**
-   * Determines what type of notification is used for Candy Upgrades
-   * - 0 = 'Icon'
-   * - 1 = 'Animation'
-   */
-  public candyUpgradeDisplay: integer = 0;
-  public moneyFormat: MoneyFormat = MoneyFormat.NORMAL;
-  public uiThemes: UiTheme = UiTheme.DEFAULT;
-  public windowType: integer = 0;
-  public experimentalSprites: boolean = false;
-  public musicPreference: number = MusicPreference.MIXED;
-  public moveAnimations: boolean = true;
-  public expGainsSpeed: ExpGainsSpeed = ExpGainsSpeed.DEFAULT;
-  public skipSeenDialogues: boolean = false;
-  /**
-   * Determines if the egg hatching animation should be skipped
-   * - 0 = Never (never skip animation)
-   * - 1 = Ask (ask to skip animation when hatching 2 or more eggs)
-   * - 2 = Always (automatically skip animation when hatching 2 or more eggs)
-   */
-  public eggSkipPreference: number = 0;
-
-  /**
-   * Defines the experience gain display mode.
-   *
-   * @remarks
-   * The `expParty` can have several modes:
-   * - `0` - Default: The normal experience gain display, nothing changed.
-   * - `1` - Level Up Notification: Displays the level up in the small frame instead of a message.
-   * - `2` - Skip: No level up frame nor message.
-   *
-   * Modes `1` and `2` are still compatible with stats display, level up, new move, etc.
-   * @default 0 - Uses the default normal experience gain display.
-   */
-  public expParty: ExpNotification = 0;
-  public hpBarSpeed: integer = 0;
-  public fusionPaletteSwaps: boolean = true;
-  public enableTouchControls: boolean = false;
-  public enableVibration: boolean = false;
-  public showBgmBar: boolean = true;
-
-  /**
-   * Determines the selected battle style.
-   * - 0 = 'Switch'
-   * - 1 = 'Set' - The option to switch the active pokemon at the start of a battle will not display.
-   */
-  public battleStyle: integer = BattleStyle.SWITCH;
-
-  /**
-   * Defines whether or not to show type effectiveness hints
-   * - true: No hints
-   * - false: Show hints for moves
-   */
-  public typeHints: boolean = false;
 
   public disableMenu: boolean = false;
 
@@ -340,7 +256,6 @@ export default class BattleScene extends SceneBase {
   private fieldOverlay: Phaser.GameObjects.Rectangle;
   private shopOverlay: Phaser.GameObjects.Rectangle;
   private shopOverlayShown: boolean = false;
-  private shopOverlayOpacity: number = 0.8;
 
   public modifiers: PersistentModifier[];
   private enemyModifiers: PersistentModifier[];
@@ -402,12 +317,21 @@ export default class BattleScene extends SceneBase {
       if (["masterVolume", "bgmVolume", "fieldVolume", "soundEffectsVolume"].includes(key)) {
         this.updateSoundVolume();
       }
+
+      if (key === "enableTouchControls") {
+        const touchControls = document.getElementById("touchControls");
+        if (touchControls) {
+          touchControls.classList.toggle("visible", value);
+        }
+      }
     });
   }
 
   loadPokemonAtlas(key: string, atlasPath: string, experimental?: boolean) {
+    const { spriteSet } = settings.display;
+
     if (experimental === undefined) {
-      experimental = this.experimentalSprites;
+      experimental = spriteSet === SpriteSet.MIXED;
     }
     const variant = atlasPath.includes("variant/") || /_[0-3]$/.test(atlasPath);
     if (experimental) {
@@ -427,7 +351,9 @@ export default class BattleScene extends SceneBase {
    * Load the variant assets for the given sprite and stores them in {@linkcode variantColorCache}
    */
   loadPokemonVariantAssets(spriteKey: string, fileRoot: string, variant?: Variant) {
-    const useExpSprite = this.experimentalSprites && this.hasExpSprite(spriteKey);
+    const { spriteSet } = settings.display;
+
+    const useExpSprite = spriteSet === SpriteSet.MIXED && this.hasExpSprite(spriteKey);
     if (useExpSprite) {
       fileRoot = `exp/${fileRoot}`;
     }
@@ -800,12 +726,14 @@ export default class BattleScene extends SceneBase {
   }
 
   async initVariantData(): Promise<void> {
+    const { spriteSet } = settings.display;
+
     Object.keys(variantData).forEach((key) => delete variantData[key]);
     await this.cachedFetch("./images/pokemon/variant/_masterlist.json")
       .then((res) => res.json())
       .then((v) => {
         Object.keys(v).forEach((k) => (variantData[k] = v[k]));
-        if (this.experimentalSprites) {
+        if (spriteSet === SpriteSet.MIXED) {
           const expVariantData = variantData["exp"];
           const traverseVariantData = (keys: string[]) => {
             let variantTree = variantData;
@@ -1940,19 +1868,21 @@ export default class BattleScene extends SceneBase {
   }
 
   updateShopOverlayOpacity(value: number): void {
-    this.shopOverlayOpacity = value;
+    settingsManager.updateSetting("display", "shopOverlayOpacity", value);
 
     if (this.shopOverlayShown) {
-      this.shopOverlay.setAlpha(this.shopOverlayOpacity);
+      this.shopOverlay.setAlpha(value);
     }
   }
 
   showShopOverlay(duration: integer): Promise<void> {
+    const { shopOverlayOpacity } = settings.display;
+
     this.shopOverlayShown = true;
     return new Promise((resolve) => {
       this.tweens.add({
         targets: this.shopOverlay,
-        alpha: this.shopOverlayOpacity,
+        alpha: shopOverlayOpacity,
         ease: "Sine.easeOut",
         duration,
         onComplete: () => resolve(),
@@ -1995,7 +1925,10 @@ export default class BattleScene extends SceneBase {
     if (this.money === undefined) {
       return;
     }
-    const formattedMoney = Utils.formatMoney(this.moneyFormat, this.money);
+
+    const { moneyFormat } = settings.display;
+
+    const formattedMoney = Utils.formatMoney(moneyFormat, this.money);
     this.moneyText.setText(i18next.t("battleScene:moneyOwned", { formattedMoney }));
     this.fieldUI.moveAbove(this.moneyText, this.luckText);
     if (forceVisible) {

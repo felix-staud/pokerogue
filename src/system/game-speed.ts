@@ -9,6 +9,7 @@ type FadeOut = typeof FadeOut;
 
 export function initGameSpeed() {
   const { gameSpeed } = settings.general;
+  console.log("init game speed", gameSpeed);
 
   const transformValue = (value: number | Utils.FixedInt): number => {
     if (value instanceof Utils.FixedInt) {

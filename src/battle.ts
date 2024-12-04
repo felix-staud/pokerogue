@@ -15,6 +15,7 @@ import { Species } from "#enums/species";
 import { SpeciesFormKey } from "#enums/species-form-key";
 import { TrainerType } from "#enums/trainer-type";
 import BattleScene from "./battle-scene";
+import { settings } from "./data/settings/settings-manager";
 import { MusicPreference } from "./enums/music-preference";
 import Trainer, { TrainerVariant } from "./field/trainer";
 import { GameMode } from "./game-mode";
@@ -226,6 +227,8 @@ export default class Battle {
   }
 
   getBgmOverride(scene: BattleScene): string | null {
+    const { musicPreference } = settings.audio;
+
     if (this.isBattleMysteryEncounter() && this.mysteryEncounter?.encounterMode === MysteryEncounterMode.DEFAULT) {
       // Music is overridden for MEs during ME onInit()
       // Should not use any BGM overrides before swapping from DEFAULT mode
@@ -237,7 +240,7 @@ export default class Battle {
       if (!this.started && this.trainer?.config.encounterBgm && this.trainer?.getEncounterMessages()?.length) {
         return `encounter_${this.trainer?.getEncounterBgm()}`;
       }
-      if (scene.musicPreference === MusicPreference.CONSISTENT) {
+      if (musicPreference === MusicPreference.CONSISTENT) {
         return this.trainer?.getBattleBgm() ?? null;
       } else {
         return this.trainer?.getMixedBattleBgm() ?? null;
@@ -254,7 +257,7 @@ export default class Battle {
         return "battle_final_encounter";
       }
       if (pokemon.species.legendary || pokemon.species.subLegendary || pokemon.species.mythical) {
-        if (scene.musicPreference === MusicPreference.CONSISTENT) {
+        if (musicPreference === MusicPreference.CONSISTENT) {
           switch (pokemon.species.speciesId) {
             case Species.REGIROCK:
             case Species.REGICE:
@@ -271,7 +274,7 @@ export default class Battle {
               }
               return "battle_legendary_unova";
           }
-        } else if (scene.musicPreference === MusicPreference.MIXED) {
+        } else if (musicPreference === MusicPreference.MIXED) {
           switch (pokemon.species.speciesId) {
             case Species.ARTICUNO:
             case Species.ZAPDOS:

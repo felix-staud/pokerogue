@@ -11,6 +11,7 @@ import { CommandPhase } from "#app/phases/command-phase";
 import { TurnInitPhase } from "#app/phases/turn-init-phase";
 import { Challenges } from "#enums/challenges";
 import { copyChallenge } from "data/challenge";
+import { settings } from "#app/data/settings/settings-manager";
 
 /**
  * Helper to handle Challenge mode specifics
@@ -61,9 +62,11 @@ export class ChallengeModeHelper extends GameManagerHelper {
    * @returns A promise that resolves when the battle is started.
    */
   async startBattle(species?: Species[]) {
+    const { battleStyle } = settings.general;
+
     await this.runToSummon(species);
 
-    if (this.game.scene.battleStyle === BattleStyle.SWITCH) {
+    if (battleStyle === BattleStyle.SWITCH) {
       this.game.onNextPrompt(
         "CheckSwitchPhase",
         Mode.CONFIRM,

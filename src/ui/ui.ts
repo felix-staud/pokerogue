@@ -53,6 +53,7 @@ import TestDialogueUiHandler from "#app/ui/test-dialogue-ui-handler";
 import AutoCompleteUiHandler from "./autocomplete-ui-handler";
 import { Device } from "#enums/devices";
 import MysteryEncounterUiHandler from "./mystery-encounter-ui-handler";
+import { settings } from "#app/data/settings/settings-manager";
 
 export enum Mode {
   MESSAGE,
@@ -400,10 +401,11 @@ export default class UI extends Phaser.GameObjects.Container {
   }
 
   shouldSkipDialogue(i18nKey: string): boolean {
+    const { skipSeenDialogues } = settings.general;
     const battleScene = this.scene as BattleScene;
 
     if (i18next.exists(i18nKey)) {
-      if (battleScene.skipSeenDialogues && battleScene.gameData.getSeenDialogues()[i18nKey] === true) {
+      if (skipSeenDialogues && battleScene.gameData.getSeenDialogues()[i18nKey] === true) {
         return true;
       }
     }

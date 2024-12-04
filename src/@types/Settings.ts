@@ -1,4 +1,3 @@
-import type { Gender } from "#app/data/gender";
 import type { BattleStyle } from "#app/enums/battle-style";
 import type { CandyUpgradeDisplayMode } from "#app/enums/candy-upgrade-display";
 import type { CandyUpgradeNotificationMode } from "#app/enums/candy-upgrade-notification-mode";
@@ -24,7 +23,7 @@ export interface GeneralSettings {
   gameSpeed: number;
   hpBarSpeed: HpBarSpeed;
   expGainsSpeed: ExpGainsSpeed;
-  showExpParty: ExpNotification;
+  partyExpNotificationMode: ExpNotification;
   skipSeenDialogues: boolean;
   eggSkipPreference: EggSkipPreference;
   battleStyle: BattleStyle;
@@ -42,7 +41,7 @@ export interface DisplaySettings {
   windowType: number;
   moneyFormat: MoneyFormat;
   damageNumbersMode: DamageNumbersMode;
-  moveAnimations: boolean;
+  enableMoveAnimations: boolean;
   showStatsOnLevelUp: boolean;
   candyUpgradeNotificationMode: CandyUpgradeNotificationMode;
   candyUpgradeDisplayMode: CandyUpgradeDisplayMode;
@@ -53,7 +52,7 @@ export interface DisplaySettings {
   timeOfDayAnimation: EaseType;
   spriteSet: SpriteSet;
   enableFusionPaletteSwaps: boolean;
-  playerGender: Gender;
+  // playerGender: Gender;
   enableTypeHints: boolean;
   showBgmBar: boolean;
   shopCursorTarget: ShopCursorTarget;

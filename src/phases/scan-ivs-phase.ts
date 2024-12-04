@@ -25,7 +25,10 @@ export class ScanIvsPhase extends PokemonPhase {
       return this.end();
     }
 
-    const { uiTheme } = settings.display;
+    const {
+      display: { uiTheme },
+      general: { hideIvScanner },
+    } = settings;
     const pokemon = this.getPokemon();
 
     let enemyIvs: number[] = [];
@@ -52,7 +55,7 @@ export class ScanIvsPhase extends PokemonPhase {
       }
     }
 
-    if (!this.scene.hideIvs) {
+    if (!hideIvScanner) {
       this.scene.ui.showText(
         i18next.t("battle:ivScannerUseQuestion", { pokemonName: getPokemonNameWithAffix(pokemon) }),
         null,

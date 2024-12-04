@@ -124,6 +124,7 @@ import { SpeciesFormKey } from "#enums/species-form-key";
 import { getStatKey, PermanentStat, Stat, TEMP_BATTLE_STATS, TempBattleStat } from "#enums/stat";
 import { StatusEffect } from "#enums/status-effect";
 import i18next from "i18next";
+import { settings } from "#app/data/settings/settings-manager";
 
 const outputModifierData = false;
 const useMaxWeightForOutput = false;
@@ -1016,9 +1017,11 @@ export class MoneyRewardModifierType extends ModifierType {
   }
 
   getDescription(scene: BattleScene): string {
+    const { moneyFormat } = settings.display;
+
     const moneyAmount = new NumberHolder(scene.getWaveMoneyAmount(this.moneyMultiplier));
     scene.applyModifiers(MoneyMultiplierModifier, true, moneyAmount);
-    const formattedMoney = formatMoney(scene.moneyFormat, moneyAmount.value);
+    const formattedMoney = formatMoney(moneyFormat, moneyAmount.value);
 
     return i18next.t("modifierType:ModifierType.MoneyRewardModifierType.description", {
       moneyMultiplier: i18next.t(this.moneyMultiplierDescriptorKey as any),
@@ -1140,8 +1143,9 @@ export class TmModifierType extends PokemonModifierType {
   }
 
   getDescription(scene: BattleScene): string {
+    const { enableMoveInfo } = settings.display;
     return i18next.t(
-      scene.enableMoveInfo
+      enableMoveInfo
         ? "modifierType:ModifierType.TmModifierTypeWithInfo.description"
         : "modifierType:ModifierType.TmModifierType.description",
       { moveName: allMoves[this.moveId].name },

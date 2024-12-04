@@ -28,12 +28,14 @@ export default class BattleMessageUiHandler extends MessageUiHandler {
   }
 
   setup(): void {
+    const { windowType } = settings.display;
+
     const ui = this.getUi();
 
     this.textTimer = null;
     this.textCallbackTimer = null;
 
-    this.bg = this.scene.add.sprite(0, 0, "bg", this.scene.windowType);
+    this.bg = this.scene.add.sprite(0, 0, "bg", windowType);
     this.bg.setName("sprite-battle-msg-bg");
     this.bg.setOrigin(0, 1);
     ui.add(this.bg);
@@ -75,7 +77,7 @@ export default class BattleMessageUiHandler extends MessageUiHandler {
     this.nameBoxContainer = this.scene.add.container(0, -16);
     this.nameBoxContainer.setVisible(false);
 
-    this.nameBox = this.scene.add.nineslice(0, 0, "namebox", this.scene.windowType, 72, 16, 8, 8, 5, 5);
+    this.nameBox = this.scene.add.nineslice(0, 0, "namebox", windowType, 72, 16, 8, 8, 5, 5);
     this.nameBox.setOrigin(0, 0);
 
     this.nameText = addTextObject(this.scene, 8, 0, "Rival", TextStyle.MESSAGE, { maxLines: 1 });
@@ -209,8 +211,10 @@ export default class BattleMessageUiHandler extends MessageUiHandler {
   }
 
   promptLevelUpStats(partyMemberIndex: integer, prevStats: integer[], showTotals: boolean): Promise<void> {
+    const { showStatsOnLevelUp } = settings.display;
+
     return new Promise((resolve) => {
-      if (!this.scene.showLevelUpStats) {
+      if (showStatsOnLevelUp) {
         return resolve();
       }
       const newStats = (this.scene as BattleScene).getPlayerParty()[partyMemberIndex].stats;

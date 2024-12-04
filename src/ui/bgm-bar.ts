@@ -2,6 +2,7 @@ import BattleScene from "../battle-scene";
 import { addTextObject, TextStyle } from "./text";
 import i18next from "i18next";
 import * as Utils from "#app/utils";
+import { settings } from "#app/data/settings/settings-manager";
 
 const hiddenX = -150;
 const shownX = 0;
@@ -73,6 +74,7 @@ export default class BgmBar extends Phaser.GameObjects.Container {
     @param {boolean} visible Whether to show or hide the BGM bar.
    */
   public toggleBgmBar(visible: boolean): void {
+    const { showBgmBar } = settings.display;
     /*
       Prevents the bar from being displayed if musicText is completely empty.
       This can be the case, for example, when the game's 1st music track takes a long time to reach the client,
@@ -83,7 +85,7 @@ export default class BgmBar extends Phaser.GameObjects.Container {
       return;
     }
 
-    if (!(this.scene as BattleScene).showBgmBar) {
+    if (!showBgmBar) {
       this.setVisible(false);
       return;
     }

@@ -2,6 +2,8 @@ import { TextStyle, addTextObject } from "../ui/text";
 import Pokemon, { DamageResult, HitResult } from "./pokemon";
 import * as Utils from "../utils";
 import { BattlerIndex } from "../battle";
+import { settings } from "#app/data/settings/settings-manager";
+import { DamageNumbersMode } from "#app/enums/damage-numbers-mode";
 
 type TextAndShadowArr = [string | null, string | null];
 
@@ -18,9 +20,10 @@ export default class DamageNumberHandler {
     result: DamageResult | HitResult.HEAL = HitResult.EFFECTIVE,
     critical: boolean = false,
   ): void {
+    const { damageNumbersMode } = settings.display;
     const scene = target.scene;
 
-    if (!scene?.damageNumbersMode) {
+    if (damageNumbersMode === DamageNumbersMode.OFF) {
       return;
     }
 
@@ -82,7 +85,7 @@ export default class DamageNumberHandler {
 
     this.damageNumbers.get(battlerIndex)!.push(damageNumber);
 
-    if (scene.damageNumbersMode === 1) {
+    if (damageNumbersMode === DamageNumbersMode.SIMPLE) {
       scene.tweens.add({
         targets: damageNumber,
         duration: Utils.fixedInt(750),

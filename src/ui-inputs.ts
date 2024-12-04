@@ -74,7 +74,9 @@ export class UiInputs {
   }
 
   doVibration(inputSuccess: boolean, vibrationLength: number): void {
-    if (inputSuccess && this.scene.enableVibration && typeof navigator.vibrate !== "undefined") {
+    const { enableVibration } = settings.general;
+
+    if (inputSuccess && enableVibration && typeof navigator.vibrate !== "undefined") {
       navigator.vibrate(vibrationLength);
     }
   }
@@ -161,13 +163,15 @@ export class UiInputs {
   }
 
   buttonInfo(pressed: boolean = true): void {
-    if (this.scene.showMovesetFlyout) {
+    const { showMovesetFlyout, showArenaFlyout } = settings.display;
+
+    if (showMovesetFlyout) {
       for (const p of this.scene.getField().filter((p) => p?.isActive(true))) {
         p.toggleFlyout(pressed);
       }
     }
 
-    if (this.scene.showArenaFlyout) {
+    if (showArenaFlyout) {
       this.scene.ui.processInfoButton(pressed);
     }
   }

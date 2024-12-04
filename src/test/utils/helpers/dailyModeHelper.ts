@@ -1,3 +1,4 @@
+import { settings } from "#app/data/settings/settings-manager";
 import { BattleStyle } from "#app/enums/battle-style";
 import { Button } from "#app/enums/buttons";
 import overrides from "#app/overrides";
@@ -46,9 +47,11 @@ export class DailyModeHelper extends GameManagerHelper {
    * @returns A promise that resolves when the battle is started.
    */
   async startBattle() {
+    const { battleStyle } = settings.general;
+
     await this.runToSummon();
 
-    if (this.game.scene.battleStyle === BattleStyle.SWITCH) {
+    if (battleStyle === BattleStyle.SWITCH) {
       this.game.onNextPrompt(
         "CheckSwitchPhase",
         Mode.CONFIRM,

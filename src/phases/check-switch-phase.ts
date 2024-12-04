@@ -8,6 +8,7 @@ import { BattlePhase } from "./battle-phase";
 import { SummonMissingPhase } from "./summon-missing-phase";
 import { SwitchPhase } from "./switch-phase";
 import { SwitchType } from "#enums/switch-type";
+import { settings } from "#app/data/settings/settings-manager";
 
 export class CheckSwitchPhase extends BattlePhase {
   protected fieldIndex: integer;
@@ -23,12 +24,14 @@ export class CheckSwitchPhase extends BattlePhase {
   start() {
     super.start();
 
+    const { battleStyle } = settings.general;
+
     const pokemon = this.scene.getPlayerField()[this.fieldIndex];
 
     // End this phase early...
 
     // ...if the user is playing in Set Mode
-    if (this.scene.battleStyle === BattleStyle.SET) {
+    if (battleStyle === BattleStyle.SET) {
       return super.end();
     }
 

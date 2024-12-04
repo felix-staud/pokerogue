@@ -13,14 +13,13 @@ import { MusicPreference } from "#app/enums/music-preference";
 import { ShopCursorTarget } from "#app/enums/shop-cursor-target";
 import { SpriteSet } from "#app/enums/sprite-set";
 import { UiTheme } from "#app/enums/ui-theme";
-import { Gender } from "../gender";
 
 export const defaultSettings: Settings = {
   general: {
     gameSpeed: 1,
     hpBarSpeed: HpBarSpeed.DEFAULT,
     expGainsSpeed: ExpGainsSpeed.DEFAULT,
-    showExpParty: ExpNotification.DEFAULT,
+    partyExpNotificationMode: ExpNotification.DEFAULT,
     skipSeenDialogues: false,
     eggSkipPreference: EggSkipPreference.NEVER,
     battleStyle: BattleStyle.SWITCH,
@@ -36,7 +35,7 @@ export const defaultSettings: Settings = {
     windowType: 0,
     moneyFormat: MoneyFormat.NORMAL,
     damageNumbersMode: DamageNumbersMode.OFF,
-    moveAnimations: true,
+    enableMoveAnimations: true,
     showStatsOnLevelUp: true,
     candyUpgradeNotificationMode: CandyUpgradeNotificationMode.ON,
     candyUpgradeDisplayMode: CandyUpgradeDisplayMode.ICON,
@@ -47,7 +46,7 @@ export const defaultSettings: Settings = {
     timeOfDayAnimation: EaseType.NONE,
     spriteSet: SpriteSet.CONSISTENT,
     enableFusionPaletteSwaps: true,
-    playerGender: Gender.MALE,
+    // playerGender: Gender.MALE,
     enableTypeHints: false,
     showBgmBar: true,
     shopCursorTarget: ShopCursorTarget.REWARDS,

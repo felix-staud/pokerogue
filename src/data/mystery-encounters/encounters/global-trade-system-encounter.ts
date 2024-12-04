@@ -42,6 +42,7 @@ import { Species } from "#enums/species";
 import i18next from "i18next";
 import { getEncounterText, showEncounterText } from "../utils/encounter-dialogue-utils";
 import { addPokemonDataToDexAndValidateAchievements } from "../utils/encounter-pokemon-utils";
+import { settings } from "#app/data/settings/settings-manager";
 
 /** the i18n namespace for the encounter */
 const namespace = "mysteryEncounters/globalTradeSystem";
@@ -119,11 +120,13 @@ export const GlobalTradeSystemEncounter: MysteryEncounter = MysteryEncounterBuil
   .withDescription(`${namespace}:description`)
   .withQuery(`${namespace}:query`)
   .withOnInit((scene: BattleScene) => {
+    const { musicPreference } = settings.audio;
+
     const encounter = scene.currentBattle.mysteryEncounter!;
 
     // Load bgm
     let bgmKey: string;
-    if (scene.musicPreference === MusicPreference.CONSISTENT) {
+    if (musicPreference === MusicPreference.CONSISTENT) {
       bgmKey = "mystery_encounter_gen_5_gts";
       scene.loadBgm(bgmKey, `${bgmKey}.mp3`);
     } else {

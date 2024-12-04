@@ -76,6 +76,8 @@ import {
 import type { Nature } from "#enums/nature";
 import { PLAYER_PARTY_MAX_SIZE } from "#app/constants";
 import { settings } from "#app/data/settings/settings-manager";
+import { CandyUpgradeNotificationMode } from "#app/enums/candy-upgrade-notification-mode";
+import { CandyUpgradeDisplayMode } from "#app/enums/candy-upgrade-display";
 
 export type StarterSelectCallback = (starters: Starter[]) => void;
 
@@ -1352,14 +1354,24 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
    * @returns true if upgrade notifications are enabled and set to display an 'Icon'
    */
   isUpgradeIconEnabled(): boolean {
-    return this.scene.candyUpgradeNotification !== 0 && this.scene.candyUpgradeDisplay === 0;
+    const { candyUpgradeNotificationMode, candyUpgradeDisplayMode } = settings.display;
+
+    return (
+      candyUpgradeNotificationMode !== CandyUpgradeNotificationMode.OFF &&
+      candyUpgradeDisplayMode === CandyUpgradeDisplayMode.ICON
+    );
   }
   /**
    * Determines if 'Animation' based upgrade notifications should be shown
    * @returns true if upgrade notifications are enabled and set to display an 'Animation'
    */
   isUpgradeAnimationEnabled(): boolean {
-    return this.scene.candyUpgradeNotification !== 0 && this.scene.candyUpgradeDisplay === 1;
+    const { candyUpgradeNotificationMode, candyUpgradeDisplayMode } = settings.display;
+
+    return (
+      candyUpgradeNotificationMode !== CandyUpgradeNotificationMode.OFF &&
+      candyUpgradeDisplayMode === CandyUpgradeDisplayMode.ANIMATION
+    );
   }
 
   /**
@@ -1412,9 +1424,14 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
    * @param startPaused Should this animation be paused after it is added?
    */
   setUpgradeAnimation(icon: Phaser.GameObjects.Sprite, species: PokemonSpecies, startPaused: boolean = false): void {
+    const { candyUpgradeNotificationMode, candyUpgradeDisplayMode } = settings.display;
+
     this.scene.tweens.killTweensOf(icon);
     // Skip animations if they are disabled
-    if (this.scene.candyUpgradeDisplay === 0 || species.speciesId !== species.getRootSpeciesId(false)) {
+    if (
+      candyUpgradeDisplayMode === CandyUpgradeDisplayMode.ICON ||
+      species.speciesId !== species.getRootSpeciesId(false)
+    ) {
       return;
     }
 
@@ -1449,12 +1466,12 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
     const isSameSpeciesEggAvailable = this.isSameSpeciesEggAvailable(species.speciesId);
 
     // 'Passives Only' mode
-    if (this.scene.candyUpgradeNotification === 1) {
+    if (candyUpgradeNotificationMode === CandyUpgradeNotificationMode.PASSIVES_ONLY) {
       if (isPassiveAvailable) {
         this.scene.tweens.chain(tweenChain).paused = startPaused;
       }
       // 'On' mode
-    } else if (this.scene.candyUpgradeNotification === 2) {
+    } else if (candyUpgradeNotificationMode === CandyUpgradeNotificationMode.ON) {
       if (isPassiveAvailable || isValueReductionAvailable || isSameSpeciesEggAvailable) {
         this.scene.tweens.chain(tweenChain).paused = startPaused;
       }
@@ -1465,12 +1482,14 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
    * Sets the visibility of a Candy Upgrade Icon
    */
   setUpgradeIcon(starter: StarterContainer): void {
+    const { candyUpgradeNotificationMode } = settings.display;
+
     const species = starter.species;
     const slotVisible = !!species?.speciesId;
 
     if (
       !species ||
-      this.scene.candyUpgradeNotification === 0 ||
+      candyUpgradeNotificationMode === CandyUpgradeNotificationMode.OFF ||
       species.speciesId !== species.getRootSpeciesId(false)
     ) {
       starter.candyUpgradeIcon.setVisible(false);
@@ -1483,12 +1502,12 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
     const isSameSpeciesEggAvailable = this.isSameSpeciesEggAvailable(species.speciesId);
 
     // 'Passive Only' mode
-    if (this.scene.candyUpgradeNotification === 1) {
+    if (candyUpgradeNotificationMode === CandyUpgradeNotificationMode.PASSIVES_ONLY) {
       starter.candyUpgradeIcon.setVisible(slotVisible && isPassiveAvailable);
       starter.candyUpgradeOverlayIcon.setVisible(slotVisible && starter.candyUpgradeIcon.visible);
 
       // 'On' mode
-    } else if (this.scene.candyUpgradeNotification === 2) {
+    } else if (candyUpgradeNotificationMode === CandyUpgradeNotificationMode.ON) {
       starter.candyUpgradeIcon.setVisible(
         slotVisible && (isPassiveAvailable || isValueReductionAvailable || isSameSpeciesEggAvailable),
       );
@@ -1514,13 +1533,15 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
    * @param event {@linkcode Event} sent by the callback
    */
   onCandyUpgradeDisplayChanged(event: Event): void {
+    const { candyUpgradeDisplayMode } = settings.display;
+
     const candyUpgradeDisplayEvent = event as CandyUpgradeNotificationChangedEvent;
     if (!candyUpgradeDisplayEvent) {
       return;
     }
 
     // Loop through all visible candy icons when set to 'Icon' mode
-    if (this.scene.candyUpgradeDisplay === 0) {
+    if (candyUpgradeDisplayMode === CandyUpgradeDisplayMode.ICON) {
       this.filteredStarterContainers.forEach((starter) => {
         this.setUpgradeIcon(starter);
       });
@@ -3037,6 +3058,8 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
   };
 
   updateScroll = () => {
+    const { candyUpgradeDisplayMode } = settings.display;
+
     const maxColumns = 9;
     const maxRows = 9;
     const onScreenFirstIndex = this.scrollCursor * maxColumns;
@@ -3110,7 +3133,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
         container.favoriteIcon.setVisible(this.starterPreferences[speciesId]?.favorite ?? false);
 
         // 'Candy Icon' mode
-        if (this.scene.candyUpgradeDisplay === 0) {
+        if (candyUpgradeDisplayMode === CandyUpgradeDisplayMode.ICON) {
           if (!starterColors[speciesId]) {
             // Default to white if no colors are found
             starterColors[speciesId] = ["ffffff", "ffffff"];
@@ -3121,7 +3144,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
           container.candyUpgradeOverlayIcon.setTint(argbFromRgba(rgbHexToRgba(starterColors[speciesId][1])));
 
           this.setUpgradeIcon(container);
-        } else if (this.scene.candyUpgradeDisplay === 1) {
+        } else if (candyUpgradeDisplayMode === CandyUpgradeDisplayMode.ANIMATION) {
           container.candyUpgradeIcon.setVisible(false);
           container.candyUpgradeOverlayIcon.setVisible(false);
         }

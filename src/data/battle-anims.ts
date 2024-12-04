@@ -10,6 +10,7 @@ import { SubstituteTag } from "./battler-tags";
 import { isNullOrUndefined } from "../utils";
 import Phaser from "phaser";
 import { EncounterAnim } from "#enums/encounter-anims";
+import { settings } from "./settings/settings-manager";
 //import fs from 'vite-plugin-fs/browser';
 
 export enum AnimFrameTarget {
@@ -941,6 +942,8 @@ export abstract class BattleAnim {
   }
 
   play(scene: BattleScene, onSubstitute?: boolean, callback?: Function) {
+    const { enableMoveAnimations } = settings.display;
+
     const isOppAnim = this.isOppAnim();
     const user = !isOppAnim ? this.user! : this.target!; // TODO: are those bangs correct?
     const target = !isOppAnim ? this.target! : this.user!;
@@ -1012,7 +1015,7 @@ export abstract class BattleAnim {
       }
     };
 
-    if (!scene.moveAnimations && !this.playRegardlessOfIssues) {
+    if (!enableMoveAnimations && !this.playRegardlessOfIssues) {
       return cleanUpAndComplete();
     }
 
@@ -1284,6 +1287,8 @@ export abstract class BattleAnim {
     frameTimedEventPriority?: 0 | 1 | 3 | 5,
     callback?: Function,
   ) {
+    const { enableMoveAnimations } = settings.display;
+
     const spriteCache: SpriteCache = {
       [AnimFrameTarget.GRAPHIC]: [],
       [AnimFrameTarget.USER]: [],
@@ -1304,7 +1309,7 @@ export abstract class BattleAnim {
       }
     };
 
-    if (!scene.moveAnimations && !this.playRegardlessOfIssues) {
+    if (!enableMoveAnimations && !this.playRegardlessOfIssues) {
       return cleanUpAndComplete();
     }
 

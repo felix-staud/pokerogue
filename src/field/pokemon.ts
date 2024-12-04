@@ -228,7 +228,8 @@ import {
 import { Nature } from "#enums/nature";
 import { StatusEffect } from "#enums/status-effect";
 import { doShinySparkleAnim } from "#app/field/anims";
-import { settingsManager } from "#app/data/settings/settings-manager";
+import { settings, settingsManager } from "#app/data/settings/settings-manager";
+import { SpriteSet } from "#app/enums/sprite-set";
 
 export enum LearnMoveSituation {
   MISC,
@@ -608,6 +609,8 @@ export default abstract class Pokemon extends Phaser.GameObjects.Container {
   abstract getBattlerIndex(): BattlerIndex;
 
   loadAssets(ignoreOverride: boolean = true): Promise<void> {
+    const { spriteSet } = settings.display;
+
     return new Promise((resolve) => {
       const moveIds = this.getMoveset().map((m) => m!.getMove().id); // TODO: is this bang correct?
       Promise.allSettled(moveIds.map((m) => initMoveAnim(this.scene, m))).then(() => {
@@ -675,7 +678,7 @@ export default abstract class Pokemon extends Phaser.GameObjects.Container {
                   .replace(/_[1-3]$/, "");
                 let config = variantData;
                 const useExpSprite =
-                  this.scene.experimentalSprites &&
+                  spriteSet === SpriteSet.MIXED &&
                   this.scene.hasExpSprite(this.getBattleSpriteKey(isBackSprite, ignoreOverride));
                 battleSpritePath.split("/").map((p) => (config ? (config = config[p]) : null));
                 const variantSet: VariantSet = config as VariantSet;
