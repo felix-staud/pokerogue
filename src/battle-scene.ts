@@ -341,7 +341,7 @@ export default class BattleScene extends SceneBase {
 
     settingsManager.eventBus.on(SettingsManager.Event.Updated, ({ category, key, value }) => {
       if ([ "masterVolume", "bgmVolume", "fieldVolume", "soundEffectsVolume" ].includes(key)) {
-        BattleScene.instance?.updateSoundVolume();
+        this.updateSoundVolume();
       }
     });
   }

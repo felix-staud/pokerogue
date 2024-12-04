@@ -1,7 +1,7 @@
 import { Stat } from "#enums/stat";
 import { SpeciesStatBoosterModifier } from "#app/modifier/modifier";
 import { modifierTypes } from "#app/modifier/modifier-type";
-import i18next from "#app/plugins/i18n";
+import i18next from "#app/plugins/i18n/i18n";
 import * as Utils from "#app/utils";
 import { Species } from "#enums/species";
 import GameManager from "#test/utils/gameManager";

@@ -3,7 +3,7 @@ import { trainerConfigs } from "#app/data/trainer-config";
 import Pokemon, { EnemyPokemon, PlayerPokemon, QueuedMove } from "#app/field/pokemon";
 import { ModifierTier } from "#app/modifier/modifier-tier";
 import { CustomModifierSettings } from "#app/modifier/modifier-type";
-import i18next from "#app/plugins/i18n";
+import i18next from "#app/plugins/i18n/i18n";
 import { ArenaTagType } from "#enums/arena-tag-type";
 import { BattleSpec } from "#enums/battle-spec";
 import { Moves } from "#enums/moves";

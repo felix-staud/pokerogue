@@ -1,5 +1,8 @@
 import type { Settings } from "#app/@types/Settings";
 import { BattleStyle } from "#app/enums/battle-style";
+import { CandyUpgradeDisplayMode } from "#app/enums/candy-upgrade-display";
+import { CandyUpgradeNotificationMode } from "#app/enums/candy-upgrade-notification-mode";
+import { DamageNumbersMode } from "#app/enums/damage-numbers-mode";
 import { EaseType } from "#app/enums/ease-type";
 import { EggSkipPreference } from "#app/enums/egg-skip-preference";
 import { ExpGainsSpeed } from "#app/enums/exp-gains-speed";
@@ -32,11 +35,11 @@ export const defaultSettings: Settings = {
     uiTheme: UiTheme.DEFAULT,
     windowType: 0,
     moneyFormat: MoneyFormat.NORMAL,
-    damageNumbersMode: 0,
+    damageNumbersMode: DamageNumbersMode.OFF,
     moveAnimations: true,
     showStatsOnLevelUp: true,
-    candyUpgradeNotification: 0,
-    candyUpgradeDisplay: 0,
+    candyUpgradeNotificationMode: CandyUpgradeNotificationMode.ON,
+    candyUpgradeDisplayMode: CandyUpgradeDisplayMode.ICON,
     enableMoveInfo: true,
     showMovesetFlyout: true,
     showArenaFlyout: true,

@@ -26,7 +26,7 @@ import { TrainerSlot } from "#app/data/trainer-config";
 import { applyModifierTypeToPlayerPokemon, getEncounterPokemonLevelForWave, getHighestStatPlayerPokemon, getSpriteKeysFromPokemon, STANDARD_ENCOUNTER_BOOSTED_LEVEL_MODIFIER } from "#app/data/mystery-encounters/utils/encounter-pokemon-utils";
 import PokemonData from "#app/system/pokemon-data";
 import { BerryModifier } from "#app/modifier/modifier";
-import i18next from "#app/plugins/i18n";
+import i18next from "#app/plugins/i18n/i18n";
 import { BerryType } from "#enums/berry-type";
 import { PERMANENT_STATS, Stat } from "#enums/stat";
 import { StatStageChangePhase } from "#app/phases/stat-stage-change-phase";

@@ -1,4 +1,4 @@
-import i18next from "#app/plugins/i18n";
+import i18next from "#app/plugins/i18n/i18n";
 import { Abilities } from "#enums/abilities";
 import { Moves } from "#enums/moves";
 import { Species } from "#enums/species";

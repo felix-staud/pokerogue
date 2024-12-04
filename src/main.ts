@@ -5,7 +5,7 @@ import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import BBCodeTextPlugin from "phaser3-rex-plugins/plugins/bbcodetext-plugin";
 import InputTextPlugin from "phaser3-rex-plugins/plugins/inputtext-plugin";
 import TransitionImagePackPlugin from "phaser3-rex-plugins/templates/transitionimagepack/transitionimagepack-plugin";
-import { initI18n } from "./plugins/i18n";
+import { initI18n } from "./plugins/i18n/i18n";
 
 
 // Catch global errors and display them in an alert so users can report the issue.

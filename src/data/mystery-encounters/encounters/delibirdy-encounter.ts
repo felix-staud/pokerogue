@@ -11,7 +11,7 @@ import { CLASSIC_MODE_MYSTERY_ENCOUNTER_WAVES } from "#app/game-mode";
 import { BerryModifier, HealingBoosterModifier, LevelIncrementBoosterModifier, MoneyMultiplierModifier, PokemonHeldItemModifier, PokemonInstantReviveModifier, PreserveBerryModifier } from "#app/modifier/modifier";
 import { modifierTypes, PokemonHeldItemModifierType } from "#app/modifier/modifier-type";
 import { ModifierRewardPhase } from "#app/phases/modifier-reward-phase";
-import i18next from "#app/plugins/i18n";
+import i18next from "#app/plugins/i18n/i18n";
 import { OptionSelectItem } from "#app/ui/abstact-option-select-ui-handler";
 import { MysteryEncounterOptionMode } from "#enums/mystery-encounter-option-mode";
 import { MysteryEncounterTier } from "#enums/mystery-encounter-tier";

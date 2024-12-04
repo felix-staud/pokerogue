@@ -10,7 +10,7 @@ import { Type } from "#enums/type";
 import { doubleBattleDialogue } from "#app/data/dialogue";
 import { PersistentModifier } from "#app/modifier/modifier";
 import { TrainerVariant } from "#app/field/trainer";
-import { getIsInitialized, initI18n } from "#app/plugins/i18n";
+import { getIsInitialized, initI18n } from "#app/plugins/i18n/i18n";
 import i18next from "i18next";
 import { Moves } from "#enums/moves";
 import { PartyMemberStrength } from "#enums/party-member-strength";

@@ -3,7 +3,8 @@ import { Mode } from "../ui";
 "#app/inputs-controller";
 import AbstractSettingsUiHandler from "./abstract-settings-ui-handler";
 import { SettingKeys, SettingType } from "#app/system/settings/settings";
-import { displaySettingsUiItems } from "#app/data/settings/settings-ui-items";
+import { useDisplaySettingsUiItems } from "#app/data/settings/settings-ui-items";
+import i18next from "i18next";
 
 export default class SettingsDisplayUiHandler extends AbstractSettingsUiHandler {
   /**
@@ -13,7 +14,7 @@ export default class SettingsDisplayUiHandler extends AbstractSettingsUiHandler 
    * @param mode - The UI mode, optional.
    */
   constructor(scene: BattleScene, mode: Mode | null = null) {
-    super(scene, SettingType.DISPLAY, mode, displaySettingsUiItems);
+    super(scene, SettingType.DISPLAY, mode, useDisplaySettingsUiItems(i18next.resolvedLanguage ?? "en"));
     this.title = "Display";
 
     /**

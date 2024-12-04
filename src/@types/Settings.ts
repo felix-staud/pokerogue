@@ -1,5 +1,8 @@
 import type { Gender } from "#app/data/gender";
 import type { BattleStyle } from "#app/enums/battle-style";
+import type { CandyUpgradeDisplayMode } from "#app/enums/candy-upgrade-display";
+import type { CandyUpgradeNotificationMode } from "#app/enums/candy-upgrade-notification-mode";
+import type { DamageNumbersMode } from "#app/enums/damage-numbers-mode";
 import type { EaseType } from "#app/enums/ease-type";
 import type { EggSkipPreference } from "#app/enums/egg-skip-preference";
 import type { ExpGainsSpeed } from "#app/enums/exp-gains-speed";
@@ -38,11 +41,11 @@ export interface DisplaySettings {
   uiTheme: UiTheme;
   windowType: number;
   moneyFormat: MoneyFormat;
-  damageNumbersMode: number;
+  damageNumbersMode: DamageNumbersMode;
   moveAnimations: boolean;
   showStatsOnLevelUp: boolean;
-  candyUpgradeNotification: number;
-  candyUpgradeDisplay: number;
+  candyUpgradeNotificationMode: CandyUpgradeNotificationMode;
+  candyUpgradeDisplayMode: CandyUpgradeDisplayMode;
   enableMoveInfo: boolean;
   showMovesetFlyout: boolean;
   showArenaFlyout: boolean;

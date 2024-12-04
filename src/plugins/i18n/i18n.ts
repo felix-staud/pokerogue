@@ -3,7 +3,8 @@ import i18next from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import HttpBackend from "i18next-http-backend";
 import processor, { KoreanPostpositionProcessor } from "i18next-korean-postposition-processor";
-import pkg from "../../package.json";
+import pkg from "../../../package.json";
+import { supportedLanguages } from "./supported-languages";
 
 //#region Interfaces/Types
 
@@ -153,7 +154,7 @@ export async function initI18n(): Promise<void> {
   i18next.use(new KoreanPostpositionProcessor());
   await i18next.init({
     fallbackLng: "en",
-    supportedLngs: [ "en", "es-ES", "fr", "it", "de", "zh-CN", "zh-TW", "pt-BR", "ko", "ja", "ca-ES" ],
+    supportedLngs: supportedLanguages.map(lang => lang.key),
     backend: {
       loadPath(lng: string, [ ns ]: string[]) {
         let fileName: string;

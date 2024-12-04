@@ -8,9 +8,9 @@ import { Button } from "#enums/buttons";
 import { InputsIcons } from "#app/ui/settings/abstract-control-settings-ui-handler";
 import NavigationMenu, { NavigationManager } from "#app/ui/settings/navigationMenu";
 import { Setting, SettingKeys, SettingType } from "#app/system/settings/settings";
-import i18next, { t } from "i18next";
-import { settingsManager, type Settings, type SettingsUiItem } from "#app/data/settings/settings-manager";
-
+import i18next from "i18next";
+import { settingsManager } from "#app/data/settings/settings-manager";
+import type { Settings, SettingsUiItem } from "#app/@types/Settings";
 
 /**
  * Abstract class for handling UI elements related to settings.
@@ -107,6 +107,10 @@ export default class AbstractSettingsUiHandler extends MessageUiHandler {
     cancelText.setOrigin(0, 0.15);
     cancelText.setPositionRelative(iconCancel, -cancelText.width / 6 - 2, 0);
 
+    const requiresReloadInfoText = addTextObject(this.scene, 0, 0, "*: Requires Reload", TextStyle.SUMMARY_GRAY, { fontSize: "3rem" });
+    requiresReloadInfoText.setOrigin(0, 0.15);
+    requiresReloadInfoText.setPositionRelative(actionsBg, 10, 10);
+
     this.optionsContainer = this.scene.add.container(0, 0);
 
     this.settingLabels = [];
@@ -174,7 +178,7 @@ export default class AbstractSettingsUiHandler extends MessageUiHandler {
       this.uiItems.forEach((uiItem, i) => {
         let settingName = uiItem.label;
         if (uiItem?.requireReload) {
-          settingName += ` (${t("settings:requireReload")})`;
+          settingName += " *";
         }
 
         this.settingLabels[i] = addTextObject(this.scene, 8, 28 + i * 16, settingName, TextStyle.SETTINGS_LABEL);
@@ -263,6 +267,7 @@ export default class AbstractSettingsUiHandler extends MessageUiHandler {
     this.settingsContainer.add(iconCancel);
     this.settingsContainer.add(actionText);
     this.settingsContainer.add(cancelText);
+    this.settingsContainer.add(requiresReloadInfoText);
     this.settingsContainer.add(this.messageBoxContainer);
 
     ui.add(this.settingsContainer);
@@ -466,11 +471,11 @@ export default class AbstractSettingsUiHandler extends MessageUiHandler {
     if (settingIndex === -1) {
       settingIndex = this.cursor + this.scrollCursor;
     }
-    let setting;
+    let setting: SettingsUiItem | Setting;
     if (!this.uiItems) {
-      setting = this.settings[settingIndex];
+      setting = this.settings[settingIndex] as Setting;
     } else {
-      setting = this.uiItems[settingIndex];
+      setting = this.uiItems[settingIndex] as SettingsUiItem;
     }
 
     const lastCursor = this.optionCursors[settingIndex];
@@ -501,7 +506,7 @@ export default class AbstractSettingsUiHandler extends MessageUiHandler {
             this.reloadRequired = true;
           }
         } else {
-          settingsManager.updateSetting(this.category, setting.key,  setting.options[cursor].value);
+          settingsManager.updateSetting(this.category, setting.key as any,  setting.options[cursor].value);
         }
       };
 
