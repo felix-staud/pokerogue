@@ -3,6 +3,7 @@ import { Mode } from "../ui";
 "#app/inputs-controller";
 import AbstractSettingsUiHandler from "./abstract-settings-ui-handler";
 import { SettingKeys, SettingType } from "#app/system/settings/settings";
+import { LOCALE_LS_KEY } from "#app/constants";
 
 export default class SettingsDisplayUiHandler extends AbstractSettingsUiHandler {
   /**
@@ -21,7 +22,7 @@ export default class SettingsDisplayUiHandler extends AbstractSettingsUiHandler 
      */
     const languageIndex = this.settings.findIndex(s => s.key === SettingKeys.Language);
     if (languageIndex >= 0) {
-      const currentLocale = localStorage.getItem("prLang");
+      const currentLocale = localStorage.getItem(LOCALE_LS_KEY);
       switch (currentLocale) {
         case "en":
           this.settings[languageIndex].options[0] = {

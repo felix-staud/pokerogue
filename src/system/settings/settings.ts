@@ -10,6 +10,7 @@ import { MoneyFormat } from "#enums/money-format";
 import { PlayerGender } from "#enums/player-gender";
 import { getIsInitialized, initI18n } from "#app/plugins/i18n";
 import { ShopCursorTarget } from "#app/enums/shop-cursor-target";
+import { LOCALE_LS_KEY } from "#app/constants";
 
 function getTranslation(key: string): string {
   if (!getIsInitialized()) {
@@ -871,7 +872,7 @@ export function setSetting(scene: BattleScene, setting: string, value: integer):
           const changeLocaleHandler = (locale: string): boolean => {
             try {
               i18next.changeLanguage(locale);
-              localStorage.setItem("prLang", locale);
+              localStorage.setItem(LOCALE_LS_KEY, locale);
               cancelHandler();
               // Reload the whole game to apply the new locale since also some constants are translated
               window.location.reload();

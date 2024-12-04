@@ -15,3 +15,9 @@ export const SAVES_ZIP_PREFIX = "poketernity_";
 
 /** File extension for save files. */
 export const SAVE_FILE_EXTENSION = ".poketernity.sav";
+
+/** Prefix for local storage keys. */
+export const LS_PREFIX = "pkty";
+
+/** Key for the local storage item storing the locale. */
+export const LOCALE_LS_KEY = `${LS_PREFIX}/locale`;
